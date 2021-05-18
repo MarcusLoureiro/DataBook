@@ -1,4 +1,4 @@
-gitgitpackage com.example.databook
+package com.example.databook
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
