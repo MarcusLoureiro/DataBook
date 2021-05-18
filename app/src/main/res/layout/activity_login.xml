@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".LoginActivity">
+
+    <ImageView
+        android:id="@+id/arrow_back"
+        android:layout_width="51dp"
+        android:layout_height="56dp"
+        android:background="@drawable/arrow_back"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/imageView3"
+        app:layout_constraintHorizontal_bias="0.285"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.023" />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="196dp"
+        android:layout_height="191dp"
+        android:src="@drawable/logo_azul"
+        app:layout_constraintBottom_toTopOf="@+id/textView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.222" />
+
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:width="423dp"
+        android:height="55dp"
+        android:fontFamily="@font/montserrat"
+        android:lineSpacingMultiplier="1.3"
+        android:text="SEJA BEM-VINDO"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        android:textColor="#FF000000"
+        android:textSize="40sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.242" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="388dp"
+        android:layout_height="80dp"
+        android:width="422dp"
+        android:height="30dp"
+        android:fontFamily="@font/montserrat"
+        android:lineSpacingMultiplier="1.3"
+        android:lines="2"
+        android:textStyle="bold"
+        android:text="Para continuar faça seu Login, Por favor."
+        android:textAlignment="center"
+        android:textColor="#FF969FAA"
+        android:textSize="24.5sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout"
+        android:layout_width="392dp"
+        android:layout_height="62dp"
+        android:outlineAmbientShadowColor="@color/black"
+        android:textColorHint="@color/black"
+        android:hint="Email"
+        app:boxStrokeColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <EditText
+            android:id="@+id/edEmail"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:autofillHints=""
+            android:backgroundTint="@color/white"
+            android:inputType="text"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
+            android:textCursorDrawable="@color/black" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout2"
+        android:layout_width="392dp"
+        android:layout_height="62dp"
+        android:outlineAmbientShadowColor="@color/black"
+        android:textColorHint="@color/black"
+        android:hint="Senha"
+        android:layout_marginTop="200dp"
+        app:boxStrokeColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">>
+
+        <EditText
+            android:id="@+id/edSenha"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:autofillHints=""
+            android:backgroundTint="@color/white"
+            android:inputType="text"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
+            android:textCursorDrawable="@color/black" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/tv_esqueceuSenha"
+        android:layout_width="336dp"
+        android:layout_height="33dp"
+        android:layout_marginTop="450dp"
+        android:width="423dp"
+        android:height="55dp"
+        android:textStyle="bold"
+        android:fontFamily="@font/montserrat"
+        android:lineSpacingMultiplier="1.3"
+        android:text="Esqueceu sua senha?"
+        android:textAlignment="textStart"
+        android:textColor="@color/color3"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.235"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.243" />
+
+    <android.widget.Button
+        android:id="@+id/btn_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="116dp"
+        android:background="@drawable/btentrar"
+        android:backgroundTint="@color/color4"
+        android:fontFamily="@font/montserrat"
+        android:lineSpacingMultiplier="0.38"
+        android:text="Login"
+        android:textColor="@color/white"
+        android:textSize="21sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_login_google"
+        app:layout_constraintVertical_bias="0.209" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="383dp"
+        android:layout_height="37dp"
+        android:width="422dp"
+        android:height="30dp"
+        android:fontFamily="@font/montserrat"
+        android:lineSpacingMultiplier="1.3"
+        android:lines="2"
+        android:text="Você não possui login?"
+        android:textAlignment="center"
+        android:textColor="#FF969FAA"
+        android:textSize="24.5sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.678"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/btn_login"
+        app:layout_constraintVertical_bias="0.423" />
+
+    <TextView
+        android:id="@+id/tv_cadastre_se"
+        android:layout_width="336dp"
+        android:layout_height="33dp"
+        android:layout_marginTop="450dp"
+        android:width="423dp"
+        android:height="55dp"
+        android:fontFamily="@font/montserrat"
+        android:lineSpacingMultiplier="1.3"
+        android:text="Cadastre-se"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        android:textColor="@color/color3"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.493"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.814" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
