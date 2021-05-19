@@ -10,8 +10,13 @@ class InitScreenActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_init_screen)
         btn_entrar.setOnClickListener {
-            val intent = Intent(this, LoginActivity::class.java)
-            startActivity(intent)
+          InicarLogin()
         }
+    }
+
+    fun InicarLogin(){
+        val intent = Intent(this, LoginActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 }
