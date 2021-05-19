@@ -1,3 +1,7 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="poster_altura">215dp</dimen>
+    <dimen name="poster_largura">140dp</dimen>
+    <dimen name="strarEvaluation">27dp</dimen>
+    <dimen name="nameMedia_maxDeight">35dp</dimen>
 </resources>
