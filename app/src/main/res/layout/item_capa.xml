@@ -20,6 +20,7 @@
 
             <ImageView
                 android:id="@+id/mediaImage"
+                android:src="@drawable/img3"
                 android:layout_width="@dimen/poster_largura"
                 android:layout_height="@dimen/poster_altura"
                 android:adjustViewBounds="true"
@@ -33,7 +34,7 @@
             android:layout_width="@dimen/poster_largura"
             android:layout_height="wrap_content"
             android:fontFamily="@font/montserrat"
-            android:text="The Flash"
+            android:text="Harry Potter"
             android:textColor="@color/color2"
             android:textSize="20dp"
             android:textStyle="bold" />
