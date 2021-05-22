@@ -9,13 +9,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.DataBook">
-        <activity android:name=".ResgitrarLivroActivity"></activity>
-        <activity android:name=".LivroSelecionadoActivity" />
-        <activity android:name=".cadastroActivity" />
-        <activity android:name=".LoginActivity" />
-        <activity android:name=".InitScreenActivity" />
-        <activity android:name=".MainActivity" />
-        <activity android:name=".SplashScreenActivity">
+        <activity android:name=".livro.ResgitrarLivroActivity"></activity>
+        <activity android:name=".livro.LivroSelecionadoActivity" />
+        <activity android:name=".login.cadastroActivity" />
+        <activity android:name=".login.LoginActivity" />
+        <activity android:name=".init.InitScreenActivity" />
+        <activity android:name=".home.MainActivity" />
+        <activity android:name=".init.SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

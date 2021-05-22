@@ -1,6 +1,5 @@
-package com.example.databook
+package com.example.databook.home
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,10 +8,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.databook.adapter.LivroAdapter
+import com.example.databook.livro.LivroSelecionadoActivity
+import com.example.databook.R
+import com.example.databook.livro.LivroAdapter
+import com.example.databook.livro.ResgitrarLivroActivity
 import com.example.desafiofirebase.entities.Livro
-import com.example.desafiofirebase.entities.Repository
-import kotlinx.android.synthetic.main.fragment_home_favoritos.*
 import kotlinx.android.synthetic.main.fragment_home_favoritos.view.*
 
 class HomeFragment:Fragment(), LivroAdapter.OnLivroClickListener{
@@ -69,13 +69,27 @@ class HomeFragment:Fragment(), LivroAdapter.OnLivroClickListener{
 
     fun addLivro():ArrayList<Livro>{
         return arrayListOf<Livro>(
-            Livro("123", "Harry Potter e a Pedra Filosofal", "J.K Rowling",  "2015", "", R.drawable.img3),
-            Livro("123", "Harry Potter e a Pedra Filosofal", "J.K Rowling",  "2015", "", R.drawable.img3),
-            Livro("123", "Harry Potter e a Pedra Filosofal", "J.K Rowling",  "2015", "", R.drawable.img3),
-            Livro("123", "Harry Potter e a Pedra Filosofal", "J.K Rowling",  "2015", "", R.drawable.img3),
-            Livro("123", "Harry Potter e a Pedra Filosofal", "J.K Rowling",  "2015", "", R.drawable.img3),
-            Livro("123", "Harry Potter e a Pedra Filosofal", "J.K Rowling",  "2015", "", R.drawable.img3),
-            Livro("123", "Harry Potter e a Pedra Filosofal", "J.K Rowling",  "2015", "", R.drawable.img3)
+            Livro("123", "Harry Potter e a Pedra Filosofal", "J.K Rowling",  "2015", "",
+                R.drawable.img3
+            ),
+            Livro("123", "Java e suas bases", "Oracle",  "2012", "Aprenda as bases da linguagem java",
+                R.drawable.img1
+            ),
+            Livro("123", "Kotlin e o começo do Android", "Google",  "2018", "A nova linguagem oficial do android chegou",
+                R.drawable.img2
+            ),
+            Livro("123", "O que aconteceu com Annie?", "C.K Herry",  "2017", "A saga de mistérios continua com o novo livro dessa jornada.",
+                R.drawable.img1
+            ),
+            Livro("123", "Harry Potter e a Pedra Filosofal", "J.K Rowling",  "2015", "",
+                R.drawable.img3
+            ),
+            Livro("123", "Harry Potter e a Pedra Filosofal", "J.K Rowling",  "2015", "",
+                R.drawable.img3
+            ),
+            Livro("123", "Harry Potter e a Pedra Filosofal", "J.K Rowling",  "2015", "",
+                R.drawable.img3
+            )
         )
 
     }

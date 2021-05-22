@@ -1,6 +1,5 @@
-package com.example.databook.adapter
+package com.example.databook.livro
 
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,7 +7,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.databook.R
 import com.example.desafiofirebase.entities.Livro
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.activity_main.view.*
 import kotlinx.android.synthetic.main.item_capa.view.*
 
 class LivroAdapter(

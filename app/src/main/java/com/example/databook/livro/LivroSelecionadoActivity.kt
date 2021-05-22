@@ -1,8 +1,9 @@
-package com.example.databook
+package com.example.databook.livro
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.core.view.isGone
+import com.example.databook.R
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_livro_selecionado.*
 import kotlinx.android.synthetic.main.login_body.*
@@ -12,9 +13,17 @@ class LivroSelecionadoActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_livro_selecionado)
         setinfos()
+        var isClick = false
 
         imgFundoLivroSelecionado.setOnClickListener {
-            includeInfos.isGone = true
+            if(isClick == false){
+                includeInfos.isGone = true
+                isClick = true
+            }else if (isClick == true){
+                includeInfos.isGone = false
+                isClick = false
+            }
+
         }
     }
 

@@ -1,0 +1,76 @@
+{
+  "project_info": {
+    "project_number": "389033630908",
+    "project_id": "fir-auth-d0bee",
+    "storage_bucket": "fir-auth-d0bee.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:389033630908:android:6a4ce07fb7a18e8ea704b9",
+        "android_client_info": {
+          "package_name": "com.example.databook"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "389033630908-10ehndc75t0s3o2ftvpmkq0baccaep14.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBrwifymbSS-qHKHud5gyhiPkyVtEivrAM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "389033630908-10ehndc75t0s3o2ftvpmkq0baccaep14.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:389033630908:android:48bd4c31fd71c950a704b9",
+        "android_client_info": {
+          "package_name": "com.example.firebaseexemplo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "389033630908-s2ec3s8289ir112mk2mo63raraicaub2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.firebaseexemplo",
+            "certificate_hash": "3ef38522dbacb05914dadbcc07f208e90aea2a32"
+          }
+        },
+        {
+          "client_id": "389033630908-10ehndc75t0s3o2ftvpmkq0baccaep14.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBrwifymbSS-qHKHud5gyhiPkyVtEivrAM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "389033630908-10ehndc75t0s3o2ftvpmkq0baccaep14.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
