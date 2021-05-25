@@ -1,34 +1,37 @@
 package com.example.databook.livro
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
 import com.example.databook.R
 import com.example.desafiofirebase.entities.Livro
+import com.example.filmapp.Media.dataBase.FavoritosEntity
 import com.example.isbm.Entities.Books
 import com.example.isbm.Entities.Item
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_capa.view.*
 
-class LivroAdapter(
-    private val listLivros: List<Item>,
-    val listener: OnLivroClickListener
-) : RecyclerView.Adapter<LivroAdapter.ViewHolder>() {
+class LivroFavAdapter(
+    private val listFavLivros: List<FavoritosEntity>,
+    val listener: OnLivroFavClickListener
+) : RecyclerView.Adapter<LivroFavAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int): ViewHolder {
         return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_capa, parent, false))
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        var result = listLivros[position].volumeInfo
+        var result = listFavLivros[position]
         holder.itemView.tag = position
         holder.tvTitulo.text = result.title
 //        var img = result.imageLinks.smallThumbnail
 //        if(img != "" && img != null){
 //            Picasso.get().load(img).into(holder.ivLivro)
 //        }else{
-            Picasso.get().load(R.drawable.sem_imagem).into(holder.ivLivro)
+//      holder.ivLivro.setImageURI(result.imagem.toUri())
 //        }
 
 //        holder.ivLivro.setOnClickListener {
@@ -44,10 +47,10 @@ class LivroAdapter(
 
     }
 
-    override fun getItemCount() = listLivros.size
+    override fun getItemCount() = listFavLivros.size
 
-    interface OnLivroClickListener {
-        fun livroClick(position: Int)
+    interface OnLivroFavClickListener {
+        fun livroFavClick(position: Int)
 
     }
 
@@ -62,7 +65,7 @@ class LivroAdapter(
         override fun onClick(v: View?){
             val position = absoluteAdapterPosition
             if(RecyclerView.NO_POSITION != position){
-                listener.livroClick(position)
+                listener.livroFavClick(position)
             }
         }
     }

@@ -9,6 +9,9 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.databook.R
 import com.example.databook.init.SplashScreenActivity
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_livro_selecionado.*
@@ -18,19 +21,16 @@ class PerfiFragment:Fragment(){
 
     var Perfil: Boolean? = null
     val mAuth = FirebaseAuth.getInstance().currentUser
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         if (arguments != null) {
             Perfil = arguments?.getBoolean(perfil)
         }
-
-
     }
 
     companion object {
         private val perfil = "perfil"
-
         fun newInstance(Perfil: Boolean): PerfiFragment {
             val fragment = PerfiFragment()
             val args = Bundle()
@@ -45,7 +45,7 @@ class PerfiFragment:Fragment(){
         Picasso.get().load(mAuth?.photoUrl).into(view.iv_perfil)
         view.tv_perfil_name.setText(mAuth?.displayName)
         view.iv_exit_app.setOnClickListener {
-            FirebaseAuth.getInstance().signOut()
+            signOut()
             InicarSplash()
         }
         return view
@@ -57,6 +57,20 @@ class PerfiFragment:Fragment(){
         activity?.finish()
         Toast.makeText(activity, "Usuário Desconectado", Toast.LENGTH_SHORT).show()
     }
+
+    fun signOut(){
+        // Sai do Firebase
+        FirebaseAuth.getInstance().signOut()
+        // Sai do google
+        var googleSignInClient: GoogleSignInClient
+        val googleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken("389033630908-10ehndc75t0s3o2ftvpmkq0baccaep14.apps.googleusercontent.com")
+            .requestEmail()
+            .build()
+        googleSignInClient = GoogleSignIn.getClient(requireActivity(), googleSignInOptions)
+        googleSignInClient.signOut()
+    }
+
 }
 
 

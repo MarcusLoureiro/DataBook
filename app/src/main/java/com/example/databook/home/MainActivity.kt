@@ -22,7 +22,6 @@ class MainActivity : AppCompatActivity() {
         adapter.addFragment(homeFavoritos, "Favoritos")
         adapter.addFragment(homeHome, "Home")
         adapter.addFragment(homePerfil, "Perfil")
-
         viewPager_HomePage.adapter = adapter
         tabLayout_HomePage.setupWithViewPager(viewPager_HomePage)
 
@@ -30,6 +29,7 @@ class MainActivity : AppCompatActivity() {
 //        tabLayout_HomePage.getTabAt(0)!!.setIcon(R.drawable.ic_series_roxo)
 //        tabLayout_HomePage.getTabAt(1)!!.setIcon(R.drawable.ic_home_roxo)
 //        tabLayout_HomePage.getTabAt(2)!!.setIcon(R.drawable.ic_claquete_flaticon)
+        // Seta o item principal
         viewPager_HomePage.setCurrentItem(1)
     }
 }

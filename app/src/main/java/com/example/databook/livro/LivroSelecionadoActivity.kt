@@ -2,6 +2,7 @@ package com.example.databook.livro
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.core.net.toUri
 import androidx.core.view.isGone
 import com.example.databook.R
 import com.squareup.picasso.Picasso
@@ -30,12 +31,17 @@ class LivroSelecionadoActivity : AppCompatActivity() {
     private fun setinfos() {
         val id = intent.getSerializableExtra("id") as? Boolean
         val titulo = intent.getSerializableExtra("titulo") as? String
-        val imagem = intent.getSerializableExtra("imagem") as? Int
+        val imagem = intent.getSerializableExtra("imagem") as? String
         val autora = intent.getSerializableExtra("autora") as? String
         val ano = intent.getSerializableExtra("ano") as? String
         val sinopse = intent.getSerializableExtra("sinopse") as? String
         val favoritos = intent.getSerializableExtra("favoritos") as? Boolean
-        Picasso.get().load(imagem!!).into(imgFundoLivroSelecionado)
+        imgFundoLivroSelecionado.setImageResource(R.drawable.sem_imagem)
+//        if(favoritos == true){
+//            imgFundoLivroSelecionado.setImageURI(imagem.toString().toUri())
+//        }else {
+//            Picasso.get().load(imagem).into(imgFundoLivroSelecionado)
+//        }
         textViewTitulo.setText(titulo)
         textViewAno.setText(ano)
         textViewSinopse.setText(sinopse)

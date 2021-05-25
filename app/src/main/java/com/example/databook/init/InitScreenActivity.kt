@@ -30,12 +30,14 @@ class InitScreenActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_init_screen)
+
         val googleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken("389033630908-10ehndc75t0s3o2ftvpmkq0baccaep14.apps.googleusercontent.com")
             .requestEmail()
             .build()
         googleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions)
         mAuth = FirebaseAuth.getInstance()
+        mAuth.useAppLanguage()
         val user: FirebaseUser? = mAuth.currentUser
         if (user != null) {
             println("id idfer" + user.providerData[1].providerId)

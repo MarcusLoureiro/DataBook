@@ -8,6 +8,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputPesquisa"
         android:layout_width="387dp"
         android:layout_height="62dp"
         android:layout_gravity="center"
@@ -19,8 +20,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/imageView3"
-        app:startIconDrawable="@drawable/ic_lupa"
-        app:startIconTint="@color/color4">
+        app:endIconMode="custom"
+        app:endIconDrawable="@drawable/ic_lupa"
+        app:endIconTint="@color/color4">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edTextPesquisa"
