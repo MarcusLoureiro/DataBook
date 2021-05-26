@@ -2,15 +2,17 @@ package com.example.dataBase
 
 import android.content.Context
 import androidx.room.*
+import com.example.databook.dataBase.Converters
 import com.example.filmapp.Media.dataBase.FavoritosDAO
 import com.example.filmapp.Media.dataBase.FavoritosEntity
 
 
 @Database(
     entities = [FavoritosEntity::class],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
+@TypeConverters(Converters::class)
 abstract class AppDataBase : RoomDatabase() {
 
     abstract fun favoritosDAO(): FavoritosDAO

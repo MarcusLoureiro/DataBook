@@ -1,6 +1,8 @@
 package com.example.databook.home
 
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.core.graphics.drawable.toDrawable
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -15,6 +18,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import coil.ImageLoader
+import coil.request.ImageRequest
+import coil.request.SuccessResult
 import com.example.dataBase.FavoritosViewModel
 import com.example.databook.livro.LivroSelecionadoActivity
 import com.example.databook.R
@@ -32,23 +38,21 @@ import kotlinx.android.synthetic.main.fragment_home_favoritos.*
 import kotlinx.android.synthetic.main.fragment_home_favoritos.view.*
 import kotlin.math.log
 
-class HomeFragment:Fragment(), LivroAdapter.OnLivroClickListener, LivroFavAdapter.OnLivroFavClickListener{
+class HomeFragment : Fragment(), LivroAdapter.OnLivroClickListener,
+    LivroFavAdapter.OnLivroFavClickListener {
     var Favoritos: Boolean? = null
     private lateinit var listLivro: List<Item>
     private lateinit var listFavs: List<FavoritosEntity>
     private lateinit var viewModelFav: FavoritosViewModel
 
 
-
-    val viewModel by viewModels<MainViewModel>{
-        object : ViewModelProvider.Factory{
+    val viewModel by viewModels<MainViewModel> {
+        object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
                 return MainViewModel(service) as T
             }
         }
     }
-
-
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -73,14 +77,18 @@ class HomeFragment:Fragment(), LivroAdapter.OnLivroClickListener, LivroFavAdapte
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         viewModelFav = ViewModelProvider(this).get(FavoritosViewModel::class.java)
         var view = inflater.inflate(R.layout.fragment_home_favoritos, container, false)
 
         view.fb_addBook.setOnClickListener {
             IniciarTelaRegistro()
         }
-        if(Favoritos == false) {
+        if (Favoritos == false) {
 
             view.textInputPesquisa.setEndIconOnClickListener {
                 callResultsSearch(view)
@@ -89,19 +97,17 @@ class HomeFragment:Fragment(), LivroAdapter.OnLivroClickListener, LivroFavAdapte
             view.textInputPesquisa.editText?.doOnTextChanged { inputText, _, _, _ ->
                 callResultsSearch(view)
             }
-        }else{
+        } else {
             callResultFavs(view)
         }
         return view
 
     }
 
-    fun IniciarTelaRegistro(){
+    fun IniciarTelaRegistro() {
         val intent = Intent(activity, ResgitrarLivroActivity::class.java)
         startActivity(intent)
     }
-
-
 
 
     override fun livroClick(position: Int) {
@@ -122,38 +128,45 @@ class HomeFragment:Fragment(), LivroAdapter.OnLivroClickListener, LivroFavAdapte
         var searchText = view.textInputPesquisa.editText?.text.toString()
         if (searchText != "") {
             viewModel.getSearch(searchText)
-            viewModel.returnSearchList.observe(viewLifecycleOwner){
+            viewModel.returnSearchList.observe(viewLifecycleOwner) {
                 listLivro = it.items
-                view.rv_result.layoutManager = GridLayoutManager(activity, 2, LinearLayoutManager.VERTICAL, false)
+                view.rv_result.layoutManager =
+                    GridLayoutManager(activity, 2, LinearLayoutManager.VERTICAL, false)
                 view.rv_result.setHasFixedSize(true)
                 var livroAdapter = LivroAdapter(listLivro, this)
                 view.rv_result.adapter = livroAdapter
-                }
             }
         }
+    }
 
-    fun callResultFavs(view: View){
-        viewModelFav.favList.observe(viewLifecycleOwner){
+    fun callResultFavs(view: View) {
+        viewModelFav.favList.observe(viewLifecycleOwner) {
             listFavs = it
-            view.rv_result.layoutManager = GridLayoutManager(activity, 2, LinearLayoutManager.VERTICAL, false)
+            view.rv_result.layoutManager =
+                GridLayoutManager(activity, 2, LinearLayoutManager.VERTICAL, false)
             view.rv_result.setHasFixedSize(true)
-            var livroFavAdapter = LivroFavAdapter(listFavs, this)
-            view.rv_result.adapter = livroFavAdapter
+            var adapter = LivroFavAdapter(this)
+            adapter.setData(listFavs)
+            view.rv_result.adapter = adapter
         }
     }
 
     override fun livroFavClick(position: Int) {
         var item = listFavs[position]
         val intent = Intent(activity, LivroSelecionadoActivity::class.java)
-        intent.putExtra("id", item.id)
-        intent.putExtra("titulo", item.title)
-        intent.putExtra("imagem", item.imagem)
-        intent.putExtra("autora", item.autor)
-        intent.putExtra("ano", item.lancamento)
-        intent.putExtra("sinopse", item.sinopse)
+        intent.putExtra("position", position)
         intent.putExtra("favoritos", true)
         startActivity(intent)
-        Toast.makeText(activity, "CLICOU", Toast.LENGTH_SHORT).show()
+        Toast.makeText(activity, item.title, Toast.LENGTH_SHORT).show()
+    }
+
+    private suspend fun getBitmap(): Bitmap {
+        val loanding = ImageLoader(requireContext())
+        val request = ImageRequest.Builder(requireContext())
+            .data("https://m.media-amazon.com/images/I/41bAc8f84yL.jpg")
+            .build()
+        val result = (loanding.execute(request) as SuccessResult).drawable
+        return (result as BitmapDrawable).bitmap
     }
 }
 

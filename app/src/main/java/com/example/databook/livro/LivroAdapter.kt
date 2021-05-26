@@ -1,15 +1,22 @@
 package com.example.databook.livro
 
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import coil.ImageLoader
+import coil.load
+import coil.request.ImageRequest
+import coil.request.SuccessResult
+import com.bumptech.glide.Glide
 import com.example.databook.R
-import com.example.desafiofirebase.entities.Livro
-import com.example.isbm.Entities.Books
 import com.example.isbm.Entities.Item
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_capa.view.*
+import java.lang.Exception
 
 class LivroAdapter(
     private val listLivros: List<Item>,
@@ -17,32 +24,30 @@ class LivroAdapter(
 ) : RecyclerView.Adapter<LivroAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int): ViewHolder {
-        return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_capa, parent, false))
+        return ViewHolder(
+            LayoutInflater.from(parent.context).inflate(R.layout.item_capa, parent, false)
+        )
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         var result = listLivros[position].volumeInfo
         holder.itemView.tag = position
         holder.tvTitulo.text = result.title
-//        var img = result.imageLinks.smallThumbnail
-//        if(img != "" && img != null){
-//            Picasso.get().load(img).into(holder.ivLivro)
-//        }else{
-            Picasso.get().load(R.drawable.sem_imagem).into(holder.ivLivro)
+        holder.ivLivro.load(R.drawable.sem_imagem)
+//        if(result.imageLinks.thumbnail.isNullOrBlank() == false){
+//            Glide.with(holder.itemView)
+//                .load(result.imageLinks.thumbnail)
+//                .error(R.drawable.sem_imagem)
+//                .centerCrop()
+//                .placeholder(R.drawable.sem_imagem)
+//                .into(holder.ivLivro)
+//            Log.i("IMAGEM", result.imageLinks.thumbnail)
 //        }
 
-//        holder.ivLivro.setOnClickListener {
-//            val intent = Intent(holder.itemView.context, LivroDetailsActivity::class.java)
-//            intent.putExtra("name", listLivros[position].name)
-//            intent.putExtra("lancamento", listLivros[position].data)
-//            intent.putExtra("descricao", listLivros[position].description)
-//            intent.putExtra("url", listLivros[position].URL)
-//            intent.putExtra("key", listLivros[position].id)
-//            holder.itemView.context.startActivity(intent)
-//        }
         holder.ivLivro.setOnClickListener(holder)
 
     }
+
 
     override fun getItemCount() = listLivros.size
 
@@ -59,9 +64,9 @@ class LivroAdapter(
             itemView.setOnClickListener(this)
         }
 
-        override fun onClick(v: View?){
+        override fun onClick(v: View?) {
             val position = absoluteAdapterPosition
-            if(RecyclerView.NO_POSITION != position){
+            if (RecyclerView.NO_POSITION != position) {
                 listener.livroClick(position)
             }
         }
