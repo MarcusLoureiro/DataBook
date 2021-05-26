@@ -9,6 +9,7 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Toast
@@ -28,6 +29,7 @@ import kotlinx.android.synthetic.main.activity_resgitrar_livro.*
 import kotlinx.android.synthetic.main.custom_alert.view.*
 import kotlinx.coroutines.launch
 import java.util.*
+import kotlin.time.nanoseconds
 
 
 class ResgitrarLivroActivity : AppCompatActivity() {
@@ -153,6 +155,9 @@ class ResgitrarLivroActivity : AppCompatActivity() {
         val builder = MaterialAlertDialogBuilder(this, R.style.MaterialAlertDialog_rounded).create()
         val view: View = LayoutInflater.from(this).inflate(R.layout.custom_alert, null)
         builder.setView(view)
+        var window = builder.window
+        window!!.setGravity(Gravity.CENTER)
+        builder.window!!.attributes.windowAnimations = R.style.DialogAnimation
         builder.show()
         view.btAlert_galeria.setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK)

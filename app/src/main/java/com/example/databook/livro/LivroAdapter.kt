@@ -1,28 +1,23 @@
 package com.example.databook.livro
 
-import android.graphics.Bitmap
-import android.graphics.drawable.BitmapDrawable
+import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import coil.ImageLoader
 import coil.load
-import coil.request.ImageRequest
-import coil.request.SuccessResult
 import com.bumptech.glide.Glide
 import com.example.databook.R
+import com.example.isbm.Entities.ImageLinks
 import com.example.isbm.Entities.Item
-import com.squareup.picasso.Picasso
+import com.example.isbm.Entities.VolumeInfo
 import kotlinx.android.synthetic.main.item_capa.view.*
-import java.lang.Exception
+import org.json.JSONObject
 
-class LivroAdapter(
-    private val listLivros: List<Item>,
-    val listener: OnLivroClickListener
-) : RecyclerView.Adapter<LivroAdapter.ViewHolder>() {
 
+class LivroAdapter(val listener: OnLivroClickListener, val context: Context) : RecyclerView.Adapter<LivroAdapter.ViewHolder>() {
+    private var listLivros = emptyList<Item>()
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int): ViewHolder {
         return ViewHolder(
             LayoutInflater.from(parent.context).inflate(R.layout.item_capa, parent, false)
@@ -34,20 +29,24 @@ class LivroAdapter(
         holder.itemView.tag = position
         holder.tvTitulo.text = result.title
         holder.ivLivro.load(R.drawable.sem_imagem)
-//        if(result.imageLinks.thumbnail.isNullOrBlank() == false){
-//            Glide.with(holder.itemView)
-//                .load(result.imageLinks.thumbnail)
-//                .error(R.drawable.sem_imagem)
-//                .centerCrop()
-//                .placeholder(R.drawable.sem_imagem)
-//                .into(holder.ivLivro)
-//            Log.i("IMAGEM", result.imageLinks.thumbnail)
-//        }
+        if(result.imageLinks.thumbnail != null ){
+            Glide.with(holder.itemView)
+                .load(result.imageLinks.thumbnail)
+                .error(R.drawable.sem_imagem)
+                .centerCrop()
+                .into(holder.ivLivro)
+            Log.i("IMAGEM", result.imageLinks.thumbnail)
+        }
 
         holder.ivLivro.setOnClickListener(holder)
 
     }
 
+
+    fun setData(listLivros: List<Item>){
+        this.listLivros = listLivros
+        notifyDataSetChanged()
+    }
 
     override fun getItemCount() = listLivros.size
 

@@ -1,16 +1,11 @@
 package com.example.databook.home
 
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.activity.viewModels
-import androidx.core.graphics.drawable.toDrawable
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -18,25 +13,18 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import coil.ImageLoader
-import coil.request.ImageRequest
-import coil.request.SuccessResult
 import com.example.dataBase.FavoritosViewModel
 import com.example.databook.livro.LivroSelecionadoActivity
 import com.example.databook.R
 import com.example.databook.livro.LivroAdapter
 import com.example.databook.livro.LivroFavAdapter
 import com.example.databook.livro.ResgitrarLivroActivity
-import com.example.desafiofirebase.entities.Livro
 import com.example.filmapp.Media.dataBase.FavoritosEntity
-import com.example.isbm.Entities.Books
 import com.example.isbm.Entities.Item
 import com.example.isbm.Entities.VolumeInfo
 import com.example.isbm.Services.MainViewModel
 import com.example.isbm.Services.service
-import kotlinx.android.synthetic.main.fragment_home_favoritos.*
 import kotlinx.android.synthetic.main.fragment_home_favoritos.view.*
-import kotlin.math.log
 
 class HomeFragment : Fragment(), LivroAdapter.OnLivroClickListener,
     LivroFavAdapter.OnLivroFavClickListener {
@@ -133,7 +121,8 @@ class HomeFragment : Fragment(), LivroAdapter.OnLivroClickListener,
                 view.rv_result.layoutManager =
                     GridLayoutManager(activity, 2, LinearLayoutManager.VERTICAL, false)
                 view.rv_result.setHasFixedSize(true)
-                var livroAdapter = LivroAdapter(listLivro, this)
+                var livroAdapter = LivroAdapter(this, requireActivity())
+                livroAdapter.setData(listLivro)
                 view.rv_result.adapter = livroAdapter
             }
         }
@@ -160,14 +149,6 @@ class HomeFragment : Fragment(), LivroAdapter.OnLivroClickListener,
         Toast.makeText(activity, item.title, Toast.LENGTH_SHORT).show()
     }
 
-    private suspend fun getBitmap(): Bitmap {
-        val loanding = ImageLoader(requireContext())
-        val request = ImageRequest.Builder(requireContext())
-            .data("https://m.media-amazon.com/images/I/41bAc8f84yL.jpg")
-            .build()
-        val result = (loanding.execute(request) as SuccessResult).drawable
-        return (result as BitmapDrawable).bitmap
-    }
 }
 
 

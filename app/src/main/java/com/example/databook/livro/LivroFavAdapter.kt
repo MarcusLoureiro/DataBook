@@ -1,18 +1,12 @@
 package com.example.databook.livro
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.example.databook.R
-import com.example.desafiofirebase.entities.Livro
 import com.example.filmapp.Media.dataBase.FavoritosEntity
-import com.example.isbm.Entities.Books
-import com.example.isbm.Entities.Item
-import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_capa.view.*
 
 class LivroFavAdapter(val listener: OnLivroFavClickListener) : RecyclerView.Adapter<LivroFavAdapter.ViewHolder>() {

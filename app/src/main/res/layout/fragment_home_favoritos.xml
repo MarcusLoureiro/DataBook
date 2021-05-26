@@ -16,6 +16,7 @@
         app:boxStrokeWidthFocused="0dp"
         app:boxStrokeColor="#FFF"
         app:boxBackgroundColor="#FFF"
+        android:layout_marginTop="10dp"
         app:layout_constraintBottom_toTopOf="@+id/btn_login"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
