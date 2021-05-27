@@ -16,7 +16,7 @@ import kotlinx.android.synthetic.main.item_capa.view.*
 import org.json.JSONObject
 
 
-class LivroAdapter(val listener: OnLivroClickListener, val context: Context) : RecyclerView.Adapter<LivroAdapter.ViewHolder>() {
+class LivroAdapter(val listener: OnLivroClickListener) : RecyclerView.Adapter<LivroAdapter.ViewHolder>() {
     private var listLivros = emptyList<Item>()
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int): ViewHolder {
         return ViewHolder(

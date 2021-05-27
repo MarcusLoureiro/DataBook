@@ -97,21 +97,6 @@ class HomeFragment : Fragment(), LivroAdapter.OnLivroClickListener,
         startActivity(intent)
     }
 
-
-    override fun livroClick(position: Int) {
-//        val media = listLivro.get(position)
-//        val intent = Intent(context, LivroSelecionadoActivity::class.java)
-//        intent.putExtra("imagem", media.URL)
-//        intent.putExtra("favoritos", true)
-//        intent.putExtra("sinopse", media.sinopse)
-//        intent.putExtra("id", media.id)
-//        intent.putExtra("titulo", media.titulo)
-//        intent.putExtra("autora", media.autora)
-//        intent.putExtra("ano", media.ano)
-//        startActivity(intent)
-//        livroAdapter.notifyDataSetChanged()
-    }
-
     fun callResultsSearch(view: View) {
         var searchText = view.textInputPesquisa.editText?.text.toString()
         if (searchText != "") {
@@ -121,7 +106,7 @@ class HomeFragment : Fragment(), LivroAdapter.OnLivroClickListener,
                 view.rv_result.layoutManager =
                     GridLayoutManager(activity, 2, LinearLayoutManager.VERTICAL, false)
                 view.rv_result.setHasFixedSize(true)
-                var livroAdapter = LivroAdapter(this, requireActivity())
+                var livroAdapter = LivroAdapter(this)
                 livroAdapter.setData(listLivro)
                 view.rv_result.adapter = livroAdapter
             }
@@ -140,13 +125,25 @@ class HomeFragment : Fragment(), LivroAdapter.OnLivroClickListener,
         }
     }
 
+
+    override fun livroClick(position: Int) {
+        val book = listLivro.get(position)
+        val intent = Intent(context, LivroSelecionadoActivity::class.java)
+        var adapter = LivroAdapter(this)
+        intent.putExtra("bookApi", book)
+        intent.putExtra("favoritos", false)
+        adapter.notifyDataSetChanged()
+        startActivity(intent)
+    }
+
     override fun livroFavClick(position: Int) {
         var item = listFavs[position]
         val intent = Intent(activity, LivroSelecionadoActivity::class.java)
+        var adapter = LivroFavAdapter(this)
         intent.putExtra("position", position)
         intent.putExtra("favoritos", true)
         startActivity(intent)
-        Toast.makeText(activity, item.title, Toast.LENGTH_SHORT).show()
+        adapter.notifyDataSetChanged()
     }
 
 }
