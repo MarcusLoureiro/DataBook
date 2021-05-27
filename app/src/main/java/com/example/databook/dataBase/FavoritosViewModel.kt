@@ -34,6 +34,17 @@ class FavoritosViewModel(app: Application): AndroidViewModel(app) {
         }
     }
 
+    fun checkFavoritoInList(
+        book: FavoritosEntity,
+        listDataBase: List<FavoritosEntity>
+    ): FavoritosEntity {
+        listDataBase?.forEach {
+            if (book.id == it.id)
+                book.favoritoIndication = true
+        }
+        return book
+    }
+
 }
 
 

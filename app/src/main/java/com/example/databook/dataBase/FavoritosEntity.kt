@@ -11,6 +11,8 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.example.databook.R
 import com.google.firebase.auth.FirebaseAuth
+import com.google.gson.JsonObject
+import org.json.JSONObject
 import java.io.IOException
 import java.io.Serializable
 import java.nio.channels.AsynchronousFileChannel.open
@@ -23,8 +25,9 @@ data class FavoritosEntity (
     val id:String = "",
     var UserID: String = "",
     var title: String = "",
-    var imagem: Bitmap,
+    var imagem: Bitmap? = null,
     var autor: String = "",
     var lancamento: String = "",
-    var sinopse: String = ""
+    var sinopse: String = "",
+    var favoritoIndication: Boolean = false
     ):Serializable

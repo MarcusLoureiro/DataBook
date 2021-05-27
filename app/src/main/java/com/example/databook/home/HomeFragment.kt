@@ -2,6 +2,8 @@ package com.example.databook.home
 
 import android.content.Intent
 import android.os.Bundle
+import android.provider.MediaStore
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,6 +26,8 @@ import com.example.isbm.Entities.Item
 import com.example.isbm.Entities.VolumeInfo
 import com.example.isbm.Services.MainViewModel
 import com.example.isbm.Services.service
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import kotlinx.android.synthetic.main.custom_alert.view.*
 import kotlinx.android.synthetic.main.fragment_home_favoritos.view.*
 
 class HomeFragment : Fragment(), LivroAdapter.OnLivroClickListener,
@@ -145,6 +149,8 @@ class HomeFragment : Fragment(), LivroAdapter.OnLivroClickListener,
         startActivity(intent)
         adapter.notifyDataSetChanged()
     }
+
+
 
 }
 

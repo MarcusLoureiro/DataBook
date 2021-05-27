@@ -29,6 +29,7 @@ import kotlinx.android.synthetic.main.activity_resgitrar_livro.*
 import kotlinx.android.synthetic.main.custom_alert.view.*
 import kotlinx.coroutines.launch
 import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.time.nanoseconds
 
 
@@ -81,16 +82,13 @@ class ResgitrarLivroActivity : AppCompatActivity() {
             lifecycleScope.launch {
                 if (pickImage == "bitmap" ) {
                     var bitmap = imagemBitmap as Bitmap
-                    val fav = FavoritosEntity(id, userID, title, bitmap, autor, ano, sinopse)
+                    val fav = FavoritosEntity(id, userID, title, bitmap, autor, ano, sinopse, true)
                     addFavList(fav)
                 } else if (pickImage == "uri"){
                     var uri = getBitmap(imageUri.toString())
-                    val fav = FavoritosEntity(id, userID, title, uri, autor, ano, sinopse)
+                    val fav = FavoritosEntity(id, userID, title, uri, autor, ano, sinopse, true)
                     addFavList(fav)
                 }
-            }
-            viewModelFav.favList.observe(this) {
-                Log.i("Lista Fav", it.toString())
             }
         }
     }
@@ -132,7 +130,8 @@ class ResgitrarLivroActivity : AppCompatActivity() {
                 fav.imagem,
                 fav.autor,
                 fav.lancamento,
-                fav.sinopse
+                fav.sinopse,
+                true
             )
         )
     }
@@ -146,7 +145,8 @@ class ResgitrarLivroActivity : AppCompatActivity() {
                 fav.imagem,
                 fav.autor,
                 fav.lancamento,
-                fav.sinopse
+                fav.sinopse,
+                false
             )
         )
     }
@@ -171,6 +171,8 @@ class ResgitrarLivroActivity : AppCompatActivity() {
             builder.dismiss()
         }
     }
+
+
 
     private suspend fun getBitmap(data: String): Bitmap {
         val loanding = ImageLoader(this)
