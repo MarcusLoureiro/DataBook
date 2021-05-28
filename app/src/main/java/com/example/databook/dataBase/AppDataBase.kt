@@ -9,7 +9,7 @@ import com.example.filmapp.Media.dataBase.FavoritosEntity
 
 @Database(
     entities = [FavoritosEntity::class],
-    version = 2,
+    version = 1,
     exportSchema = false
 )
 @TypeConverters(Converters::class)

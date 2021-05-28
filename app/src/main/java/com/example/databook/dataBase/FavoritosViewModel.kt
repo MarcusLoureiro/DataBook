@@ -2,6 +2,7 @@ package com.example.dataBase
 
 import android.app.Application
 import androidx.lifecycle.*
+import com.example.filmapp.Media.dataBase.FavoritosDAO
 import com.example.filmapp.Media.dataBase.FavoritosEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -11,38 +12,36 @@ class FavoritosViewModel(app: Application): AndroidViewModel(app) {
     val favList: LiveData<List<FavoritosEntity>>
 //    val favListMaior: LiveData<List<FavoritosEntity>>
 //    val favListMenor: LiveData<List<FavoritosEntity>>
-    private val repository: UsersRepository
+    private val repository: FavoritosRepository
 
     init {
         val favsDAO = AppDataBase.getDataBase(app).favoritosDAO()
-        repository = UsersRepository(favsDAO)
+        repository = FavoritosRepository(favsDAO)
         favList = repository.readAllData
-//        favListMaior = repository.readAllDataMaiorIdade
-//        favListMenor = repository.readAllDataMenorIdade
     }
 
-    fun saveNewMedia(fav: FavoritosEntity){
+    fun addFav(fav: FavoritosEntity){
         viewModelScope.launch(Dispatchers.IO) {
-            repository.saveInUsersListTask(fav)
+            repository.addFav(fav)
         }
     }
 
-
-    fun removeMedia(fav: FavoritosEntity){
+    fun updateFav(fav: FavoritosEntity){
         viewModelScope.launch(Dispatchers.IO) {
-            repository.removeOfUsersListTask(fav)
+            repository.updateFav(fav)
         }
     }
 
-    fun checkFavoritoInList(
-        book: FavoritosEntity,
-        listDataBase: List<FavoritosEntity>
-    ): FavoritosEntity {
-        listDataBase?.forEach {
-            if (book.id == it.id)
-                book.favoritoIndication = true
+    fun deleteFav(fav: FavoritosEntity){
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.deleteFav(fav)
         }
-        return book
+    }
+
+    fun deleteAllFav() {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.deleteAllFavs()
+        }
     }
 
 }

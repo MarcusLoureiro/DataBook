@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:orientation="vertical">
-
             <ImageButton
                 android:id="@+id/image"
                 android:layout_width="56dp"
@@ -17,7 +16,6 @@
                 android:contentDescription="image"
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_add_image" />
-
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -29,7 +27,6 @@
                 android:text="De onde você deseja adicionar uma imagem?"
                 android:textColor="@color/color2"
                 android:textSize="18sp" />
-
             <android.widget.Button
                 android:id="@+id/btAlert_galeria"
                 android:layout_width="wrap_content"
@@ -41,7 +38,6 @@
                 android:text="Galeria"
                 android:textColor="@color/white"
                 android:textStyle="bold" />
-
             <android.widget.Button
                 android:id="@+id/btAlert_camera"
                 android:layout_width="wrap_content"
@@ -53,5 +49,4 @@
                 android:text="Camera"
                 android:textColor="@color/white"
                 android:textStyle="bold" />
-
 </LinearLayout>

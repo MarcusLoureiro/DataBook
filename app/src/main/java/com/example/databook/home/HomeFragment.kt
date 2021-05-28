@@ -146,8 +146,9 @@ class HomeFragment : Fragment(), LivroAdapter.OnLivroClickListener,
         var adapter = LivroFavAdapter(this)
         intent.putExtra("position", position)
         intent.putExtra("favoritos", true)
-        startActivity(intent)
         adapter.notifyDataSetChanged()
+        startActivity(intent)
+
     }
 
 

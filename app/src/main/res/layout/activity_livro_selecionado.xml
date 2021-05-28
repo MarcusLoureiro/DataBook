@@ -14,7 +14,7 @@
 
     <LinearLayout
         android:id="@+id/includeInfos"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="500dp"
         android:background="@drawable/round_login_body"
         android:gravity="center"
@@ -172,13 +172,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
 
-                android:layout_marginBottom="68dp"
                 android:gravity="center"
                 android:orientation="horizontal"
-                app:layout_constraintBottom_toTopOf="@+id/favorito_ic"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.441"
-                app:layout_constraintStart_toStartOf="parent">
+                app:layout_constraintHorizontal_bias="0.432"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewTitulo"
+                app:layout_constraintVertical_bias="0.625">
 
                 <TextView
                     android:id="@+id/textViewAutora"
@@ -225,32 +226,14 @@
 
             </LinearLayout>
 
-            <ImageButton
-                android:id="@+id/favorito_ic"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@color/white"
-                android:src="@drawable/ic_favorito_amarelo"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.144"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.962" />
+            <include
+                android:id="@+id/fabMenuInclude"
+                layout="@layout/fab_menu"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:layout_editor_absoluteX="81dp"
+                tools:layout_editor_absoluteY="377dp" />
 
-            <ImageButton
-                android:id="@+id/share_ic"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-
-                android:backgroundTint="@color/white"
-                android:src="@drawable/ic_compartilhar_amarelo"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.711"
-                app:layout_constraintStart_toEndOf="@+id/favorito_ic"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.962" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

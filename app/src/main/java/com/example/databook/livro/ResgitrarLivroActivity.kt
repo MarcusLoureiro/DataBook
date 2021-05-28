@@ -122,7 +122,7 @@ class ResgitrarLivroActivity : AppCompatActivity() {
     }
 
     fun addFavList(fav: FavoritosEntity) {
-        viewModelFav.saveNewMedia(
+        viewModelFav.addFav(
             FavoritosEntity(
                 fav.id,
                 fav.UserID,
@@ -136,28 +136,11 @@ class ResgitrarLivroActivity : AppCompatActivity() {
         )
     }
 
-    fun removeFavList(fav: FavoritosEntity) {
-        viewModelFav.removeMedia(
-            FavoritosEntity(
-                fav.id,
-                fav.UserID,
-                fav.title,
-                fav.imagem,
-                fav.autor,
-                fav.lancamento,
-                fav.sinopse,
-                false
-            )
-        )
-    }
 
     fun creatAlert() {
         val builder = MaterialAlertDialogBuilder(this, R.style.MaterialAlertDialog_rounded).create()
         val view: View = LayoutInflater.from(this).inflate(R.layout.custom_alert, null)
         builder.setView(view)
-        var window = builder.window
-        window!!.setGravity(Gravity.CENTER)
-        builder.window!!.attributes.windowAnimations = R.style.DialogAnimation
         builder.show()
         view.btAlert_galeria.setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK)
@@ -171,8 +154,6 @@ class ResgitrarLivroActivity : AppCompatActivity() {
             builder.dismiss()
         }
     }
-
-
 
     private suspend fun getBitmap(data: String): Bitmap {
         val loanding = ImageLoader(this)

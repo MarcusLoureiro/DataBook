@@ -139,4 +139,5 @@ dependencies {
 
     //Expand Text
     implementation 'com.ms-square:expandableTextView:0.1.4'
+
 }
