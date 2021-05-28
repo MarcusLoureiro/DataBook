@@ -19,10 +19,10 @@ import coil.ImageLoader
 import coil.load
 import coil.request.ImageRequest
 import coil.request.SuccessResult
-import com.example.dataBase.FavoritosViewModel
+import com.example.databook.dataBase.Favoritos.FavoritosViewModel
 import com.example.databook.R
 import com.example.databook.R.drawable
-import com.example.filmapp.Media.dataBase.FavoritosEntity
+import com.example.databook.dataBase.Favoritos.FavoritosEntity
 import com.example.isbm.Entities.Item
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_livro_selecionado.*
@@ -60,9 +60,6 @@ class LivroSelecionadoActivity : AppCompatActivity() {
     }
 
     private var clicked = false
-//    var bookCheckedFavorito: FavoritosEntity = FavoritosEntity()
-//    var FavoritoApi: FavoritosEntity = FavoritosEntity()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         val favoritos = intent.getSerializableExtra("favoritos") as? Boolean
         viewModelFav = ViewModelProvider(this).get(FavoritosViewModel::class.java)
@@ -95,6 +92,7 @@ class LivroSelecionadoActivity : AppCompatActivity() {
         }
         fabFavoritar.setOnClickListener {
             if (favoritos == true) {
+                changeIconFav(true)
                 val position = intent.getSerializableExtra("position") as? Int
                 viewModelFav.favList.observe(this) {
                     var favCopy = FavoritosEntity()
@@ -102,13 +100,13 @@ class LivroSelecionadoActivity : AppCompatActivity() {
                         favCopy = it[position!!]
                         setBookFavInView(it[position!!])
                         deleteFav(it[position])
-                        fabFavoritar.setImageResource(drawable.ic_favorito_amarelo)
                         finish()
                     } else {
                         setBookFavInView(favCopy)
                     }
                 }
             } else {
+                changeIconFav(false)
                 lifecycleScope.launch {
                     var bookApi = getBookApiData()
                     viewModelFav.addFav(
@@ -124,6 +122,7 @@ class LivroSelecionadoActivity : AppCompatActivity() {
                         )
                     )
                 }
+
 
             }
         }
@@ -215,7 +214,7 @@ class LivroSelecionadoActivity : AppCompatActivity() {
         intent.putExtra(
             Intent.EXTRA_TEXT, "Nome do App: DataBook\n" +
                     "Título do livro:${textViewTitulo.text}\n" +
-                    "Sinopse do livro:${textViewTitulo.text}\n"
+                    "Sinopse do livro:${textViewSinopse.text}\n"
         )
         startActivity(Intent.createChooser(intent, "${textViewTitulo.text}"))
     }
@@ -260,6 +259,14 @@ class LivroSelecionadoActivity : AppCompatActivity() {
 
         val result = (loanding.execute(request) as SuccessResult).drawable
         return (result as BitmapDrawable).bitmap
+    }
+
+    fun changeIconFav(fav: Boolean){
+        if(fav){
+            fabFavoritar.setImageResource(drawable.ic_favorito_amarelo)
+        }else{
+            fabFavoritar.setImageResource(drawable.ic_favorito_select)
+        }
     }
 
 

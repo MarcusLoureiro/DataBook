@@ -3,7 +3,6 @@ package com.example.isbm.Services
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.filmapp.Media.dataBase.FavoritosEntity
 import com.example.isbm.Entities.Books
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

@@ -1,4 +1,4 @@
-package com.example.filmapp.Media.dataBase
+package com.example.databook.dataBase.Perfil
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -19,15 +19,15 @@ import java.nio.channels.AsynchronousFileChannel.open
 import java.nio.channels.AsynchronousServerSocketChannel.open
 import java.nio.channels.Pipe.open
 
-@Entity(tableName = "favoritostable")
-data class FavoritosEntity (
+@Entity(tableName = "perfiltable")
+data class PerfilEntity (
     @PrimaryKey(autoGenerate = false)
-    val id:String = "",
-    var UserID: String = "",
-    var title: String = "",
-    var imagem: Bitmap? = null,
-    var autor: String = "",
-    var lancamento: String = "",
-    var sinopse: String = "",
-    var favoritoIndication: Boolean = false
+    val UserID: String = "",
+    var imagemPerfil: Bitmap? = null,
+    var nome: String = "",
+    var email: String = "",
+    var senha: String = "",
+    var countFavoritos: Int = 0,
+    var countCompartilhamentos: Int = 0,
+    var ultimoTermo: String = ""
     ):Serializable

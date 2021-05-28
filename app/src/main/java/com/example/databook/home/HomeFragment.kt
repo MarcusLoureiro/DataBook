@@ -2,12 +2,9 @@ package com.example.databook.home
 
 import android.content.Intent
 import android.os.Bundle
-import android.provider.MediaStore
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -15,19 +12,16 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.dataBase.FavoritosViewModel
+import com.example.databook.dataBase.Favoritos.FavoritosViewModel
 import com.example.databook.livro.LivroSelecionadoActivity
 import com.example.databook.R
 import com.example.databook.livro.LivroAdapter
 import com.example.databook.livro.LivroFavAdapter
 import com.example.databook.livro.ResgitrarLivroActivity
-import com.example.filmapp.Media.dataBase.FavoritosEntity
+import com.example.databook.dataBase.Favoritos.FavoritosEntity
 import com.example.isbm.Entities.Item
-import com.example.isbm.Entities.VolumeInfo
 import com.example.isbm.Services.MainViewModel
 import com.example.isbm.Services.service
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import kotlinx.android.synthetic.main.custom_alert.view.*
 import kotlinx.android.synthetic.main.fragment_home_favoritos.view.*
 
 class HomeFragment : Fragment(), LivroAdapter.OnLivroClickListener,

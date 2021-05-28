@@ -1,9 +1,9 @@
-package com.example.dataBase
+package com.example.databook.dataBase.Favoritos
 
 import android.app.Application
 import androidx.lifecycle.*
-import com.example.filmapp.Media.dataBase.FavoritosDAO
-import com.example.filmapp.Media.dataBase.FavoritosEntity
+import com.example.dataBase.AppDataBase
+import com.example.dataBase.FavoritosRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 

@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.example.databook.R
-import com.example.filmapp.Media.dataBase.FavoritosEntity
+import com.example.databook.dataBase.Favoritos.FavoritosEntity
 import kotlinx.android.synthetic.main.item_capa.view.*
 
 class LivroFavAdapter(val listener: OnLivroFavClickListener) : RecyclerView.Adapter<LivroFavAdapter.ViewHolder>() {

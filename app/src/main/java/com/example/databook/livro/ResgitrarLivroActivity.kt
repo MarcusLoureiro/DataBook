@@ -1,36 +1,29 @@
 package com.example.databook.livro
 
-import android.R.attr
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import coil.ImageLoader
 import coil.request.ImageRequest
 import coil.request.SuccessResult
-import com.example.dataBase.FavoritosViewModel
+import com.example.databook.dataBase.Favoritos.FavoritosViewModel
 import com.example.databook.R
-import com.example.filmapp.Media.dataBase.FavoritosEntity
+import com.example.databook.dataBase.Favoritos.FavoritosEntity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_resgitrar_livro.*
 import kotlinx.android.synthetic.main.custom_alert.view.*
 import kotlinx.coroutines.launch
 import java.util.*
-import kotlin.collections.ArrayList
-import kotlin.time.nanoseconds
 
 
 class ResgitrarLivroActivity : AppCompatActivity() {

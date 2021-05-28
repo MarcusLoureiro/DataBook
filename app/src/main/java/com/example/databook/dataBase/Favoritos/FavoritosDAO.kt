@@ -1,6 +1,5 @@
-package com.example.filmapp.Media.dataBase
+package com.example.databook.dataBase.Favoritos
 
-import android.app.usage.UsageEvents
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import androidx.room.Dao
@@ -10,7 +9,7 @@ interface FavoritosDAO {
 
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun saveInUsersList(user: FavoritosEntity)
+    suspend fun saveInFavsList(fav: FavoritosEntity)
 
     @Update
     suspend fun updateFavs(fav: FavoritosEntity)
