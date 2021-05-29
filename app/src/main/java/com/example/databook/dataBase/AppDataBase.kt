@@ -11,7 +11,7 @@ import com.example.databook.dataBase.Perfil.PerfilEntity
 
 @Database(
     entities = [FavoritosEntity::class, PerfilEntity::class],
-    version = 2,
+    version = 5,
     exportSchema = false
 )
 @TypeConverters(Converters::class)

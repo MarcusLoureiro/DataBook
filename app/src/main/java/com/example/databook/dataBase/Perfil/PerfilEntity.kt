@@ -8,6 +8,7 @@ import android.net.Uri
 import android.os.ParcelFileDescriptor.open
 import androidx.core.graphics.get
 import androidx.room.Entity
+import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import com.example.databook.R
 import com.google.firebase.auth.FirebaseAuth
@@ -22,11 +23,10 @@ import java.nio.channels.Pipe.open
 @Entity(tableName = "perfiltable")
 data class PerfilEntity (
     @PrimaryKey(autoGenerate = false)
-    val UserID: String = "",
-    var imagemPerfil: Bitmap? = null,
+    var userID: String = "",
+    @Ignore var imagemPerfil: Bitmap? = null,
     var nome: String = "",
     var email: String = "",
-    var senha: String = "",
     var countFavoritos: Int = 0,
     var countCompartilhamentos: Int = 0,
     var ultimoTermo: String = ""

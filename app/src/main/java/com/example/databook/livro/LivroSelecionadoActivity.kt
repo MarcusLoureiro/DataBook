@@ -112,7 +112,7 @@ class LivroSelecionadoActivity : AppCompatActivity() {
                     viewModelFav.addFav(
                         FavoritosEntity(
                             bookApi.id,
-                            FirebaseAuth.getInstance().currentUser.toString(),
+                            FirebaseAuth.getInstance().currentUser!!.uid.toString(),
                             bookApi.volumeInfo.title,
                             getBitmap(bookApi.volumeInfo.imageLinks.thumbnail),
                             bookApi.volumeInfo.authors[0],

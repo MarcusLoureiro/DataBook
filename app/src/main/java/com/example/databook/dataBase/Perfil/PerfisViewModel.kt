@@ -19,19 +19,19 @@ class PerfisViewModel(app: Application): AndroidViewModel(app) {
         perfilList = repository.readAllData
     }
 
-    fun addFav(perfil: PerfilEntity){
+    fun addPerfil(perfil: PerfilEntity){
         viewModelScope.launch(Dispatchers.IO) {
             repository.addPerfil(perfil)
         }
     }
 
-    fun updateFav(perfil: PerfilEntity){
+    fun updatePerfil(perfil: PerfilEntity){
         viewModelScope.launch(Dispatchers.IO) {
             repository.updatePerfil(perfil)
         }
     }
 
-    fun deleteFav(perfil: PerfilEntity){
+    fun deletePerfil(perfil: PerfilEntity){
         viewModelScope.launch(Dispatchers.IO) {
             repository.deletePerfil(perfil)
         }
