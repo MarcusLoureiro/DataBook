@@ -23,6 +23,7 @@ import com.example.databook.dataBase.Favoritos.FavoritosViewModel
 import com.example.databook.R
 import com.example.databook.R.drawable
 import com.example.databook.dataBase.Favoritos.FavoritosEntity
+import com.example.databook.dataBase.Perfil.PerfisViewModel
 import com.example.isbm.Entities.Item
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_livro_selecionado.*
@@ -33,6 +34,8 @@ import kotlinx.coroutines.launch
 @Suppress("DEPRECATION")
 class LivroSelecionadoActivity : AppCompatActivity() {
     private lateinit var viewModelFav: FavoritosViewModel
+    private lateinit var viewModelPerfil: PerfisViewModel
+    val mAuth = FirebaseAuth.getInstance().currentUser
 
     private val rotateOpen: Animation by lazy {
         AnimationUtils.loadAnimation(
@@ -61,9 +64,12 @@ class LivroSelecionadoActivity : AppCompatActivity() {
 
     private var clicked = false
     override fun onCreate(savedInstanceState: Bundle?) {
-        val favoritos = intent.getSerializableExtra("favoritos") as? Boolean
+        viewModelPerfil = ViewModelProvider(this).get(PerfisViewModel::class.java)
         viewModelFav = ViewModelProvider(this).get(FavoritosViewModel::class.java)
+
+        val favoritos = intent.getSerializableExtra("favoritos") as? Boolean
         var isClick = false
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_livro_selecionado)
         setActivity()
@@ -109,7 +115,7 @@ class LivroSelecionadoActivity : AppCompatActivity() {
                 changeIconFav(false)
                 lifecycleScope.launch {
                     var bookApi = getBookApiData()
-                    viewModelFav.addFav(
+                    addFav(
                         FavoritosEntity(
                             bookApi.id,
                             FirebaseAuth.getInstance().currentUser!!.uid.toString(),
@@ -121,9 +127,8 @@ class LivroSelecionadoActivity : AppCompatActivity() {
                             true
                         )
                     )
+                    Log.i("BOOKAPI", bookApi.toString())
                 }
-
-
             }
         }
         fabCompatilhar.setOnClickListener {
@@ -152,7 +157,6 @@ class LivroSelecionadoActivity : AppCompatActivity() {
     }
 
     private fun setBookApiInView(bookApi: Item) {
-        //val id = bookApi.id
         val titulo = bookApi.volumeInfo.title
         val autor = bookApi.volumeInfo.authors.get(0)
         val ano = bookApi.volumeInfo.publishedDate
@@ -217,6 +221,16 @@ class LivroSelecionadoActivity : AppCompatActivity() {
                     "Sinopse do livro:${textViewSinopse.text}\n"
         )
         startActivity(Intent.createChooser(intent, "${textViewTitulo.text}"))
+
+        viewModelPerfil.perfilList.observe(this) {
+            it.forEach {
+                if (it.userID == mAuth!!.uid) {
+                    var PerfilAtual = it
+                    PerfilAtual.countCompartilhamentos = PerfilAtual.countCompartilhamentos+1
+                    viewModelPerfil.updatePerfil(PerfilAtual)
+                }
+            }
+        }
     }
 
     private fun onFabMenuClicked() {

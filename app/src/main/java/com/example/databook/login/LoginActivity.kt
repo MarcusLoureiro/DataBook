@@ -1,26 +1,17 @@
 package com.example.databook.login
 
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.databook.R
 import com.example.databook.dataBase.Perfil.PerfilEntity
 import com.example.databook.dataBase.Perfil.PerfisViewModel
-import com.example.databook.entities.Constants
 import com.example.databook.home.MainActivity
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.api.ApiException
-import com.google.android.gms.tasks.Task
-import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.GoogleAuthProvider
 import kotlinx.android.synthetic.main.activity_cadastro.tv_cadastre_se
 import kotlinx.android.synthetic.main.activity_login.*
 
@@ -86,9 +77,10 @@ class LoginActivity : AppCompatActivity() {
 
     fun updateUI(account: FirebaseUser?) {
         if (account != null) {
+            val Icon = BitmapFactory.decodeResource(resources, R.drawable.avatar)
             viewModelPerfil.addPerfil(PerfilEntity(
                 account.uid,
-                null,
+                Icon,
                 "",
                 account.email.toString(),
                 0,

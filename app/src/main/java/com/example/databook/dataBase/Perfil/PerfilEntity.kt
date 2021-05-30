@@ -24,7 +24,7 @@ import java.nio.channels.Pipe.open
 data class PerfilEntity (
     @PrimaryKey(autoGenerate = false)
     var userID: String = "",
-    @Ignore var imagemPerfil: Bitmap? = null,
+    var imagemPerfil: Bitmap? = null,
     var nome: String = "",
     var email: String = "",
     var countFavoritos: Int = 0,

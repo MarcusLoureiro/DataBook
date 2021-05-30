@@ -33,9 +33,11 @@ import kotlinx.coroutines.launch
 
 class InitScreenActivity : AppCompatActivity() {
     private lateinit var viewModelPerfil: PerfisViewModel
+
     companion object {
         const val RC_SIGN_IN = 100
     }
+
     private lateinit var mAuth: FirebaseAuth
     private lateinit var googleSignInClient: GoogleSignInClient
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -109,19 +111,6 @@ class InitScreenActivity : AppCompatActivity() {
 
     fun updateUI(account: FirebaseUser?) {
         if (account != null) {
-            lifecycleScope.launch {
-                viewModelPerfil.addPerfil(
-                    PerfilEntity(
-                        account.uid,
-                        getBitmap(account.photoUrl.toString()),
-                        account.displayName.toString(),
-                        account.email.toString(),
-                        0,
-                        0,
-                        "")
-                )
-            }
-
             Toast.makeText(this, "Olá, ${account.displayName}", Toast.LENGTH_LONG).show()
             InicarHome()
         } else {
