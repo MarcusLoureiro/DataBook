@@ -1,23 +1,51 @@
 package com.example.dataBase
 
 import androidx.lifecycle.LiveData
-import com.example.filmapp.Media.dataBase.FavoritosEntity
-import com.example.filmapp.Media.dataBase.FavoritosDAO
+import com.example.databook.dataBase.Favoritos.FavoritosEntity
+import com.example.databook.dataBase.Favoritos.FavoritosDAO
+import com.example.databook.dataBase.Perfil.PerfilDAO
+import com.example.databook.dataBase.Perfil.PerfilEntity
 
 
-class UsersRepository(private val favoritosDAO: FavoritosDAO){
+class FavoritosRepository(private val favoritosDAO: FavoritosDAO){
 
     val readAllData: LiveData<List<FavoritosEntity>> = favoritosDAO.getFavoritosList()
-//    val readAllDataMenorIdade: LiveData<List<FavoritosEntity>> = favoritosDAO.getUsersMenorIdade()
-//    val readAllDataMaiorIdade: LiveData<List<FavoritosEntity>> = favoritosDAO.getUsersMaiorIdade()
 
-
-    suspend fun saveInUsersListTask(fav: FavoritosEntity){
-        favoritosDAO.saveInUsersList(fav)
+    suspend fun addFav(fav: FavoritosEntity){
+        favoritosDAO.saveInFavsList(fav)
     }
 
-    suspend fun removeOfUsersListTask(fav: FavoritosEntity){
-        favoritosDAO.removeOfUsersList(fav)
+    suspend fun deleteFav(fav: FavoritosEntity){
+        favoritosDAO.removeOfFavsList(fav)
     }
 
+    suspend fun deleteAllFavs(){
+        favoritosDAO.deletAllFavs()
+    }
+
+    suspend fun updateFav(fav: FavoritosEntity){
+        favoritosDAO.updateFavs(fav)
+    }
+}
+
+class PerfilRepository(private val perfisDAO: PerfilDAO){
+
+    val readAllData: LiveData<List<PerfilEntity>> = perfisDAO.getPerfilList()
+
+
+    suspend fun addPerfil(fav: PerfilEntity){
+        perfisDAO.saveInPerfisList(fav)
+    }
+
+    suspend fun deletePerfil(fav: PerfilEntity){
+        perfisDAO.removeOfPerfilList(fav)
+    }
+
+    suspend fun deleteAllPerfis(){
+        perfisDAO.deletAllPerfil()
+    }
+
+    suspend fun updatePerfil(fav: PerfilEntity){
+        perfisDAO.updatePerfil(fav)
+    }
 }

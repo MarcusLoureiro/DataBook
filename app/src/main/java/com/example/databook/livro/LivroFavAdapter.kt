@@ -1,53 +1,34 @@
 package com.example.databook.livro
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
 import com.example.databook.R
-import com.example.desafiofirebase.entities.Livro
-import com.example.filmapp.Media.dataBase.FavoritosEntity
-import com.example.isbm.Entities.Books
-import com.example.isbm.Entities.Item
-import com.squareup.picasso.Picasso
+import com.example.databook.dataBase.Favoritos.FavoritosEntity
 import kotlinx.android.synthetic.main.item_capa.view.*
 
-class LivroFavAdapter(
-    private val listFavLivros: List<FavoritosEntity>,
-    val listener: OnLivroFavClickListener
-) : RecyclerView.Adapter<LivroFavAdapter.ViewHolder>() {
+class LivroFavAdapter(val listener: OnLivroFavClickListener) : RecyclerView.Adapter<LivroFavAdapter.ViewHolder>() {
+
+    private var fav = emptyList<FavoritosEntity>()
 
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int): ViewHolder {
         return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_capa, parent, false))
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        var result = listFavLivros[position]
-        holder.itemView.tag = position
+        var result = fav[position]
         holder.tvTitulo.text = result.title
-//        var img = result.imageLinks.smallThumbnail
-//        if(img != "" && img != null){
-//            Picasso.get().load(img).into(holder.ivLivro)
-//        }else{
-//      holder.ivLivro.setImageURI(result.imagem.toUri())
-//        }
-
-//        holder.ivLivro.setOnClickListener {
-//            val intent = Intent(holder.itemView.context, LivroDetailsActivity::class.java)
-//            intent.putExtra("name", listLivros[position].name)
-//            intent.putExtra("lancamento", listLivros[position].data)
-//            intent.putExtra("descricao", listLivros[position].description)
-//            intent.putExtra("url", listLivros[position].URL)
-//            intent.putExtra("key", listLivros[position].id)
-//            holder.itemView.context.startActivity(intent)
-//        }
-        holder.ivLivro.setOnClickListener(holder)
-
+        holder.ivLivro.load(result.imagem)
     }
 
-    override fun getItemCount() = listFavLivros.size
+    fun setData(fav: List<FavoritosEntity>){
+        this.fav = fav
+        notifyDataSetChanged()
+    }
+
+    override fun getItemCount() = fav.size
 
     interface OnLivroFavClickListener {
         fun livroFavClick(position: Int)
@@ -70,3 +51,19 @@ class LivroFavAdapter(
         }
     }
 }
+
+//        var img = result.imageLinks.smallThumbnail
+//        if(img != "" && img != null){
+//            Picasso.get().load(img).into(holder.ivLivro)
+//        }else{
+//      holder.ivLivro.setImageURI(result.imagem.toUri())
+//        }
+//        holder.ivLivro.setOnClickListener {
+//            val intent = Intent(holder.itemView.context, LivroDetailsActivity::class.java)
+//            intent.putExtra("name", listLivros[position].name)
+//            intent.putExtra("lancamento", listLivros[position].data)
+//            intent.putExtra("descricao", listLivros[position].description)
+//            intent.putExtra("url", listLivros[position].URL)
+//            intent.putExtra("key", listLivros[position].id)
+//            holder.itemView.context.startActivity(intent)
+//        }

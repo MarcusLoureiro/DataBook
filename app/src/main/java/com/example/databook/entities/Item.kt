@@ -1,12 +1,14 @@
 package com.example.isbm.Entities
 
+import java.io.Serializable
+
 data class Item(
-    val accessInfo: AccessInfo,
-    val etag: String,
-    val id: String,
-    val kind: String,
-    val saleInfo: SaleInfo,
-    val searchInfo: SearchInfo,
-    val selfLink: String,
-    val volumeInfo: VolumeInfo
-)
+    val accessInfo: AccessInfo = AccessInfo(),
+    val etag: String = "",
+    val id: String = "",
+    val kind: String = "",
+    val saleInfo: SaleInfo = SaleInfo(),
+    val searchInfo: SearchInfo = SearchInfo(),
+    val selfLink: String = "",
+    val volumeInfo: VolumeInfo = VolumeInfo()
+): Serializable

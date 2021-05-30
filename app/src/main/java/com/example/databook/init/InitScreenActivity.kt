@@ -1,11 +1,20 @@
 package com.example.databook.init
 
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import coil.ImageLoader
+import coil.request.ImageRequest
+import coil.request.SuccessResult
 import com.example.databook.R
+import com.example.databook.dataBase.Perfil.PerfilEntity
+import com.example.databook.dataBase.Perfil.PerfisViewModel
 import com.example.databook.entities.Constants
 import com.example.databook.home.MainActivity
 import com.example.databook.login.LoginActivity
@@ -20,8 +29,10 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import kotlinx.android.synthetic.main.activity_init_screen.*
+import kotlinx.coroutines.launch
 
 class InitScreenActivity : AppCompatActivity() {
+    private lateinit var viewModelPerfil: PerfisViewModel
     companion object {
         const val RC_SIGN_IN = 100
     }
@@ -30,14 +41,13 @@ class InitScreenActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_init_screen)
-
+        viewModelPerfil = ViewModelProvider(this).get(PerfisViewModel::class.java)
         val googleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken("389033630908-10ehndc75t0s3o2ftvpmkq0baccaep14.apps.googleusercontent.com")
             .requestEmail()
             .build()
         googleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions)
         mAuth = FirebaseAuth.getInstance()
-        mAuth.useAppLanguage()
         val user: FirebaseUser? = mAuth.currentUser
         if (user != null) {
             println("id idfer" + user.providerData[1].providerId)
@@ -99,6 +109,19 @@ class InitScreenActivity : AppCompatActivity() {
 
     fun updateUI(account: FirebaseUser?) {
         if (account != null) {
+            lifecycleScope.launch {
+                viewModelPerfil.addPerfil(
+                    PerfilEntity(
+                        account.uid,
+                        getBitmap(account.photoUrl.toString()),
+                        account.displayName.toString(),
+                        account.email.toString(),
+                        0,
+                        0,
+                        "")
+                )
+            }
+
             Toast.makeText(this, "Olá, ${account.displayName}", Toast.LENGTH_LONG).show()
             InicarHome()
         } else {
@@ -151,6 +174,16 @@ class InitScreenActivity : AppCompatActivity() {
         val intent = Intent(this, LoginActivity::class.java)
         startActivity(intent)
         finish()
+    }
+
+    private suspend fun getBitmap(data: String): Bitmap {
+        val loanding = ImageLoader(this)
+        val request = ImageRequest.Builder(this)
+            .data(data)
+            .build()
+
+        val result = (loanding.execute(request) as SuccessResult).drawable
+        return (result as BitmapDrawable).bitmap
     }
 }
 

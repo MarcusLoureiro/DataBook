@@ -5,7 +5,10 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import com.example.databook.R
+import com.example.databook.dataBase.Perfil.PerfilEntity
+import com.example.databook.dataBase.Perfil.PerfisViewModel
 import com.example.databook.entities.Constants
 import com.example.databook.home.MainActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -23,7 +26,7 @@ import kotlinx.android.synthetic.main.activity_login.*
 
 
 class LoginActivity : AppCompatActivity() {
-
+    private lateinit var viewModelPerfil: PerfisViewModel
     companion object {
         const val RC_SIGN_IN = 100
     }
@@ -31,6 +34,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var mAuth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        viewModelPerfil = ViewModelProvider(this).get(PerfisViewModel::class.java)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
         mAuth = FirebaseAuth.getInstance()
@@ -82,6 +86,14 @@ class LoginActivity : AppCompatActivity() {
 
     fun updateUI(account: FirebaseUser?) {
         if (account != null) {
+            viewModelPerfil.addPerfil(PerfilEntity(
+                account.uid,
+                null,
+                "",
+                account.email.toString(),
+                0,
+                0,
+                ""))
             Toast.makeText(this, "olá, ${account.email}", Toast.LENGTH_LONG).show()
             InicarHome()
         } else {

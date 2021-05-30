@@ -28,4 +28,18 @@
         <item name="android:lineSpacingMultiplier">1.3</item>
     </style>
 
+    <style name="MaterialAlertDialog_rounded" parent="@style/ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="shapeAppearanceOverlay">@style/DialogCorners</item>
+    </style>
+
+    <style name="DialogCorners">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">16dp</item>
+    </style>
+
+    <style name="DialogAnimation">
+    <item name="android:windowEnterAnimation">@anim/slide_up</item>
+    <item name="android:windowExitAnimation">@anim/slide_bottom</item>
+    </style>
+
 </resources>
