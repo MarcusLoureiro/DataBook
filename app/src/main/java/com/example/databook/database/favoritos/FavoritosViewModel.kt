@@ -1,17 +1,15 @@
-package com.example.databook.dataBase.Favoritos
+package com.example.databook.database.favoritos
 
 import android.app.Application
 import androidx.lifecycle.*
-import com.example.dataBase.AppDataBase
-import com.example.dataBase.FavoritosRepository
+import com.example.databook.database.AppDataBase
+import com.example.databook.database.FavoritosRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class FavoritosViewModel(app: Application): AndroidViewModel(app) {
 
     val favList: LiveData<List<FavoritosEntity>>
-//    val favListMaior: LiveData<List<FavoritosEntity>>
-//    val favListMenor: LiveData<List<FavoritosEntity>>
     private val repository: FavoritosRepository
 
     init {
@@ -38,11 +36,11 @@ class FavoritosViewModel(app: Application): AndroidViewModel(app) {
         }
     }
 
-    fun deleteAllFav() {
-        viewModelScope.launch(Dispatchers.IO) {
-            repository.deleteAllFavs()
-        }
-    }
+//    fun deleteAllFav() {
+//        viewModelScope.launch(Dispatchers.IO) {
+//            repository.deleteAllFavs()
+//        }
+//    }
 
     fun getseacrhListFav(search:String): LiveData<List<FavoritosEntity>>{
         return repository.getListFavSearch(search)

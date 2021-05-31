@@ -1,4 +1,4 @@
-package com.example.databook.dataBase.Favoritos
+package com.example.databook.database.favoritos
 
 import android.graphics.Bitmap
 import androidx.room.Entity

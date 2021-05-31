@@ -30,6 +30,6 @@ class MainActivity : AppCompatActivity() {
 //        tabLayout_HomePage.getTabAt(1)!!.setIcon(R.drawable.ic_home_roxo)
 //        tabLayout_HomePage.getTabAt(2)!!.setIcon(R.drawable.ic_claquete_flaticon)
         // Seta o item principal
-        viewPager_HomePage.setCurrentItem(1)
+        viewPager_HomePage.currentItem = 1
     }
 }

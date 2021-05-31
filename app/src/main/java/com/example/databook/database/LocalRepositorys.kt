@@ -1,11 +1,11 @@
-package com.example.dataBase
+package com.example.databook.database
 
 import androidx.lifecycle.LiveData
-import com.example.databook.dataBase.Favoritos.FavoritosEntity
-import com.example.databook.dataBase.Favoritos.FavoritosDAO
-import com.example.databook.dataBase.Perfil.PerfilDAO
-import com.example.databook.dataBase.Perfil.PerfilEntity
-import java.util.concurrent.Flow
+import com.example.databook.database.favoritos.FavoritosEntity
+import com.example.databook.database.favoritos.FavoritosDAO
+import com.example.databook.database.perfil.PerfilDAO
+import com.example.databook.database.perfil.PerfilEntity
+
 
 
 class FavoritosRepository(private val favoritosDAO: FavoritosDAO){
@@ -20,9 +20,9 @@ class FavoritosRepository(private val favoritosDAO: FavoritosDAO){
         favoritosDAO.removeOfFavsList(fav)
     }
 
-    suspend fun deleteAllFavs(){
-        favoritosDAO.deletAllFavs()
-    }
+//    suspend fun deleteAllFavs(){
+//        favoritosDAO.deletAllFavs()
+//    }
 
     suspend fun updateFav(fav: FavoritosEntity){
         favoritosDAO.updateFavs(fav)
@@ -46,13 +46,13 @@ class PerfilRepository(private val perfisDAO: PerfilDAO){
         perfisDAO.saveInPerfisList(fav)
     }
 
-    suspend fun deletePerfil(fav: PerfilEntity){
-        perfisDAO.removeOfPerfilList(fav)
-    }
-
-    suspend fun deleteAllPerfis(){
-        perfisDAO.deletAllPerfil()
-    }
+//    suspend fun deletePerfil(fav: PerfilEntity){
+//        perfisDAO.removeOfPerfilList(fav)
+//    }
+//
+//    suspend fun deleteAllPerfis(){
+//        perfisDAO.deletAllPerfil()
+//    }
 
     suspend fun updatePerfil(fav: PerfilEntity){
         perfisDAO.updatePerfil(fav)

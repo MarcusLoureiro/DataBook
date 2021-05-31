@@ -1,5 +1,6 @@
 package com.example.databook.livro
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
@@ -16,9 +17,9 @@ import androidx.lifecycle.lifecycleScope
 import coil.ImageLoader
 import coil.request.ImageRequest
 import coil.request.SuccessResult
-import com.example.databook.dataBase.Favoritos.FavoritosViewModel
+import com.example.databook.database.favoritos.FavoritosViewModel
 import com.example.databook.R
-import com.example.databook.dataBase.Favoritos.FavoritosEntity
+import com.example.databook.database.favoritos.FavoritosEntity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_resgitrar_livro.*
@@ -28,13 +29,14 @@ import java.util.*
 
 
 @Suppress("DEPRECATION", "NAME_SHADOWING")
-class ResgitrarLivroActivity : AppCompatActivity() {
+class RegistrarLivroActivity : AppCompatActivity() {
     private var pickImage = ""
     private var imageUri: Uri? = null
     private var imagemBitmap: Bitmap? = null
     private lateinit var viewModelFav: FavoritosViewModel
 
 
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         viewModelFav = ViewModelProvider(this).get(FavoritosViewModel::class.java)
         super.onCreate(savedInstanceState)
@@ -50,7 +52,7 @@ class ResgitrarLivroActivity : AppCompatActivity() {
         }
 
         iv_livro.setOnClickListener {
-            creatAlert()
+            createAlert()
         }
 
         btn_registrar.setOnClickListener {
@@ -152,7 +154,7 @@ class ResgitrarLivroActivity : AppCompatActivity() {
     }
 
 
-    private fun creatAlert() {
+    private fun createAlert() {
         val builder = MaterialAlertDialogBuilder(this, R.style.MaterialAlertDialog_rounded).create()
         val view: View = LayoutInflater.from(this).inflate(R.layout.custom_alert, null)
         builder.setView(view)

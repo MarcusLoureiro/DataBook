@@ -1,8 +1,7 @@
-package com.example.isbm.Services
+package com.example.databook.services
 
-import com.example.isbm.Entities.Books
+import com.example.databook.entities.Books
 import com.google.gson.GsonBuilder
-import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
@@ -17,10 +16,6 @@ interface Service {
     suspend fun getSearch(
             @Query("q") searchText: String,
             @Query("key") key: String?): Books
-
-//    @GET("volumes?langRestrict=en&maxResults=40&printType=books")
-//    suspend fun searchBooks(@Query("q") searchText: String?,
-//                    @Query("key") key: String?): Books
 }
 
 
@@ -29,10 +24,10 @@ const val keyApi = "AIzaSyCGBvxxhR2IOAXrXkPsM8S8qu--_CCz3H0"
 
 var gson = GsonBuilder()
     .setLenient()
-    .create()
+    .create()!!
 
 
-val retrofit = Retrofit.Builder()
+val retrofit: Retrofit = Retrofit.Builder()
     .baseUrl(urlApiGoogleBooks)
     .addConverterFactory(GsonConverterFactory.create(gson))
     .build()

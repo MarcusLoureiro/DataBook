@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.example.databook.R
-import com.example.databook.dataBase.Favoritos.FavoritosEntity
+import com.example.databook.database.favoritos.FavoritosEntity
 import kotlinx.android.synthetic.main.item_capa.view.*
 
 class LivroFavAdapter(val listener: OnLivroFavClickListener) : RecyclerView.Adapter<LivroFavAdapter.ViewHolder>() {
@@ -18,7 +18,7 @@ class LivroFavAdapter(val listener: OnLivroFavClickListener) : RecyclerView.Adap
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        var result = fav[position]
+        val result = fav[position]
         holder.tvTitulo.text = result.title
         holder.ivLivro.load(result.imagem)
     }
@@ -51,19 +51,3 @@ class LivroFavAdapter(val listener: OnLivroFavClickListener) : RecyclerView.Adap
         }
     }
 }
-
-//        var img = result.imageLinks.smallThumbnail
-//        if(img != "" && img != null){
-//            Picasso.get().load(img).into(holder.ivLivro)
-//        }else{
-//      holder.ivLivro.setImageURI(result.imagem.toUri())
-//        }
-//        holder.ivLivro.setOnClickListener {
-//            val intent = Intent(holder.itemView.context, LivroDetailsActivity::class.java)
-//            intent.putExtra("name", listLivros[position].name)
-//            intent.putExtra("lancamento", listLivros[position].data)
-//            intent.putExtra("descricao", listLivros[position].description)
-//            intent.putExtra("url", listLivros[position].URL)
-//            intent.putExtra("key", listLivros[position].id)
-//            holder.itemView.context.startActivity(intent)
-//        }

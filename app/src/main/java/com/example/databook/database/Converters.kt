@@ -1,11 +1,8 @@
-package com.example.databook.dataBase
+package com.example.databook.database
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import androidx.room.TypeConverter
-import com.google.common.reflect.TypeToken
-import com.google.gson.Gson
-import com.google.gson.JsonElement
 import java.io.ByteArrayOutputStream
 
 

@@ -7,8 +7,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.databook.R
-import com.example.databook.dataBase.Perfil.PerfilEntity
-import com.example.databook.dataBase.Perfil.PerfisViewModel
+import com.example.databook.database.perfil.PerfilEntity
+import com.example.databook.database.perfil.PerfisViewModel
 import com.example.databook.home.MainActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -18,9 +18,7 @@ import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var viewModelPerfil: PerfisViewModel
-    companion object {
-        const val RC_SIGN_IN = 100
-    }
+
 
     private lateinit var mAuth: FirebaseAuth
 
@@ -41,33 +39,30 @@ class LoginActivity : AppCompatActivity() {
             signIn()
         }
         tv_cadastre_se.setOnClickListener {
-            InicarCadastro()
-        }
-        tv_cadastre_se.setOnClickListener {
-            InicarCadastro()
+            inicarCadastro()
         }
     }
 
 
-    fun InicarCadastro() {
-        val intent = Intent(this, cadastroActivity::class.java)
+    private fun inicarCadastro() {
+        val intent = Intent(this, CadastroActivity::class.java)
         startActivity(intent)
         finish()
     }
 
-    fun InicarHome() {
+    private fun inicarHome() {
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
         finish()
     }
 
-    fun testarCampos(): Boolean {
+    private fun testarCampos(): Boolean {
         var teste = true
-        if (edEmail.text.isNullOrBlank() == true) {
+        if (edEmail.text.isNullOrBlank()) {
             teste = false
             Toast.makeText(this, "Email inválido", Toast.LENGTH_SHORT).show()
         }
-        if (edSenha.text.isNullOrBlank() == true) {
+        if (edSenha.text.isNullOrBlank()) {
             teste = false
             Toast.makeText(this, "Senha inválida", Toast.LENGTH_SHORT).show()
         }
@@ -75,27 +70,27 @@ class LoginActivity : AppCompatActivity() {
     }
 
 
-    fun updateUI(account: FirebaseUser?) {
+    private fun updateUI(account: FirebaseUser?) {
         if (account != null) {
-            val Icon = BitmapFactory.decodeResource(resources, R.drawable.avatar)
+            val icon = BitmapFactory.decodeResource(resources, R.drawable.avatar)
             viewModelPerfil.addPerfil(PerfilEntity(
                 account.uid,
-                Icon,
+                icon,
                 "",
                 account.email.toString(),
                 0,
                 0,
                 ""))
             Toast.makeText(this, "olá, ${account.email}", Toast.LENGTH_LONG).show()
-            InicarHome()
+            inicarHome()
         } else {
             Toast.makeText(this, "U Didnt signed in", Toast.LENGTH_LONG).show()
         }
     }
 
 
-    fun signIn() {
-        if (testarCampos() == true) {
+    private fun signIn() {
+        if (testarCampos()) {
             val email = edEmail.text.toString()
             val password = edSenha.text.toString()
             mAuth.signInWithEmailAndPassword(email, password)

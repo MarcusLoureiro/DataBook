@@ -1,10 +1,9 @@
-package com.example.databook.dataBase.Perfil
+package com.example.databook.database.perfil
 
 import android.app.Application
 import androidx.lifecycle.*
-import com.example.dataBase.AppDataBase
-import com.example.dataBase.FavoritosRepository
-import com.example.dataBase.PerfilRepository
+import com.example.databook.database.AppDataBase
+import com.example.databook.database.PerfilRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -31,17 +30,17 @@ class PerfisViewModel(app: Application): AndroidViewModel(app) {
         }
     }
 
-    fun deletePerfil(perfil: PerfilEntity){
-        viewModelScope.launch(Dispatchers.IO) {
-            repository.deletePerfil(perfil)
-        }
-    }
+//    fun deletePerfil(perfil: PerfilEntity){
+//        viewModelScope.launch(Dispatchers.IO) {
+//            repository.deletePerfil(perfil)
+//        }
+//    }
 
-    fun deleteAllFav() {
-        viewModelScope.launch(Dispatchers.IO) {
-            repository.deleteAllPerfis()
-        }
-    }
+//    fun deleteAllFav() {
+//        viewModelScope.launch(Dispatchers.IO) {
+//            repository.deleteAllPerfis()
+//        }
+//    }
 
 }
 

@@ -1,17 +1,16 @@
-package com.example.dataBase
+package com.example.databook.database
 
 import android.content.Context
 import androidx.room.*
-import com.example.databook.dataBase.Converters
-import com.example.databook.dataBase.Favoritos.FavoritosDAO
-import com.example.databook.dataBase.Favoritos.FavoritosEntity
-import com.example.databook.dataBase.Perfil.PerfilDAO
-import com.example.databook.dataBase.Perfil.PerfilEntity
+import com.example.databook.database.favoritos.FavoritosDAO
+import com.example.databook.database.favoritos.FavoritosEntity
+import com.example.databook.database.perfil.PerfilDAO
+import com.example.databook.database.perfil.PerfilEntity
 
 
 @Database(
     entities = [FavoritosEntity::class, PerfilEntity::class],
-    version = 2,
+    version = 3,
     exportSchema = false
 )
 @TypeConverters(Converters::class)

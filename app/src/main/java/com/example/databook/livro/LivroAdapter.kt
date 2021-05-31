@@ -1,6 +1,5 @@
 package com.example.databook.livro
 
-import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -9,11 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.bumptech.glide.Glide
 import com.example.databook.R
-import com.example.isbm.Entities.ImageLinks
-import com.example.isbm.Entities.Item
-import com.example.isbm.Entities.VolumeInfo
+import com.example.databook.entities.Item
 import kotlinx.android.synthetic.main.item_capa.view.*
-import org.json.JSONObject
 
 
 class LivroAdapter(val listener: OnLivroClickListener) : RecyclerView.Adapter<LivroAdapter.ViewHolder>() {
@@ -25,18 +21,16 @@ class LivroAdapter(val listener: OnLivroClickListener) : RecyclerView.Adapter<Li
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        var result = listLivros[position].volumeInfo
+        val result = listLivros[position].volumeInfo
         holder.itemView.tag = position
         holder.tvTitulo.text = result.title
         holder.ivLivro.load(R.drawable.sem_imagem)
-        if(result.imageLinks.thumbnail != null ){
-            Glide.with(holder.itemView)
-                .load(result.imageLinks.thumbnail)
-                .error(R.drawable.sem_imagem)
-                .centerCrop()
-                .into(holder.ivLivro)
-            Log.i("IMAGEM", result.imageLinks.thumbnail)
-        }
+        Glide.with(holder.itemView)
+            .load(result.imageLinks.thumbnail)
+            .error(R.drawable.sem_imagem)
+            .centerCrop()
+            .into(holder.ivLivro)
+        Log.i("IMAGEM", result.imageLinks.thumbnail)
 
         holder.ivLivro.setOnClickListener(holder)
 

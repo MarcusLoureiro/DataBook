@@ -18,33 +18,35 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import coil.ImageLoader
 import coil.request.ImageRequest
 import coil.request.SuccessResult
-import com.example.databook.dataBase.Favoritos.FavoritosViewModel
+import com.example.databook.database.favoritos.FavoritosViewModel
 import com.example.databook.livro.LivroSelecionadoActivity
 import com.example.databook.R
 import com.example.databook.livro.LivroAdapter
 import com.example.databook.livro.LivroFavAdapter
-import com.example.databook.livro.ResgitrarLivroActivity
-import com.example.databook.dataBase.Favoritos.FavoritosEntity
-import com.example.databook.dataBase.Perfil.PerfilEntity
-import com.example.databook.dataBase.Perfil.PerfisViewModel
-import com.example.isbm.Entities.Item
-import com.example.isbm.Services.MainViewModel
-import com.example.isbm.Services.service
+import com.example.databook.livro.RegistrarLivroActivity
+import com.example.databook.database.favoritos.FavoritosEntity
+import com.example.databook.database.perfil.PerfilEntity
+import com.example.databook.database.perfil.PerfisViewModel
+import com.example.databook.entities.Item
+import com.example.databook.services.MainViewModel
+import com.example.databook.services.service
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.fragment_home_favoritos.view.*
 import kotlinx.coroutines.launch
 
+@Suppress("UNCHECKED_CAST")
 class HomeFragment : Fragment(), LivroAdapter.OnLivroClickListener,
     LivroFavAdapter.OnLivroFavClickListener {
-    var Favoritos: Boolean? = null
+    private val mAuth = FirebaseAuth.getInstance().currentUser
 
+    private lateinit var viewModelFav: FavoritosViewModel
     private lateinit var viewModelPerfil: PerfisViewModel
     private lateinit var listLivro: List<Item>
-    var listFavs = listOf<FavoritosEntity>()
-    private lateinit var viewModelFav: FavoritosViewModel
 
-    val mAuth = FirebaseAuth.getInstance().currentUser
-    val viewModel by viewModels<MainViewModel> {
+    private var listFavs = listOf<FavoritosEntity>()
+    private var favBoolean: Boolean? = null
+
+    private val viewModel by viewModels<MainViewModel> {
         object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
                 return MainViewModel(service) as T
@@ -56,15 +58,13 @@ class HomeFragment : Fragment(), LivroAdapter.OnLivroClickListener,
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        if (arguments != null) {
-            Favoritos = arguments?.getBoolean(favoritos)
-        }
+        if (arguments != null) favBoolean = arguments?.getBoolean(favoritos)
 
 
     }
 
     companion object {
-        private val favoritos = "favoritos"
+        private const val favoritos = "favoritos"
 
         fun newInstance(Favoritos: Boolean): HomeFragment {
             val fragment = HomeFragment()
@@ -82,14 +82,14 @@ class HomeFragment : Fragment(), LivroAdapter.OnLivroClickListener,
     ): View? {
         viewModelPerfil = ViewModelProvider(this).get(PerfisViewModel::class.java)
         viewModelFav = ViewModelProvider(this).get(FavoritosViewModel::class.java)
-        var view = inflater.inflate(R.layout.fragment_home_favoritos, container, false)
+        val view = inflater.inflate(R.layout.fragment_home_favoritos, container, false)
         lifecycleScope.launch {
             viewModelPerfil.addPerfil(
                 PerfilEntity(
                     mAuth!!.uid,
-                    getBitmap(mAuth!!.photoUrl.toString()),
-                    mAuth!!.displayName.toString(),
-                    mAuth!!.email.toString(),
+                    getBitmap(mAuth.photoUrl.toString()),
+                    mAuth.displayName.toString(),
+                    mAuth.email.toString(),
                     0,
                     0,
                     ""
@@ -97,13 +97,13 @@ class HomeFragment : Fragment(), LivroAdapter.OnLivroClickListener,
             )
         }
         view.fb_addBook.setOnClickListener {
-            IniciarTelaRegistro()
+            iniciarTelaRegistro()
         }
-        if (Favoritos == false) {
+        if (favBoolean == false) {
             view.textInputPesquisa.setEndIconOnClickListener {
                 callResultsSearch(view)
             }
-            view.textInputPesquisa.editText?.doOnTextChanged { inputText, _, _, _ ->
+            view.textInputPesquisa.editText?.doOnTextChanged { _, _, _, _ ->
                 callResultsSearch(view)
             }
         } else {
@@ -111,7 +111,7 @@ class HomeFragment : Fragment(), LivroAdapter.OnLivroClickListener,
             view.textInputPesquisa.setEndIconOnClickListener {
                 callResultsSearchFav(view)
             }
-            view.textInputPesquisa.editText?.doOnTextChanged { inputText, _, _, _ ->
+            view.textInputPesquisa.editText?.doOnTextChanged { _, _, _, _ ->
                 callResultsSearchFav(view)
             }
         }
@@ -119,14 +119,14 @@ class HomeFragment : Fragment(), LivroAdapter.OnLivroClickListener,
 
     }
 
-    fun IniciarTelaRegistro() {
-        val intent = Intent(activity, ResgitrarLivroActivity::class.java)
+    private fun iniciarTelaRegistro() {
+        val intent = Intent(activity, RegistrarLivroActivity::class.java)
         intent.putExtra("edit", false)
         startActivity(intent)
     }
 
-    fun callResultsSearch(view: View) {
-        var searchText = view.textInputPesquisa.editText?.text.toString()
+    private fun callResultsSearch(view: View) {
+        val searchText = view.textInputPesquisa.editText?.text.toString()
         if (searchText != "") {
             viewModel.getSearch(searchText)
             viewModel.returnSearchList.observe(viewLifecycleOwner) {
@@ -134,7 +134,7 @@ class HomeFragment : Fragment(), LivroAdapter.OnLivroClickListener,
                 view.rv_result.layoutManager =
                     GridLayoutManager(activity, 2, LinearLayoutManager.VERTICAL, false)
                 view.rv_result.setHasFixedSize(true)
-                var livroAdapter = LivroAdapter(this)
+                val livroAdapter = LivroAdapter(this)
                 livroAdapter.setData(listLivro)
                 view.rv_result.adapter = livroAdapter
             }
@@ -142,30 +142,30 @@ class HomeFragment : Fragment(), LivroAdapter.OnLivroClickListener,
     }
 
 
-    fun callResultFavs(view: View) {
+    private fun callResultFavs(view: View) {
         val listResult = viewModelFav.getListFavUserId(mAuth!!.uid)
         listResult.observeForever {
             listFavs = it
             view.rv_result.layoutManager =
                 GridLayoutManager(activity, 2, LinearLayoutManager.VERTICAL, false)
             view.rv_result.setHasFixedSize(true)
-            var adapter = LivroFavAdapter(this)
+            val adapter = LivroFavAdapter(this)
             adapter.setData(listFavs)
             view.rv_result.adapter = adapter
         }
-        viewModelPerfil.perfilList.observe(viewLifecycleOwner) {
+        viewModelPerfil.perfilList.observe(viewLifecycleOwner) { it ->
             it.forEach {
-                if (it.userID == mAuth!!.uid) {
-                    var PerfilAtual = it
-                    PerfilAtual.countFavoritos = listFavs.size
-                    viewModelPerfil.updatePerfil(PerfilAtual)
+                if (it.userID == mAuth.uid) {
+                    val perfilAtual = it
+                    perfilAtual.countFavoritos = listFavs.size
+                    viewModelPerfil.updatePerfil(perfilAtual)
                 }
             }
         }
     }
 
-    fun callResultsSearchFav(view: View) {
-        var searchText = view.textInputPesquisa.editText?.text.toString()
+    private fun callResultsSearchFav(view: View) {
+        val searchText = view.textInputPesquisa.editText?.text.toString()
         if (searchText != "") {
             val listResult = viewModelFav.getseacrhListFav(searchText)
             listResult.observe(viewLifecycleOwner) {
@@ -173,7 +173,7 @@ class HomeFragment : Fragment(), LivroAdapter.OnLivroClickListener,
                 view.rv_result.layoutManager =
                     GridLayoutManager(activity, 2, LinearLayoutManager.VERTICAL, false)
                 view.rv_result.setHasFixedSize(true)
-                var adapter = LivroFavAdapter(this)
+                val adapter = LivroFavAdapter(this)
                 adapter.setData(listFavs)
                 view.rv_result.adapter = adapter
             }
@@ -184,9 +184,9 @@ class HomeFragment : Fragment(), LivroAdapter.OnLivroClickListener,
 
 
     override fun livroClick(position: Int) {
-        val book = listLivro.get(position)
+        val book = listLivro[position]
         val intent = Intent(context, LivroSelecionadoActivity::class.java)
-        var adapter = LivroAdapter(this)
+        val adapter = LivroAdapter(this)
         intent.putExtra("bookApi", book)
         intent.putExtra("favoritos", false)
         adapter.notifyDataSetChanged()
@@ -194,9 +194,8 @@ class HomeFragment : Fragment(), LivroAdapter.OnLivroClickListener,
     }
 
     override fun livroFavClick(position: Int) {
-        var item = listFavs[position]
         val intent = Intent(activity, LivroSelecionadoActivity::class.java)
-        var adapter = LivroFavAdapter(this)
+        val adapter = LivroFavAdapter(this)
         intent.putExtra("position", position)
         intent.putExtra("favoritos", true)
         adapter.notifyDataSetChanged()

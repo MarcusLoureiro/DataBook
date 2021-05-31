@@ -19,12 +19,12 @@ import coil.ImageLoader
 import coil.load
 import coil.request.ImageRequest
 import coil.request.SuccessResult
-import com.example.databook.dataBase.Favoritos.FavoritosViewModel
+import com.example.databook.database.favoritos.FavoritosViewModel
 import com.example.databook.R
 import com.example.databook.R.drawable
-import com.example.databook.dataBase.Favoritos.FavoritosEntity
-import com.example.databook.dataBase.Perfil.PerfisViewModel
-import com.example.isbm.Entities.Item
+import com.example.databook.database.favoritos.FavoritosEntity
+import com.example.databook.database.perfil.PerfisViewModel
+import com.example.databook.entities.Item
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_livro_selecionado.*
 import kotlinx.android.synthetic.main.fab_menu.*
@@ -35,7 +35,7 @@ import kotlinx.coroutines.launch
 class LivroSelecionadoActivity : AppCompatActivity() {
     private lateinit var viewModelFav: FavoritosViewModel
     private lateinit var viewModelPerfil: PerfisViewModel
-    val mAuth = FirebaseAuth.getInstance().currentUser
+    private val mAuth = FirebaseAuth.getInstance().currentUser
 
     private val rotateOpen: Animation by lazy {
         AnimationUtils.loadAnimation(
@@ -101,9 +101,8 @@ class LivroSelecionadoActivity : AppCompatActivity() {
                 changeIconFav(true)
                 val position = intent.getSerializableExtra("position") as? Int
                 viewModelFav.favList.observe(this) {
-                    var favCopy = FavoritosEntity()
-                    if (it.size != 0) {
-                        favCopy = it[position!!]
+                    val favCopy = FavoritosEntity()
+                    if (it.isNotEmpty()) {
                         setBookFavInView(it[position!!])
                         deleteFav(it[position])
                         finish()
@@ -114,11 +113,11 @@ class LivroSelecionadoActivity : AppCompatActivity() {
             } else {
                 changeIconFav(false)
                 lifecycleScope.launch {
-                    var bookApi = getBookApiData()
+                    val bookApi = getBookApiData()
                     addFav(
                         FavoritosEntity(
                             bookApi.id,
-                            FirebaseAuth.getInstance().currentUser!!.uid.toString(),
+                            FirebaseAuth.getInstance().currentUser!!.uid,
                             bookApi.volumeInfo.title,
                             getBitmap(bookApi.volumeInfo.imageLinks.thumbnail),
                             bookApi.volumeInfo.authors[0],
@@ -158,7 +157,7 @@ class LivroSelecionadoActivity : AppCompatActivity() {
 
     private fun setBookApiInView(bookApi: Item) {
         val titulo = bookApi.volumeInfo.title
-        val autor = bookApi.volumeInfo.authors.get(0)
+        val autor = bookApi.volumeInfo.authors[0]
         val ano = bookApi.volumeInfo.publishedDate
         val sinopse = bookApi.volumeInfo.description
         val imagem = bookApi.volumeInfo.imageLinks.thumbnail
@@ -190,7 +189,7 @@ class LivroSelecionadoActivity : AppCompatActivity() {
 
     private fun updateFav() {
         val position = intent.getSerializableExtra("position") as? Int
-        val intent = Intent(this, ResgitrarLivroActivity::class.java)
+        val intent = Intent(this, RegistrarLivroActivity::class.java)
         intent.putExtra("position", position)
         intent.putExtra("edit", true)
         startActivity(intent)
@@ -206,9 +205,8 @@ class LivroSelecionadoActivity : AppCompatActivity() {
     private fun getFavInListData() {
         val position = intent.getSerializableExtra("position") as? Int
         viewModelFav.favList.observe(this) {
-            var favCopy = FavoritosEntity()
-            if (it.size != 0) {
-                favCopy = it[position!!]
+            val favCopy = FavoritosEntity()
+            if (it.isNotEmpty()) {
                 setBookFavInView(it[position!!])
             } else {
                 setBookFavInView(favCopy)
@@ -232,12 +230,12 @@ class LivroSelecionadoActivity : AppCompatActivity() {
         )
         startActivity(Intent.createChooser(intent, "${textViewTitulo.text}"))
 
-        viewModelPerfil.perfilList.observe(this) {
+        viewModelPerfil.perfilList.observe(this) { it ->
             it.forEach {
                 if (it.userID == mAuth!!.uid) {
-                    var PerfilAtual = it
-                    PerfilAtual.countCompartilhamentos = PerfilAtual.countCompartilhamentos + 1
-                    viewModelPerfil.updatePerfil(PerfilAtual)
+                    val perfilAtual = it
+                    perfilAtual.countCompartilhamentos = perfilAtual.countCompartilhamentos + 1
+                    viewModelPerfil.updatePerfil(perfilAtual)
                 }
             }
         }
@@ -285,7 +283,7 @@ class LivroSelecionadoActivity : AppCompatActivity() {
         return (result as BitmapDrawable).bitmap
     }
 
-    fun changeIconFav(fav: Boolean) {
+    private fun changeIconFav(fav: Boolean) {
         if (fav) {
             fabFavoritar.setImageResource(drawable.ic_favorito_amarelo)
         } else {
