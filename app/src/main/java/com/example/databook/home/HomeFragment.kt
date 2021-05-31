@@ -114,6 +114,7 @@ class HomeFragment : Fragment(), LivroAdapter.OnLivroClickListener,
 
     fun IniciarTelaRegistro() {
         val intent = Intent(activity, ResgitrarLivroActivity::class.java)
+        intent.putExtra("edit", false)
         startActivity(intent)
     }
 

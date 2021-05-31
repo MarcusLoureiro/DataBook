@@ -44,6 +44,14 @@ class FavoritosViewModel(app: Application): AndroidViewModel(app) {
         }
     }
 
+    fun seacrhListFav(search:String): LiveData<List<FavoritosEntity>>{
+        return repository.getListFavSearch(search)
+    }
+
+    fun getListFavUserId(userID: String):LiveData<List<FavoritosEntity>> {
+        return repository.getListFavUser(userID)
+    }
+
 }
 
 

@@ -94,7 +94,7 @@ class LivroSelecionadoActivity : AppCompatActivity() {
             onFabMenuClicked()
         }
         fabEditar.setOnClickListener {
-            Toast.makeText(this, "Clicou em Editar", Toast.LENGTH_SHORT).show()
+            updateFav()
         }
         fabFavoritar.setOnClickListener {
             if (favoritos == true) {
@@ -188,6 +188,16 @@ class LivroSelecionadoActivity : AppCompatActivity() {
         ).show()
     }
 
+    private fun updateFav() {
+        val position = intent.getSerializableExtra("position") as? Int
+        val intent = Intent(this, ResgitrarLivroActivity::class.java)
+        intent.putExtra("position", position)
+        intent.putExtra("edit", true)
+        startActivity(intent)
+
+    }
+
+
     private fun getBookApiData(): Item {
         val item = intent.getSerializableExtra("bookApi") as? Item
         return item as Item
@@ -226,7 +236,7 @@ class LivroSelecionadoActivity : AppCompatActivity() {
             it.forEach {
                 if (it.userID == mAuth!!.uid) {
                     var PerfilAtual = it
-                    PerfilAtual.countCompartilhamentos = PerfilAtual.countCompartilhamentos+1
+                    PerfilAtual.countCompartilhamentos = PerfilAtual.countCompartilhamentos + 1
                     viewModelPerfil.updatePerfil(PerfilAtual)
                 }
             }
@@ -275,10 +285,10 @@ class LivroSelecionadoActivity : AppCompatActivity() {
         return (result as BitmapDrawable).bitmap
     }
 
-    fun changeIconFav(fav: Boolean){
-        if(fav){
+    fun changeIconFav(fav: Boolean) {
+        if (fav) {
             fabFavoritar.setImageResource(drawable.ic_favorito_amarelo)
-        }else{
+        } else {
             fabFavoritar.setImageResource(drawable.ic_favorito_select)
         }
     }

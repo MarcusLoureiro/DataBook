@@ -5,6 +5,7 @@ import com.example.databook.dataBase.Favoritos.FavoritosEntity
 import com.example.databook.dataBase.Favoritos.FavoritosDAO
 import com.example.databook.dataBase.Perfil.PerfilDAO
 import com.example.databook.dataBase.Perfil.PerfilEntity
+import java.util.concurrent.Flow
 
 
 class FavoritosRepository(private val favoritosDAO: FavoritosDAO){
@@ -25,6 +26,14 @@ class FavoritosRepository(private val favoritosDAO: FavoritosDAO){
 
     suspend fun updateFav(fav: FavoritosEntity){
         favoritosDAO.updateFavs(fav)
+    }
+
+    fun getListFavUser(userID: String): LiveData<List<FavoritosEntity>>{
+        return favoritosDAO.getListFavUserId(userID)
+    }
+
+    fun getListFavSearch(search: String): LiveData<List<FavoritosEntity>> {
+        return favoritosDAO.getListFavSearch(search)
     }
 }
 

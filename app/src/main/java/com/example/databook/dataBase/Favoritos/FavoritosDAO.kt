@@ -23,6 +23,12 @@ interface FavoritosDAO {
     @Query("SELECT * FROM favoritostable")
     fun getFavoritosList(): LiveData<List<FavoritosEntity>>
 
+    @Query("SELECT * FROM favoritostable WHERE userID =:userID")
+    fun getListFavUserId(userID: String): LiveData<List<FavoritosEntity>>
+
+    @Query("SELECT * FROM favoritostable WHERE title LIKE :search")
+    fun getListFavSearch(search: String): LiveData<List<FavoritosEntity>>
+
 
 }
 
