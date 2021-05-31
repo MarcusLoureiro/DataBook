@@ -44,7 +44,7 @@ class FavoritosViewModel(app: Application): AndroidViewModel(app) {
         }
     }
 
-    fun seacrhListFav(search:String): LiveData<List<FavoritosEntity>>{
+    fun getseacrhListFav(search:String): LiveData<List<FavoritosEntity>>{
         return repository.getListFavSearch(search)
     }
 

@@ -40,7 +40,7 @@ class HomeFragment : Fragment(), LivroAdapter.OnLivroClickListener,
 
     private lateinit var viewModelPerfil: PerfisViewModel
     private lateinit var listLivro: List<Item>
-    private lateinit var listFavs: List<FavoritosEntity>
+    var listFavs = listOf<FavoritosEntity>()
     private lateinit var viewModelFav: FavoritosViewModel
 
     val mAuth = FirebaseAuth.getInstance().currentUser
@@ -92,7 +92,8 @@ class HomeFragment : Fragment(), LivroAdapter.OnLivroClickListener,
                     mAuth!!.email.toString(),
                     0,
                     0,
-                    "")
+                    ""
+                )
             )
         }
         view.fb_addBook.setOnClickListener {
@@ -107,6 +108,12 @@ class HomeFragment : Fragment(), LivroAdapter.OnLivroClickListener,
             }
         } else {
             callResultFavs(view)
+            view.textInputPesquisa.setEndIconOnClickListener {
+                callResultsSearchFav(view)
+            }
+            view.textInputPesquisa.editText?.doOnTextChanged { inputText, _, _, _ ->
+                callResultsSearchFav(view)
+            }
         }
         return view
 
@@ -134,8 +141,10 @@ class HomeFragment : Fragment(), LivroAdapter.OnLivroClickListener,
         }
     }
 
+
     fun callResultFavs(view: View) {
-        viewModelFav.favList.observe(viewLifecycleOwner) {
+        val listResult = viewModelFav.getListFavUserId(mAuth!!.uid)
+        listResult.observeForever {
             listFavs = it
             view.rv_result.layoutManager =
                 GridLayoutManager(activity, 2, LinearLayoutManager.VERTICAL, false)
@@ -143,15 +152,33 @@ class HomeFragment : Fragment(), LivroAdapter.OnLivroClickListener,
             var adapter = LivroFavAdapter(this)
             adapter.setData(listFavs)
             view.rv_result.adapter = adapter
-            viewModelPerfil.perfilList.observe(viewLifecycleOwner) {
-                it.forEach {
-                    if (it.userID == mAuth!!.uid) {
-                        var PerfilAtual = it
-                        PerfilAtual.countFavoritos = listFavs.size
-                        viewModelPerfil.updatePerfil(PerfilAtual)
-                    }
+        }
+        viewModelPerfil.perfilList.observe(viewLifecycleOwner) {
+            it.forEach {
+                if (it.userID == mAuth!!.uid) {
+                    var PerfilAtual = it
+                    PerfilAtual.countFavoritos = listFavs.size
+                    viewModelPerfil.updatePerfil(PerfilAtual)
                 }
             }
+        }
+    }
+
+    fun callResultsSearchFav(view: View) {
+        var searchText = view.textInputPesquisa.editText?.text.toString()
+        if (searchText != "") {
+            val listResult = viewModelFav.getseacrhListFav(searchText)
+            listResult.observe(viewLifecycleOwner) {
+                listFavs = it
+                view.rv_result.layoutManager =
+                    GridLayoutManager(activity, 2, LinearLayoutManager.VERTICAL, false)
+                view.rv_result.setHasFixedSize(true)
+                var adapter = LivroFavAdapter(this)
+                adapter.setData(listFavs)
+                view.rv_result.adapter = adapter
+            }
+        } else if (searchText == "") {
+            callResultFavs(view)
         }
     }
 
