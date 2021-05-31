@@ -1,24 +1,16 @@
 package com.example.databook.init
 
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.drawable.BitmapDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
-import coil.ImageLoader
-import coil.request.ImageRequest
-import coil.request.SuccessResult
 import com.example.databook.R
-import com.example.databook.dataBase.Perfil.PerfilEntity
-import com.example.databook.dataBase.Perfil.PerfisViewModel
+import com.example.databook.database.perfil.PerfisViewModel
 import com.example.databook.entities.Constants
 import com.example.databook.home.MainActivity
 import com.example.databook.login.LoginActivity
-import com.example.databook.login.cadastroActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -29,13 +21,15 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import kotlinx.android.synthetic.main.activity_init_screen.*
-import kotlinx.coroutines.launch
 
+@Suppress("DEPRECATION", "RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
 class InitScreenActivity : AppCompatActivity() {
     private lateinit var viewModelPerfil: PerfisViewModel
+
     companion object {
         const val RC_SIGN_IN = 100
     }
+
     private lateinit var mAuth: FirebaseAuth
     private lateinit var googleSignInClient: GoogleSignInClient
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,7 +53,7 @@ class InitScreenActivity : AppCompatActivity() {
             }
         }
         btn_entrar.setOnClickListener {
-            InicarLogin()
+            inicarLogin()
         }
     }
 
@@ -69,9 +63,9 @@ class InitScreenActivity : AppCompatActivity() {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             handleSignInResult(task)
             try {
-                val account = task.getResult(ApiException::class.java)!!
+                val account = task.getResult(ApiException::class.java)
                 println("firebaseAuthWithGoogle:" + account.id)
-                println("alo");
+                println("alo")
                 firebaseAuthWithGoogle(account.idToken!!)
 
             } catch (e: ApiException) {
@@ -81,14 +75,14 @@ class InitScreenActivity : AppCompatActivity() {
     }
 
 
-    fun InicarHome() {
+    private fun inicarHome() {
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
         finish()
     }
 
 
-    fun firebaseAuthWithGoogle(idToken: String) {
+    private fun firebaseAuthWithGoogle(idToken: String) {
         val credential = GoogleAuthProvider.getCredential(idToken, null)
         mAuth.signInWithCredential(credential)
             .addOnCompleteListener(this) { task ->
@@ -107,59 +101,46 @@ class InitScreenActivity : AppCompatActivity() {
             }
     }
 
-    fun updateUI(account: FirebaseUser?) {
+    private fun updateUI(account: FirebaseUser?) {
         if (account != null) {
-            lifecycleScope.launch {
-                viewModelPerfil.addPerfil(
-                    PerfilEntity(
-                        account.uid,
-                        getBitmap(account.photoUrl.toString()),
-                        account.displayName.toString(),
-                        account.email.toString(),
-                        0,
-                        0,
-                        "")
-                )
-            }
-
             Toast.makeText(this, "Olá, ${account.displayName}", Toast.LENGTH_LONG).show()
-            InicarHome()
+            inicarHome()
         } else {
             Toast.makeText(this, "Faça Login.", Toast.LENGTH_LONG).show()
         }
     }
 
 
-    fun signinFirebaseGoogle() {
+    private fun signinFirebaseGoogle() {
         val signInIntent = googleSignInClient.signInIntent
         startActivityForResult(signInIntent, RC_SIGN_IN)
     }
 
 
-    fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
+    private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
         try {
             val account = completedTask.getResult(
                 ApiException::class.java
             )
             // Signed in successfully
-            val googleId = account?.id ?: ""
+            val googleId = account.id ?: ""
             Log.i("Google ID", googleId)
 
-            val googleFirstName = account?.givenName ?: ""
+            val googleFirstName = account.givenName ?: ""
             Log.i("Google First Name", googleFirstName)
             Constants.nomeGoogle = googleFirstName
 
-            val googleLastName = account?.familyName ?: ""
+            val googleLastName = account.familyName ?: ""
             Log.i("Google Last Name", googleLastName)
 
-            val googleEmail = account?.email ?: ""
+            val googleEmail = account.email ?: ""
             Log.i("Google Email", googleEmail)
             Constants.emailGoogle = googleEmail
 
-            val googleProfilePicURL = account?.photoUrl.toString()
+            val googleProfilePicURL = account.photoUrl.toString()
             Log.i("Google Profile Pic URL", googleProfilePicURL)
 
-            val googleIdToken = account?.idToken ?: ""
+            val googleIdToken = account.idToken ?: ""
             Log.i("Google ID Token", googleIdToken)
 
         } catch (e: ApiException) {
@@ -170,21 +151,12 @@ class InitScreenActivity : AppCompatActivity() {
         }
     }
 
-    fun InicarLogin() {
+    private fun inicarLogin() {
         val intent = Intent(this, LoginActivity::class.java)
         startActivity(intent)
         finish()
     }
 
-    private suspend fun getBitmap(data: String): Bitmap {
-        val loanding = ImageLoader(this)
-        val request = ImageRequest.Builder(this)
-            .data(data)
-            .build()
-
-        val result = (loanding.execute(request) as SuccessResult).drawable
-        return (result as BitmapDrawable).bitmap
-    }
 }
 
 

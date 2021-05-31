@@ -1,4 +1,4 @@
-package com.example.databook.dataBase.Favoritos
+package com.example.databook.database.favoritos
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
@@ -6,7 +6,6 @@ import androidx.room.Dao
 
 @Dao
 interface FavoritosDAO {
-
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveInFavsList(fav: FavoritosEntity)
@@ -23,6 +22,11 @@ interface FavoritosDAO {
     @Query("SELECT * FROM favoritostable")
     fun getFavoritosList(): LiveData<List<FavoritosEntity>>
 
+    @Query("SELECT * FROM favoritostable WHERE userID =:userID")
+    fun getListFavUserId(userID: String): LiveData<List<FavoritosEntity>>
+
+    @Query("SELECT * FROM favoritostable WHERE title LIKE :search")
+    fun getListFavSearch(search: String): LiveData<List<FavoritosEntity>>
 
 }
 
@@ -32,8 +36,3 @@ interface FavoritosDAO {
 
 
 
-//    @Query("SELECT * FROM favoritostable WHERE idade < 18")
-//    fun getUsersMenorIdade(): LiveData<List<FavoritosEntity>>
-//
-//    @Query("SELECT * FROM favoritostable WHERE idade >= 18")
-//    fun getUsersMaiorIdade(): LiveData<List<FavoritosEntity>>

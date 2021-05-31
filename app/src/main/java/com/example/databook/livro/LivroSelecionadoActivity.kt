@@ -19,11 +19,12 @@ import coil.ImageLoader
 import coil.load
 import coil.request.ImageRequest
 import coil.request.SuccessResult
-import com.example.databook.dataBase.Favoritos.FavoritosViewModel
+import com.example.databook.database.favoritos.FavoritosViewModel
 import com.example.databook.R
 import com.example.databook.R.drawable
-import com.example.databook.dataBase.Favoritos.FavoritosEntity
-import com.example.isbm.Entities.Item
+import com.example.databook.database.favoritos.FavoritosEntity
+import com.example.databook.database.perfil.PerfisViewModel
+import com.example.databook.entities.Item
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_livro_selecionado.*
 import kotlinx.android.synthetic.main.fab_menu.*
@@ -33,6 +34,8 @@ import kotlinx.coroutines.launch
 @Suppress("DEPRECATION")
 class LivroSelecionadoActivity : AppCompatActivity() {
     private lateinit var viewModelFav: FavoritosViewModel
+    private lateinit var viewModelPerfil: PerfisViewModel
+    private val mAuth = FirebaseAuth.getInstance().currentUser
 
     private val rotateOpen: Animation by lazy {
         AnimationUtils.loadAnimation(
@@ -61,9 +64,12 @@ class LivroSelecionadoActivity : AppCompatActivity() {
 
     private var clicked = false
     override fun onCreate(savedInstanceState: Bundle?) {
-        val favoritos = intent.getSerializableExtra("favoritos") as? Boolean
+        viewModelPerfil = ViewModelProvider(this).get(PerfisViewModel::class.java)
         viewModelFav = ViewModelProvider(this).get(FavoritosViewModel::class.java)
+
+        val favoritos = intent.getSerializableExtra("favoritos") as? Boolean
         var isClick = false
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_livro_selecionado)
         setActivity()
@@ -88,16 +94,15 @@ class LivroSelecionadoActivity : AppCompatActivity() {
             onFabMenuClicked()
         }
         fabEditar.setOnClickListener {
-            Toast.makeText(this, "Clicou em Editar", Toast.LENGTH_SHORT).show()
+            updateFav()
         }
         fabFavoritar.setOnClickListener {
             if (favoritos == true) {
                 changeIconFav(true)
                 val position = intent.getSerializableExtra("position") as? Int
                 viewModelFav.favList.observe(this) {
-                    var favCopy = FavoritosEntity()
-                    if (it.size != 0) {
-                        favCopy = it[position!!]
+                    val favCopy = FavoritosEntity()
+                    if (it.isNotEmpty()) {
                         setBookFavInView(it[position!!])
                         deleteFav(it[position])
                         finish()
@@ -108,11 +113,11 @@ class LivroSelecionadoActivity : AppCompatActivity() {
             } else {
                 changeIconFav(false)
                 lifecycleScope.launch {
-                    var bookApi = getBookApiData()
-                    viewModelFav.addFav(
+                    val bookApi = getBookApiData()
+                    addFav(
                         FavoritosEntity(
                             bookApi.id,
-                            FirebaseAuth.getInstance().currentUser!!.uid.toString(),
+                            FirebaseAuth.getInstance().currentUser!!.uid,
                             bookApi.volumeInfo.title,
                             getBitmap(bookApi.volumeInfo.imageLinks.thumbnail),
                             bookApi.volumeInfo.authors[0],
@@ -121,9 +126,8 @@ class LivroSelecionadoActivity : AppCompatActivity() {
                             true
                         )
                     )
+                    Log.i("BOOKAPI", bookApi.toString())
                 }
-
-
             }
         }
         fabCompatilhar.setOnClickListener {
@@ -152,9 +156,8 @@ class LivroSelecionadoActivity : AppCompatActivity() {
     }
 
     private fun setBookApiInView(bookApi: Item) {
-        //val id = bookApi.id
         val titulo = bookApi.volumeInfo.title
-        val autor = bookApi.volumeInfo.authors.get(0)
+        val autor = bookApi.volumeInfo.authors[0]
         val ano = bookApi.volumeInfo.publishedDate
         val sinopse = bookApi.volumeInfo.description
         val imagem = bookApi.volumeInfo.imageLinks.thumbnail
@@ -184,6 +187,16 @@ class LivroSelecionadoActivity : AppCompatActivity() {
         ).show()
     }
 
+    private fun updateFav() {
+        val position = intent.getSerializableExtra("position") as? Int
+        val intent = Intent(this, RegistrarLivroActivity::class.java)
+        intent.putExtra("position", position)
+        intent.putExtra("edit", true)
+        startActivity(intent)
+
+    }
+
+
     private fun getBookApiData(): Item {
         val item = intent.getSerializableExtra("bookApi") as? Item
         return item as Item
@@ -192,9 +205,8 @@ class LivroSelecionadoActivity : AppCompatActivity() {
     private fun getFavInListData() {
         val position = intent.getSerializableExtra("position") as? Int
         viewModelFav.favList.observe(this) {
-            var favCopy = FavoritosEntity()
-            if (it.size != 0) {
-                favCopy = it[position!!]
+            val favCopy = FavoritosEntity()
+            if (it.isNotEmpty()) {
                 setBookFavInView(it[position!!])
             } else {
                 setBookFavInView(favCopy)
@@ -217,6 +229,16 @@ class LivroSelecionadoActivity : AppCompatActivity() {
                     "Sinopse do livro:${textViewSinopse.text}\n"
         )
         startActivity(Intent.createChooser(intent, "${textViewTitulo.text}"))
+
+        viewModelPerfil.perfilList.observe(this) { it ->
+            it.forEach {
+                if (it.userID == mAuth!!.uid) {
+                    val perfilAtual = it
+                    perfilAtual.countCompartilhamentos = perfilAtual.countCompartilhamentos + 1
+                    viewModelPerfil.updatePerfil(perfilAtual)
+                }
+            }
+        }
     }
 
     private fun onFabMenuClicked() {
@@ -261,10 +283,10 @@ class LivroSelecionadoActivity : AppCompatActivity() {
         return (result as BitmapDrawable).bitmap
     }
 
-    fun changeIconFav(fav: Boolean){
-        if(fav){
+    private fun changeIconFav(fav: Boolean) {
+        if (fav) {
             fabFavoritar.setImageResource(drawable.ic_favorito_amarelo)
-        }else{
+        } else {
             fabFavoritar.setImageResource(drawable.ic_favorito_select)
         }
     }

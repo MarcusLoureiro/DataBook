@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:layout_gravity="center"
     android:layout_height="match_parent"
-    tools:context=".login.cadastroActivity">
+    tools:context=".login.CadastroActivity">
 
     <ImageView
         android:id="@+id/arrow_back"

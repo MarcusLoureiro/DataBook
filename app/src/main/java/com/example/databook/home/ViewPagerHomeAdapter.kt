@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.example.databook.home
 
 import androidx.fragment.app.Fragment
@@ -17,7 +19,7 @@ class ViewPagerHomeAdapter(supportFragmentManager: FragmentManager): FragmentPag
         return fragmentsList[position]
     }
 
-    override fun getPageTitle(position: Int): CharSequence? {
+    override fun getPageTitle(position: Int): CharSequence {
         return fragmentsNamesList[position]
     }
 

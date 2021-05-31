@@ -1,9 +1,9 @@
-package com.example.isbm.Services
+package com.example.databook.services
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.isbm.Entities.Books
+import com.example.databook.entities.Books
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

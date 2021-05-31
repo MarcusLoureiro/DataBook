@@ -11,9 +11,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.DataBook">
-        <activity android:name=".livro.ResgitrarLivroActivity"></activity>
+        <activity android:name=".livro.RegistrarLivroActivity"></activity>
         <activity android:name=".livro.LivroSelecionadoActivity" />
-        <activity android:name=".login.cadastroActivity" />
+        <activity android:name=".login.CadastroActivity" />
         <activity android:name=".login.LoginActivity" />
         <activity android:name=".init.InitScreenActivity" />
         <activity android:name=".home.MainActivity" />
