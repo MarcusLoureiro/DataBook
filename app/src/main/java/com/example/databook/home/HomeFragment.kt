@@ -4,38 +4,38 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import coil.ImageLoader
 import coil.request.ImageRequest
 import coil.request.SuccessResult
 import com.example.databook.database.favoritos.FavoritosViewModel
-import com.example.databook.livro.LivroSelecionadoActivity
 import com.example.databook.R
-import com.example.databook.livro.LivroAdapter
-import com.example.databook.livro.LivroFavAdapter
-import com.example.databook.livro.RegistrarLivroActivity
 import com.example.databook.database.favoritos.FavoritosEntity
 import com.example.databook.database.perfil.PerfilEntity
 import com.example.databook.database.perfil.PerfisViewModel
+import com.example.databook.entities.Books
 import com.example.databook.entities.Item
-import com.example.databook.services.MainViewModel
-import com.example.databook.services.service
+import com.example.databook.livro.*
+import com.example.databook.services.*
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.fragment_home_favoritos.view.*
 import kotlinx.coroutines.launch
 
 @Suppress("UNCHECKED_CAST")
-class HomeFragment : Fragment(), LivroAdapter.OnLivroClickListener,
+class HomeFragment : Fragment(), MainAdapter.OnLivroClickListener,
     LivroFavAdapter.OnLivroFavClickListener {
     private val mAuth = FirebaseAuth.getInstance().currentUser
 
@@ -46,13 +46,10 @@ class HomeFragment : Fragment(), LivroAdapter.OnLivroClickListener,
     private var listFavs = listOf<FavoritosEntity>()
     private var favBoolean: Boolean? = null
 
-    private val viewModel by viewModels<MainViewModel> {
-        object : ViewModelProvider.Factory {
-            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return MainViewModel(service) as T
-            }
-        }
-    }
+
+    private lateinit var viewModel: MainViewModel
+    private lateinit var adapter: MainAdapter
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -80,9 +77,11 @@ class HomeFragment : Fragment(), LivroAdapter.OnLivroClickListener,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         viewModelPerfil = ViewModelProvider(this).get(PerfisViewModel::class.java)
         viewModelFav = ViewModelProvider(this).get(FavoritosViewModel::class.java)
         val view = inflater.inflate(R.layout.fragment_home_favoritos, container, false)
+        view.progressBar.visibility = View.GONE
         lifecycleScope.launch {
             viewModelPerfil.addPerfil(
                 PerfilEntity(
@@ -96,17 +95,25 @@ class HomeFragment : Fragment(), LivroAdapter.OnLivroClickListener,
                 )
             )
         }
+
+        setupViewModel()
+        setupUI(view)
+
+
         view.fb_addBook.setOnClickListener {
             iniciarTelaRegistro()
         }
         if (favBoolean == false) {
             view.textInputPesquisa.setEndIconOnClickListener {
-                callResultsSearch(view)
+                Log.i("termo pesquisa", view.textInputPesquisa.editText?.text.toString())
+                setupObservers(view.textInputPesquisa.editText?.text.toString(),view)
             }
             view.textInputPesquisa.editText?.doOnTextChanged { _, _, _, _ ->
-                callResultsSearch(view)
+                Log.i("termo pesquisa", view.textInputPesquisa.editText?.text.toString())
+                setupObservers(view.textInputPesquisa.editText?.text.toString(),view)
             }
         } else {
+            view.progressBar.visibility = View.GONE
             callResultFavs(view)
             view.textInputPesquisa.setEndIconOnClickListener {
                 callResultsSearchFav(view)
@@ -125,21 +132,21 @@ class HomeFragment : Fragment(), LivroAdapter.OnLivroClickListener,
         startActivity(intent)
     }
 
-    private fun callResultsSearch(view: View) {
-        val searchText = view.textInputPesquisa.editText?.text.toString()
-        if (searchText != "") {
-            viewModel.getSearch(searchText)
-            viewModel.returnSearchList.observe(viewLifecycleOwner) {
-                listLivro = it.items
-                view.rv_result.layoutManager =
-                    GridLayoutManager(activity, 2, LinearLayoutManager.VERTICAL, false)
-                view.rv_result.setHasFixedSize(true)
-                val livroAdapter = LivroAdapter(this)
-                livroAdapter.setData(listLivro)
-                view.rv_result.adapter = livroAdapter
-            }
-        }
-    }
+//    private fun callResultsSearch(view: View) {
+//        val searchText = view.textInputPesquisa.editText?.text.toString()
+//        if (searchText != "") {
+//            viewModel.getSearch(searchText)
+//            viewModel.returnSearchList.observe(viewLifecycleOwner) {
+//                listLivro = it.items
+//                view.rv_result.layoutManager =
+//                    GridLayoutManager(activity, 2, LinearLayoutManager.VERTICAL, false)
+//                view.rv_result.setHasFixedSize(true)
+//                val livroAdapter = LivroAdapter(this)
+//                livroAdapter.setData(listLivro)
+//                view.rv_result.adapter = livroAdapter
+//            }
+//        }
+//    }
 
 
     private fun callResultFavs(view: View) {
@@ -186,7 +193,7 @@ class HomeFragment : Fragment(), LivroAdapter.OnLivroClickListener,
     override fun livroClick(position: Int) {
         val book = listLivro[position]
         val intent = Intent(context, LivroSelecionadoActivity::class.java)
-        val adapter = LivroAdapter(this)
+        val adapter = MainAdapter(this)
         intent.putExtra("bookApi", book)
         intent.putExtra("favoritos", false)
         adapter.notifyDataSetChanged()
@@ -213,7 +220,53 @@ class HomeFragment : Fragment(), LivroAdapter.OnLivroClickListener,
         return (result as BitmapDrawable).bitmap
     }
 
+    private fun setupViewModel() {
+        viewModel = ViewModelProviders.of(
+            this,
+            ViewModelFactory(ApiHelper(RetrofitBuilder.service))
+        ).get(MainViewModel::class.java)
+    }
 
+    private fun setupUI(view: View) {
+        adapter = MainAdapter(this)
+        view.rv_result.layoutManager = GridLayoutManager(activity, 2, LinearLayoutManager.VERTICAL, false)
+        view.rv_result.setHasFixedSize(true)
+        view.rv_result.adapter = adapter
+    }
+
+    private fun setupObservers(string: String, view: View) {
+        if(string != "") {
+            viewModel.getSearch(string).observe(viewLifecycleOwner) {
+                it?.let { resource ->
+                    when (resource.status) {
+                        Status.SUCCESS -> {
+                            view.rv_result.visibility = View.VISIBLE
+                            view.progressBar.visibility = View.GONE
+                            resource.data?.let { Books -> retrieveList(listOf(Books))
+                                listLivro = Books.items
+                            }
+                        }
+                        Status.ERROR -> {
+                            view.rv_result.visibility = View.VISIBLE
+                            view.progressBar.visibility = View.GONE
+                            Toast.makeText(requireContext(), it.message, Toast.LENGTH_LONG).show()
+                        }
+                        Status.LOADING -> {
+                            view.progressBar.visibility = View.VISIBLE
+                            view.rv_result.visibility = View.GONE
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun retrieveList(Books: List<Books>) {
+        adapter.apply {
+            addBooks(Books)
+            notifyDataSetChanged()
+        }
+    }
 }
 
 

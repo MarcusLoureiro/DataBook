@@ -10,8 +10,6 @@ import retrofit2.http.Query
 
 interface Service {
 
-
-    //
     @GET("volumes?")
     suspend fun getSearch(
             @Query("q") searchText: String,
@@ -19,17 +17,5 @@ interface Service {
 }
 
 
-const val urlApiGoogleBooks = "https://www.googleapis.com/books/v1/"
-const val keyApi = "AIzaSyCGBvxxhR2IOAXrXkPsM8S8qu--_CCz3H0"
-
-var gson = GsonBuilder()
-    .setLenient()
-    .create()!!
 
 
-val retrofit: Retrofit = Retrofit.Builder()
-    .baseUrl(urlApiGoogleBooks)
-    .addConverterFactory(GsonConverterFactory.create(gson))
-    .build()
-
-val service: Service = retrofit.create(Service::class.java)

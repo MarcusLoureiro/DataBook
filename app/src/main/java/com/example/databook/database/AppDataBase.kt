@@ -10,7 +10,7 @@ import com.example.databook.database.perfil.PerfilEntity
 
 @Database(
     entities = [FavoritosEntity::class, PerfilEntity::class],
-    version = 3,
+    version = 1,
     exportSchema = false
 )
 @TypeConverters(Converters::class)
@@ -33,7 +33,7 @@ abstract class AppDataBase : RoomDatabase() {
                     context.applicationContext,
                     AppDataBase::class.java,
                     "DataBookDataBase"
-                ).build()
+                ).fallbackToDestructiveMigration ().build ()
                 INSTANCE = instance
                 return instance
             }
