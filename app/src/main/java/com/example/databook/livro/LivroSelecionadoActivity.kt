@@ -143,7 +143,7 @@ class LivroSelecionadoActivity : AppCompatActivity() {
         if (favoritos == true) {
             getFavInListData()
         } else if (favoritos == false) {
-            setBookApiInView(getBookApiData())
+            checkBookApi(getBookApiData())
         }
     }
 
@@ -155,19 +155,61 @@ class LivroSelecionadoActivity : AppCompatActivity() {
         imgFundoLivroSelecionado.load(fav.imagem)
     }
 
-    private fun setBookApiInView(bookApi: Item) {
-        val titulo = bookApi.volumeInfo.title
-        val autor = bookApi.volumeInfo.authors[0]
-        val ano = bookApi.volumeInfo.publishedDate
-        val sinopse = bookApi.volumeInfo.description
-        val imagem = bookApi.volumeInfo.imageLinks.thumbnail
-        textViewTitulo.text = titulo
-        textViewAno.text = ano
-        textViewSinopse.text = sinopse
-        textViewAutora.text = autor
-        imgFundoLivroSelecionado.load(imagem)
-    }
+//    private fun setBookApiInView(bookApi: Item) {
+//        val titulo = bookApi.volumeInfo.title
+//        val autor = bookApi.volumeInfo.authors[0]
+//        val ano = bookApi.volumeInfo.publishedDate
+//        val sinopse = bookApi.volumeInfo.description
+//        val imagem = bookApi.volumeInfo.imageLinks.thumbnail
+//        textViewTitulo.text = titulo
+//        textViewAno.text = ano
+//        textViewSinopse.text = sinopse
+//        textViewAutora.text = autor
+//        imgFundoLivroSelecionado.load(imagem)
+//    }
 
+    private fun checkBookApi(bookApi: Item) {
+        try {
+            val titulo = bookApi.volumeInfo.title
+            if(titulo != ""){
+                textViewTitulo.text = titulo
+            } else{
+                textViewTitulo.text = "Título indisponível"
+            }
+        }catch (e:Exception){
+            val titulo = "Título indisponível"
+            textViewTitulo.text = titulo
+        }
+        try {
+            val ano = bookApi.volumeInfo.publishedDate
+            textViewAno.text = ano
+        }catch (e:Exception){
+            val ano = "Ano indisponível"
+            textViewAno.text = ano
+        }
+        try {
+            val sinopse = bookApi.volumeInfo.description
+            textViewSinopse.text = sinopse
+        }catch (e:Exception){
+            val sinopse = "Sinopse indisponível"
+            textViewSinopse.text = sinopse
+        }
+        try {
+            val autor = bookApi.volumeInfo.authors[0]
+            textViewAutora.text = autor
+        }catch (e:Exception){
+            val autor = "Autor(a) indisponível"
+            textViewAutora.text = autor
+        }
+        try {
+            val imagem = bookApi.volumeInfo.imageLinks.thumbnail
+            imgFundoLivroSelecionado.load(imagem)
+        }catch (e:Exception){
+            val imagem = R.drawable.sem_imagem
+            imgFundoLivroSelecionado.load(imagem)
+        }
+
+    }
 
     private fun addFav(fav: FavoritosEntity) {
         viewModelFav.addFav(fav)

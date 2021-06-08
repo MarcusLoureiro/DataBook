@@ -3,6 +3,7 @@ package com.example.databook.login
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.text.InputType
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
@@ -14,13 +15,23 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.android.synthetic.main.activity_cadastro.tv_cadastre_se
 import kotlinx.android.synthetic.main.activity_login.*
+import java.util.regex.Pattern
 
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var viewModelPerfil: PerfisViewModel
-
-
     private lateinit var mAuth: FirebaseAuth
+
+    val EMAIL_ADDRESS_PATTERN = Pattern.compile(
+        "[a-zA-Z0-9\\+\\.\\_\\%\\-\\+]{1,256}" +
+                "\\@" +
+                "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,64}" +
+                "(" +
+                "\\." +
+                "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,25}" +
+                ")+"
+    )
+    val PASSWORD_PATTERN = Pattern.compile("[a-zA-Z0-9+._%-]{1,256}")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         viewModelPerfil = ViewModelProvider(this).get(PerfisViewModel::class.java)
@@ -32,7 +43,7 @@ class LoginActivity : AppCompatActivity() {
             println("id idfer" + user.providerData[1].providerId)
         }
         updateUI(user)
-        arrow_back.setOnClickListener {
+        arrow_back_login.setOnClickListener {
             finish()
         }
         btn_login.setOnClickListener {
@@ -58,11 +69,13 @@ class LoginActivity : AppCompatActivity() {
 
     private fun testarCampos(): Boolean {
         var teste = true
-        if (edEmail.text.isNullOrBlank()) {
+        if (edEmail.text.isNullOrBlank() && !isValidEmail(edEmail.text.toString())) {
+            edEmailInput.isErrorEnabled = true
             teste = false
             Toast.makeText(this, "Email inválido", Toast.LENGTH_SHORT).show()
         }
-        if (edSenha.text.isNullOrBlank()) {
+        if (edSenha.text.isNullOrBlank() && !isValidPassword(edSenha.text.toString())) {
+            edSenhaInput.isErrorEnabled = true
             teste = false
             Toast.makeText(this, "Senha inválida", Toast.LENGTH_SHORT).show()
         }
@@ -73,14 +86,17 @@ class LoginActivity : AppCompatActivity() {
     private fun updateUI(account: FirebaseUser?) {
         if (account != null) {
             val icon = BitmapFactory.decodeResource(resources, R.drawable.avatar)
-            viewModelPerfil.addPerfil(PerfilEntity(
-                account.uid,
-                icon,
-                "",
-                account.email.toString(),
-                0,
-                0,
-                ""))
+            viewModelPerfil.addPerfil(
+                PerfilEntity(
+                    account.uid,
+                    icon,
+                    "",
+                    account.email.toString(),
+                    0,
+                    0,
+                    ""
+                )
+            )
             Toast.makeText(this, "olá, ${account.email}", Toast.LENGTH_LONG).show()
             inicarHome()
         } else {
@@ -111,6 +127,16 @@ class LoginActivity : AppCompatActivity() {
                 }
         }
     }
+
+
+    fun isValidEmail(str: String): Boolean{
+        return EMAIL_ADDRESS_PATTERN.matcher(str).matches()
+    }
+
+    fun  isValidPassword(str:String): Boolean{
+        return PASSWORD_PATTERN.matcher(str).matches()
+    }
+
 }
 
 

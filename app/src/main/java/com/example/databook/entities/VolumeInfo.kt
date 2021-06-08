@@ -24,5 +24,5 @@ data class VolumeInfo(
     val publisher: String = "",
     val ratingsCount: Int = 0,
     val readingModes: ReadingModes = ReadingModes(),
-    val title: String = ""
+    var title: String = ""
 ): Serializable

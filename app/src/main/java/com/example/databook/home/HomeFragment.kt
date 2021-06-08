@@ -1,14 +1,18 @@
 package com.example.databook.home
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -41,7 +45,7 @@ class HomeFragment : Fragment(), MainAdapter.OnLivroClickListener,
 
     private lateinit var viewModelFav: FavoritosViewModel
     private lateinit var viewModelPerfil: PerfisViewModel
-    private lateinit var listLivro: List<Item>
+    private var listLivro: List<Item> = listOf()
 
     private var listFavs = listOf<FavoritosEntity>()
     private var favBoolean: Boolean? = null
@@ -189,9 +193,11 @@ class HomeFragment : Fragment(), MainAdapter.OnLivroClickListener,
         }
     }
 
-
     override fun livroClick(position: Int) {
         val book = listLivro[position]
+        listLivro.forEach {
+            Log.i("title test", book.volumeInfo.title.toString())
+        }
         val intent = Intent(context, LivroSelecionadoActivity::class.java)
         val adapter = MainAdapter(this)
         intent.putExtra("bookApi", book)
@@ -207,7 +213,6 @@ class HomeFragment : Fragment(), MainAdapter.OnLivroClickListener,
         intent.putExtra("favoritos", true)
         adapter.notifyDataSetChanged()
         startActivity(intent)
-
     }
 
     private suspend fun getBitmap(data: String): Bitmap {
@@ -242,9 +247,7 @@ class HomeFragment : Fragment(), MainAdapter.OnLivroClickListener,
                         Status.SUCCESS -> {
                             view.rv_result.visibility = View.VISIBLE
                             view.progressBar.visibility = View.GONE
-                            resource.data?.let { Books -> retrieveList(listOf(Books))
-                                listLivro = Books.items
-                            }
+                            resource.data?.let { Books -> retrieveList(listOf(Books)) }
                         }
                         Status.ERROR -> {
                             view.rv_result.visibility = View.VISIBLE
@@ -262,8 +265,9 @@ class HomeFragment : Fragment(), MainAdapter.OnLivroClickListener,
     }
 
     private fun retrieveList(Books: List<Books>) {
+        listLivro = Books[0].items
         adapter.apply {
-            addBooks(Books)
+            addBooks(Books[0].items)
             notifyDataSetChanged()
         }
     }

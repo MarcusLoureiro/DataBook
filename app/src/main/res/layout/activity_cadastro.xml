@@ -9,7 +9,8 @@
     tools:context=".login.CadastroActivity">
 
     <ImageView
-        android:id="@+id/arrow_back"
+        android:id="@+id/arrow_back_cadastro"
+        android:backgroundTint="@color/black"
         android:layout_width="51dp"
         android:layout_height="56dp"
         android:background="@drawable/arrow_back"
@@ -22,8 +23,8 @@
 
     <ImageView
         android:id="@+id/imageView3"
-        android:layout_width="196dp"
-        android:layout_height="191dp"
+        android:layout_width="138dp"
+        android:layout_height="116dp"
         android:layout_gravity="center"
         android:src="@drawable/logo_azul"
         app:layout_constraintBottom_toTopOf="@+id/textView"
@@ -58,8 +59,15 @@
 
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/edEmailInputCadastro"
         android:layout_width="387dp"
         android:layout_height="62dp"
+        android:backgroundTint="@color/white"
+        app:errorIconTint="@color/erroTint"
+        app:errorTextColor="@color/erroTint"
+        app:boxStrokeErrorColor="@color/erroTint"
+        app:errorContentDescription="Não é um e-mail válido."
+        app:errorIconDrawable="@drawable/ic_error_"
         android:layout_gravity="center"
         app:layout_constraintBottom_toTopOf="@+id/btn_login"
         app:layout_constraintEnd_toEndOf="parent"
@@ -71,13 +79,20 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/white"
+            android:inputType="textEmailAddress"
             android:hint="Email" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/edEmailConfirmInputCadastro"
         android:layout_width="387dp"
         android:layout_height="62dp"
         android:layout_gravity="center"
+        app:errorIconTint="@color/erroTint"
+        app:errorTextColor="@color/erroTint"
+        app:boxStrokeErrorColor="@color/erroTint"
+        app:errorContentDescription="E-mail não confere válido."
+        app:errorIconDrawable="@drawable/ic_error_"
         app:layout_constraintBottom_toTopOf="@+id/btn_login"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -88,14 +103,22 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/white"
+            android:inputType="textEmailAddress"
             android:hint="Confirme seu Email" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/edSenhaInputCadastro"
         android:layout_width="387dp"
         android:layout_height="62dp"
         android:layout_gravity="center"
         android:backgroundTint="@color/white"
+        app:errorIconTint="@color/erroTint"
+        app:errorTextColor="@color/erroTint"
+        app:boxStrokeErrorColor="@color/erroTint"
+        app:errorContentDescription="Senhas devem conter números, letras e símbolos."
+        app:errorIconDrawable="@drawable/ic_error_"
+        app:passwordToggleEnabled="true"
         app:layout_constraintBottom_toTopOf="@+id/btn_login"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -106,13 +129,23 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/white"
+            android:inputType="textPassword"
+
             android:hint="Senha" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/edSenhaConfirmInputCadastro"
         android:layout_width="387dp"
         android:layout_height="62dp"
         android:layout_gravity="center"
+        android:backgroundTint="@color/white"
+        app:errorIconTint="@color/erroTint"
+        app:errorTextColor="@color/erroTint"
+        app:boxStrokeErrorColor="@color/erroTint"
+        app:errorContentDescription="Senhas devem conter números, letras e símbolos"
+        app:errorIconDrawable="@drawable/ic_error_"
+        app:passwordToggleEnabled="true"
         app:layout_constraintBottom_toTopOf="@+id/btn_login"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -123,6 +156,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/white"
+            android:inputType="textPassword"
             android:hint="Confirme sua Senha" />
     </com.google.android.material.textfield.TextInputLayout>
 

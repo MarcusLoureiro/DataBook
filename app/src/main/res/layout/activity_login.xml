@@ -7,10 +7,11 @@
     tools:context=".login.LoginActivity">
 
     <ImageView
-        android:id="@+id/arrow_back"
+        android:id="@+id/arrow_back_login"
         android:layout_width="51dp"
         android:layout_height="56dp"
         android:background="@drawable/arrow_back"
+        android:backgroundTint="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/imageView3"
         app:layout_constraintHorizontal_bias="0.285"
@@ -18,18 +19,18 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.023" />
 
+
     <ImageView
         android:id="@+id/imageView3"
-        android:layout_width="196dp"
-        android:layout_height="191dp"
+        android:layout_width="154dp"
+        android:layout_height="134dp"
         android:src="@drawable/logo_azul"
         app:layout_constraintBottom_toTopOf="@+id/textView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.222" />
-
+        app:layout_constraintVertical_bias="1.0" />
 
     <TextView
         android:id="@+id/textView"
@@ -72,9 +73,16 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/edEmailInput"
         android:layout_width="387dp"
         android:layout_height="62dp"
         android:layout_gravity="center"
+        android:backgroundTint="@color/white"
+        app:errorIconTint="@color/erroTint"
+        app:errorTextColor="@color/erroTint"
+        app:boxStrokeErrorColor="@color/erroTint"
+        app:errorContentDescription="Não é um e-mail válido."
+        app:errorIconDrawable="@drawable/ic_error_"
         app:layout_constraintBottom_toTopOf="@+id/btn_login"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.541"
@@ -91,12 +99,18 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputLayout"
+        android:id="@+id/edSenhaInput"
         android:layout_width="387dp"
         android:layout_height="62dp"
         android:layout_gravity="center"
         android:layout_marginTop="150dp"
         android:backgroundTint="@color/white"
+        app:errorIconTint="@color/erroTint"
+        app:errorTextColor="@color/erroTint"
+        app:boxStrokeErrorColor="@color/erroTint"
+        app:errorContentDescription="Senhas devem conter números, letras e símbolos."
+        app:errorIconDrawable="@drawable/ic_error_"
+        app:passwordToggleEnabled="true"
         app:layout_constraintBottom_toTopOf="@+id/btn_login"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.541"
@@ -109,6 +123,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/white"
+            android:inputType="textPassword"
             android:hint="Senha" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -129,7 +144,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.266"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout"
+        app:layout_constraintTop_toBottomOf="@+id/edSenhaInput"
         app:layout_constraintVertical_bias="0.034" />
 
     <android.widget.Button
@@ -163,10 +178,9 @@
         android:textSize="24.5sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.571"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_login"
-        app:layout_constraintVertical_bias="0.431" />
+        app:layout_constraintVertical_bias="0.134" />
 
     <TextView
         android:id="@+id/tv_cadastre_se"

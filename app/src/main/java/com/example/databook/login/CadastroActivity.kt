@@ -8,14 +8,26 @@ import com.example.databook.R
 import com.example.databook.home.MainActivity
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_cadastro.*
-import kotlinx.android.synthetic.main.activity_cadastro.arrow_back
+import java.util.regex.Pattern
 
 class CadastroActivity : AppCompatActivity() {
+    val EMAIL_ADDRESS_PATTERN = Pattern.compile(
+        "[a-zA-Z0-9\\+\\.\\_\\%\\-\\+]{1,256}" +
+                "\\@" +
+                "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,64}" +
+                "(" +
+                "\\." +
+                "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,25}" +
+                ")+"
+    )
+    val PASSWORD_PATTERN = Pattern.compile("[a-zA-Z0-9+._%-]{1,256}")
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cadastro)
 
-        arrow_back.setOnClickListener {
+        arrow_back_cadastro.setOnClickListener {
             inicarHome()
             finish()
         }
@@ -31,11 +43,16 @@ class CadastroActivity : AppCompatActivity() {
                 if (password == edSenhaConfirmeCadastro.text.toString() && email == edEmailCadastro.text.toString()) {
                     registerFirebase(email, password)
                 } else {
+                    edEmailInputCadastro.isErrorEnabled = true
+                    edEmailConfirmInputCadastro.isErrorEnabled = true
+                    edSenhaInputCadastro.isErrorEnabled = true
+                    edSenhaConfirmInputCadastro.isErrorEnabled = true
                     showMsg("Algo deu errado. Tente novamente.")
                 }
             }
         }
     }
+
     private fun registerFirebase(email: String, password: String) {
         FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
@@ -66,23 +83,35 @@ class CadastroActivity : AppCompatActivity() {
 
     private fun testarCampos(): Boolean {
         var teste = true
-        if (edEmailCadastro.text.isNullOrBlank()) {
+        if (edEmailCadastro.text.isNullOrBlank() && !isValidEmail(edEmailCadastro.text.toString())) {
             teste = false
             showMsg("Email inválido")
         }
-        if (edSenhaCadastro.text.isNullOrBlank()) {
+        if (edSenhaCadastro.text.isNullOrBlank() && !isValidPassword(edSenhaCadastro.text.toString())) {
             teste = false
             showMsg("Senha inválida")
         }
-        if (edConfirmeEmailCadastro.text.isNullOrBlank()) {
+        if (edConfirmeEmailCadastro.text.isNullOrBlank() && edEmailCadastro.text.toString()
+                .equals(edConfirmeEmailCadastro.text.toString())
+        ) {
             teste = false
             showMsg("Email não confere")
         }
-        if (edSenhaConfirmeCadastro.text.isNullOrBlank()) {
+        if (edSenhaConfirmeCadastro.text.isNullOrBlank() && edSenhaCadastro.text.toString()
+                .equals(edSenhaConfirmeCadastro.text.toString())
+        ) {
             teste = false
             showMsg("Senha não confere")
         }
         return teste
+    }
+
+    fun isValidEmail(str: String): Boolean {
+        return EMAIL_ADDRESS_PATTERN.matcher(str).matches()
+    }
+
+    fun isValidPassword(str: String): Boolean {
+        return PASSWORD_PATTERN.matcher(str).matches()
     }
 
 }

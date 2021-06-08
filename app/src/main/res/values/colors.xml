@@ -6,4 +6,6 @@
     <color name="color3">#0276EB</color>
     <color name="color4">#EB9402</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="color5">#F7AC3E</color>
+    <color name="erroTint">#F32F20</color>
 </resources>
