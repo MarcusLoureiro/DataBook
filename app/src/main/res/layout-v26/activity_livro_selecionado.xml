@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -11,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
+        android:clickable="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -24,6 +26,7 @@
         android:animateLayoutChanges="true"
         android:background="@drawable/round_login_body"
         android:gravity="center"
+        android:focusable="true"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -48,7 +51,7 @@
                 android:text="Harry Potter and the\n Philosopher`s Stone"
                 android:padding="15dp"
                 android:textAlignment="center"
-                android:textColor="@color/color2"
+                android:textColor="@color/color4"
                 android:textSize="25sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/textView"
@@ -76,6 +79,8 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.199" />
 
+
+
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -92,26 +97,22 @@
                         android:animateLayoutChanges="true"
                         android:orientation="vertical">
 
-
                         <TextView
                             android:id="@+id/textViewSinopse"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:width="420dp"
-                            android:height="150dp"
-                            android:animateLayoutChanges="true"
-                            android:fontFamily="@font/montserrat"
+                            android:paddingStart="20dp"
+                            android:paddingEnd="15dp"
                             android:scrollbars="vertical"
-                            android:lineSpacingMultiplier="1"
-                            android:paddingStart="10dp"
-                            android:paddingEnd="10dp"
-                            android:maxLines="7"
                             android:text="Harry Potter é um garoto cujos pais, feiticeiros, foram assassinados por um poderosíssimo bruxo quando ele ainda era um bebê. Ele foi levado, então, para a casa dos tios que nada tinham a ver com o sobrenatural. Pelo contrário. Até os 10 anos, Harry foi uma espécie de gata borralheira: maltratado pelos tios..."
-                            android:justificationMode="inter_word"
+                            android:fontFamily="@font/montserrat"
                             android:textAlignment="textStart"
                             android:textColor="@color/color2"
                             android:textSize="15sp"
-                            android:textStyle="bold" />
+                            android:textStyle="bold"
+                            android:justificationMode="inter_word"
+                            android:maxLines="7"
+                           />
                     </LinearLayout>
             </RelativeLayout>
 
@@ -215,9 +216,6 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
-
-
         </androidx.constraintlayout.widget.ConstraintLayout>
-
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

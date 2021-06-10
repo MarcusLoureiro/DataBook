@@ -6,6 +6,7 @@ import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore.Images.Media.insertImage
+import android.text.method.ScrollingMovementMethod
 import android.util.Log
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
@@ -36,6 +37,8 @@ class LivroSelecionadoActivity : AppCompatActivity() {
     private lateinit var viewModelFav: FavoritosViewModel
     private lateinit var viewModelPerfil: PerfisViewModel
     private val mAuth = FirebaseAuth.getInstance().currentUser
+
+
 
     private val rotateOpen: Animation by lazy {
         AnimationUtils.loadAnimation(
@@ -134,6 +137,14 @@ class LivroSelecionadoActivity : AppCompatActivity() {
             setShareIntent()
         }
 
+        textViewSinopse.movementMethod = ScrollingMovementMethod()
+//        textViewSinopse.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+//            Toast.makeText(this, "rolou", Toast.LENGTH_SHORT).show()
+//        }
+//        textViewSinopse.setOnClickListener {
+//            Toast.makeText(this, "tocou", Toast.LENGTH_SHORT).show()
+//        }
+
     }
 
 
@@ -182,7 +193,7 @@ class LivroSelecionadoActivity : AppCompatActivity() {
         }
         try {
             val ano = bookApi.volumeInfo.publishedDate
-            textViewAno.text = ano
+            textViewAno.text = anoFormating(ano)
         }catch (e:Exception){
             val ano = "Ano indisponível"
             textViewAno.text = ano
@@ -331,6 +342,14 @@ class LivroSelecionadoActivity : AppCompatActivity() {
         } else {
             fabFavoritar.setImageResource(drawable.ic_favorito_select)
         }
+    }
+
+    private fun anoFormating(string: String): String{
+        var anoFormatado = ""
+        for (i in 0..3){
+            anoFormatado += string[i]
+        }
+        return anoFormatado
     }
 
 
