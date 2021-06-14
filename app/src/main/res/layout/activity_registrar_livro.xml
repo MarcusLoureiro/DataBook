@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/fundo_splash"
+    android:gravity="center"
+    android:orientation="vertical">
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center">
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/materialCardView"
+                android:layout_width="373dp"
+                android:layout_height="462dp"
+                android:layout_marginTop="225dp"
+                android:backgroundTint="@color/white"
+                app:cardCornerRadius="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.476"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.791">
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/edTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="100dp"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginEnd="15dp"
+                        android:background="@drawable/line_ed"
+                        android:fontFamily="@font/montserrat"
+                        android:textColor="@color/color2"
+                        android:textColorHint="@color/color4"
+                        android:hint="Título:" />
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/edAutor"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="150dp"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginEnd="15dp"
+                        android:background="@drawable/line_ed"
+                        android:textColorHint="@color/color4"
+                        android:textColor="@color/color2"
+                        android:fontFamily="@font/montserrat"
+                        android:hint="Autor(a):" />
+
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/edAno"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="200dp"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginEnd="15dp"
+                        android:background="@drawable/line_ed"
+                        android:fontFamily="@font/montserrat"
+                        android:textColor="@color/color2"
+                        android:textColorHint="@color/color4"
+                        android:hint="Clique para inserir data." />
+
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/edSinopse"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="1dp"
+                        android:layout_marginTop="250dp"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginEnd="15dp"
+                        android:background="@drawable/line_ed"
+                        android:fontFamily="@font/montserrat"
+                        android:minLines="2"
+                        android:maxLines="5"
+                        android:inputType="textPersonName|textMultiLine"
+                        android:textColor="@color/color2"
+                        android:textColorHint="@color/color4"
+                        android:hint="Sinopse:" />
+
+
+                <android.widget.Button
+                    android:id="@+id/btn_registrar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="150dp"
+                    android:background="@drawable/btentrar"
+                    android:backgroundTint="@color/color4"
+                    android:fontFamily="@font/montserrat"
+                    android:lineSpacingMultiplier="0.38"
+                    android:text="Registrar"
+                    android:textColor="@color/white"
+                    android:textSize="21sp"/>
+
+
+            </com.google.android.material.card.MaterialCardView>
+
+
+
+        </RelativeLayout>
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/iv_livro"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_marginTop="150dp"
+            android:layout_marginStart="120dp"
+            android:src="@drawable/livro_iv" />
+
+    </RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+

@@ -1,6 +1,6 @@
 package com.example.databook.livro
 
-import android.util.Log
+
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,16 +9,17 @@ import com.bumptech.glide.Glide
 import com.example.databook.R
 import com.example.databook.entities.Item
 import com.example.databook.entities.VolumeInfo
-import com.example.databook.services.MainViewModel
 import kotlinx.android.synthetic.main.item_capa.view.*
 
 class MainAdapter(val listener: OnLivroClickListener) : RecyclerView.Adapter<MainAdapter.DataViewHolder>() {
     private var books = emptyList<Item>()
-   inner class DataViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
+   inner class DataViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener/*, View.OnLongClickListener */{
 
         init {
             itemView.setOnClickListener(this)
+           // itemView.setOnLongClickListener(this)
         }
+
 
         fun bind(book: VolumeInfo) {
             itemView.apply {
@@ -37,6 +38,15 @@ class MainAdapter(val listener: OnLivroClickListener) : RecyclerView.Adapter<Mai
                 listener.livroClick(position)
             }
         }
+
+//       override fun onLongClick(v: View?): Boolean {
+//           val position = absoluteAdapterPosition
+//           if (RecyclerView.NO_POSITION != position) {
+//               listener.longLivroClick(position)
+//               return true
+//           }
+//           return false
+//       }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int): DataViewHolder =
@@ -59,46 +69,23 @@ class MainAdapter(val listener: OnLivroClickListener) : RecyclerView.Adapter<Mai
 
     interface OnLivroClickListener {
         fun livroClick(position: Int)
-
+        //fun longLivroClick(position: Int)
     }
 
     fun formattingItems(item: VolumeInfo): String {
         var newTitle = ""
         while (newTitle.length < 14) {
-            Log.i("teste adapter funcition", "entrou")
-            if (item.title.length > 15) {
+            return if (item.title.length > 15) {
                 for (i in 0..14) {
                     if (("${item.title[14]}" == " ") && (i == 14)) {
                         break
                     }
                     newTitle += "${item.title[i]}"
-                    Log.i("teste adapter funcition", "$newTitle")
                 }
-                return "${newTitle}..."
+                "${newTitle}..."
             } else {
                 item.title = item.title
-                return item.title
-            }
-        }
-        return ""
-    }
-
-
-    fun formattingTitle(list: List<Item>): String {
-        list.forEach {
-            return if (it.volumeInfo.title.length > 15) {
-                var newTitle = ""
-                for (i in 0..14) {
-                    if (("${it.volumeInfo.title[14]}" == " ") && (i == 14)) {
-                        break
-                    }
-                    newTitle += "${it.volumeInfo.title[i]}"
-                }
-                it.volumeInfo.title = "$newTitle..."
-                newTitle
-            } else {
-                it.volumeInfo.title = it.volumeInfo.title
-                it.volumeInfo.title
+                item.title
             }
         }
         return ""

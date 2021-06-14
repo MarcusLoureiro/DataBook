@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -34,7 +35,10 @@ import com.example.databook.entities.Books
 import com.example.databook.entities.Item
 import com.example.databook.livro.*
 import com.example.databook.services.*
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.android.synthetic.main.custom_alert.view.*
+import kotlinx.android.synthetic.main.custom_alert_delete.view.*
 import kotlinx.android.synthetic.main.fragment_home_favoritos.view.*
 import kotlinx.coroutines.launch
 
@@ -49,11 +53,12 @@ class HomeFragment : Fragment(), MainAdapter.OnLivroClickListener,
 
     private var listFavs = listOf<FavoritosEntity>()
     private var favBoolean: Boolean? = null
+    private var favDeleteBoolean: Boolean? = null
+    private var favPosition: Int? = null
 
 
     private lateinit var viewModel: MainViewModel
     private lateinit var adapter: MainAdapter
-
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,10 +67,12 @@ class HomeFragment : Fragment(), MainAdapter.OnLivroClickListener,
         if (arguments != null) favBoolean = arguments?.getBoolean(favoritos)
 
 
+
     }
 
     companion object {
         private const val favoritos = "favoritos"
+
 
         fun newInstance(Favoritos: Boolean): HomeFragment {
             val fragment = HomeFragment()
@@ -84,6 +91,16 @@ class HomeFragment : Fragment(), MainAdapter.OnLivroClickListener,
 
         viewModelPerfil = ViewModelProvider(this).get(PerfisViewModel::class.java)
         viewModelFav = ViewModelProvider(this).get(FavoritosViewModel::class.java)
+        if (favDeleteBoolean == true) {
+            viewModelFav.favList.observe(viewLifecycleOwner) {
+                viewModelFav.deleteFav(it[favPosition!!])
+                val adapter = LivroFavAdapter(this)
+                adapter.notifyDataSetChanged()
+                favDeleteBoolean = false
+            }
+        }
+
+
         val view = inflater.inflate(R.layout.fragment_home_favoritos, container, false)
         view.progressBar.visibility = View.GONE
         lifecycleScope.launch {
@@ -110,11 +127,11 @@ class HomeFragment : Fragment(), MainAdapter.OnLivroClickListener,
         if (favBoolean == false) {
             view.textInputPesquisa.setEndIconOnClickListener {
                 Log.i("termo pesquisa", view.textInputPesquisa.editText?.text.toString())
-                setupObservers(view.textInputPesquisa.editText?.text.toString(),view)
+                setupObservers(view.textInputPesquisa.editText?.text.toString(), view)
             }
             view.textInputPesquisa.editText?.doOnTextChanged { _, _, _, _ ->
                 Log.i("termo pesquisa", view.textInputPesquisa.editText?.text.toString())
-                setupObservers(view.textInputPesquisa.editText?.text.toString(),view)
+                setupObservers(view.textInputPesquisa.editText?.text.toString(), view)
             }
         } else {
             view.progressBar.visibility = View.GONE
@@ -135,23 +152,6 @@ class HomeFragment : Fragment(), MainAdapter.OnLivroClickListener,
         intent.putExtra("edit", false)
         startActivity(intent)
     }
-
-//    private fun callResultsSearch(view: View) {
-//        val searchText = view.textInputPesquisa.editText?.text.toString()
-//        if (searchText != "") {
-//            viewModel.getSearch(searchText)
-//            viewModel.returnSearchList.observe(viewLifecycleOwner) {
-//                listLivro = it.items
-//                view.rv_result.layoutManager =
-//                    GridLayoutManager(activity, 2, LinearLayoutManager.VERTICAL, false)
-//                view.rv_result.setHasFixedSize(true)
-//                val livroAdapter = LivroAdapter(this)
-//                livroAdapter.setData(listLivro)
-//                view.rv_result.adapter = livroAdapter
-//            }
-//        }
-//    }
-
 
     private fun callResultFavs(view: View) {
         val listResult = viewModelFav.getListFavUserId(mAuth!!.uid)
@@ -206,6 +206,7 @@ class HomeFragment : Fragment(), MainAdapter.OnLivroClickListener,
         startActivity(intent)
     }
 
+
     override fun livroFavClick(position: Int) {
         val intent = Intent(activity, LivroSelecionadoActivity::class.java)
         val adapter = LivroFavAdapter(this)
@@ -213,6 +214,13 @@ class HomeFragment : Fragment(), MainAdapter.OnLivroClickListener,
         intent.putExtra("favoritos", true)
         adapter.notifyDataSetChanged()
         startActivity(intent)
+    }
+
+    override fun livroFavLongClick(position: Int) {
+        Log.i("LONG", "entrou no onLongClick")
+        val adapter = LivroFavAdapter(this)
+        createAlert(listFavs[position])
+        adapter.notifyDataSetChanged()
     }
 
     private suspend fun getBitmap(data: String): Bitmap {
@@ -234,13 +242,14 @@ class HomeFragment : Fragment(), MainAdapter.OnLivroClickListener,
 
     private fun setupUI(view: View) {
         adapter = MainAdapter(this)
-        view.rv_result.layoutManager = GridLayoutManager(activity, 2, LinearLayoutManager.VERTICAL, false)
+        view.rv_result.layoutManager =
+            GridLayoutManager(activity, 2, LinearLayoutManager.VERTICAL, false)
         view.rv_result.setHasFixedSize(true)
         view.rv_result.adapter = adapter
     }
 
     private fun setupObservers(string: String, view: View) {
-        if(string != "") {
+        if (string != "") {
             viewModel.getSearch(string).observe(viewLifecycleOwner) {
                 it?.let { resource ->
                     when (resource.status) {
@@ -269,6 +278,20 @@ class HomeFragment : Fragment(), MainAdapter.OnLivroClickListener,
         adapter.apply {
             addBooks(Books[0].items)
             notifyDataSetChanged()
+        }
+    }
+
+    private fun createAlert(fav:FavoritosEntity) {
+        val builder = MaterialAlertDialogBuilder(requireContext(), R.style.MaterialAlertDialog_rounded).create()
+        val view: View = LayoutInflater.from(requireContext()).inflate(R.layout.custom_alert_delete, null)
+        builder.setView(view)
+        builder.show()
+        view.btAlert_sim.setOnClickListener {
+            viewModelFav.deleteFav(fav)
+            builder.dismiss()
+        }
+        view.btAlert_nao.setOnClickListener {
+            builder.dismiss()
         }
     }
 }

@@ -32,22 +32,35 @@ class LivroFavAdapter(val listener: OnLivroFavClickListener) : RecyclerView.Adap
 
     interface OnLivroFavClickListener {
         fun livroFavClick(position: Int)
+        fun livroFavLongClick(position: Int)
 
     }
 
-    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view), View.OnClickListener {
+    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view), View.OnClickListener, View.OnLongClickListener {
         val tvTitulo = view.mediaName!!
         val ivLivro = view.mediaImage!!
 
         init {
             itemView.setOnClickListener(this)
+            itemView.setOnLongClickListener(this)
         }
 
         override fun onClick(v: View?){
             val position = absoluteAdapterPosition
             if(RecyclerView.NO_POSITION != position){
                 listener.livroFavClick(position)
+
+            }
+        }
+
+        override fun onLongClick(v: View?): Boolean {
+            val position = absoluteAdapterPosition
+            if(RecyclerView.NO_POSITION != position){
+                listener.livroFavLongClick(position)
+                return true
+            }
+                return false
             }
         }
     }
-}
+

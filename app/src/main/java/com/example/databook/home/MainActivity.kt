@@ -15,6 +15,8 @@ class MainActivity : AppCompatActivity() {
         setTabs()
     }
     private fun setTabs() {
+
+
         val adapter = ViewPagerHomeAdapter(supportFragmentManager)
         val homePerfil = PerfiFragment.newInstance(true)
         val homeFavoritos = HomeFragment.newInstance(true)

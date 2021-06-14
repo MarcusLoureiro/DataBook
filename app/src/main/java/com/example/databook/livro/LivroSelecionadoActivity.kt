@@ -8,27 +8,35 @@ import android.os.Bundle
 import android.provider.MediaStore.Images.Media.insertImage
 import android.text.method.ScrollingMovementMethod
 import android.util.Log
+import android.view.View
+import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import android.widget.RelativeLayout
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.graphics.drawable.toBitmap
-import androidx.core.view.isGone
+import androidx.core.view.*
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import coil.ImageLoader
 import coil.load
 import coil.request.ImageRequest
 import coil.request.SuccessResult
-import com.example.databook.database.favoritos.FavoritosViewModel
 import com.example.databook.R
 import com.example.databook.R.drawable
 import com.example.databook.database.favoritos.FavoritosEntity
+import com.example.databook.database.favoritos.FavoritosViewModel
 import com.example.databook.database.perfil.PerfisViewModel
 import com.example.databook.entities.Item
+import com.example.databook.home.MainActivity
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_livro_selecionado.*
 import kotlinx.android.synthetic.main.fab_menu.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
@@ -37,7 +45,6 @@ class LivroSelecionadoActivity : AppCompatActivity() {
     private lateinit var viewModelFav: FavoritosViewModel
     private lateinit var viewModelPerfil: PerfisViewModel
     private val mAuth = FirebaseAuth.getInstance().currentUser
-
 
 
     private val rotateOpen: Animation by lazy {
@@ -67,6 +74,7 @@ class LivroSelecionadoActivity : AppCompatActivity() {
 
     private var clicked = false
     override fun onCreate(savedInstanceState: Bundle?) {
+
         viewModelPerfil = ViewModelProvider(this).get(PerfisViewModel::class.java)
         viewModelFav = ViewModelProvider(this).get(FavoritosViewModel::class.java)
 
@@ -91,28 +99,32 @@ class LivroSelecionadoActivity : AppCompatActivity() {
             fabFavoritar.setImageResource(drawable.ic_favorito_select)
         } else {
             fabFavoritar.setImageResource(drawable.ic_favorito_amarelo)
+            fabEditar.isClickable = false
         }
 
         fabMenu.setOnClickListener {
             onFabMenuClicked()
         }
         fabEditar.setOnClickListener {
-            updateFav()
+            if (favoritos == true) {
+                updateFav()
+            } else {
+                fabEditar.setImageResource(R.drawable.ic_edit)
+                Toast.makeText(
+                    this,
+                    "Somente livros favoritos podem ser editados!",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+
         }
         fabFavoritar.setOnClickListener {
             if (favoritos == true) {
-                changeIconFav(true)
-                val position = intent.getSerializableExtra("position") as? Int
-                viewModelFav.favList.observe(this) {
-                    val favCopy = FavoritosEntity()
-                    if (it.isNotEmpty()) {
-                        setBookFavInView(it[position!!])
-                        deleteFav(it[position])
-                        finish()
-                    } else {
-                        setBookFavInView(favCopy)
-                    }
-                }
+                Toast.makeText(
+                    this,
+                    "Livro já foi favoritado. Caso queira deletar. Utilize um toque longo no livro na lista da tela anterior!",
+                    Toast.LENGTH_SHORT
+                ).show()
             } else {
                 changeIconFav(false)
                 lifecycleScope.launch {
@@ -138,15 +150,7 @@ class LivroSelecionadoActivity : AppCompatActivity() {
         }
 
         textViewSinopse.movementMethod = ScrollingMovementMethod()
-//        textViewSinopse.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
-//            Toast.makeText(this, "rolou", Toast.LENGTH_SHORT).show()
-//        }
-//        textViewSinopse.setOnClickListener {
-//            Toast.makeText(this, "tocou", Toast.LENGTH_SHORT).show()
-//        }
-
     }
-
 
     private fun setActivity() {
         val favoritos = intent.getSerializableExtra("favoritos") as? Boolean
@@ -160,62 +164,49 @@ class LivroSelecionadoActivity : AppCompatActivity() {
 
     private fun setBookFavInView(fav: FavoritosEntity) {
         textViewTitulo.text = fav.title
-        textViewAno.text = fav.lancamento
+        textViewAno.text = anoFormating(fav.lancamento)
         textViewSinopse.text = fav.sinopse
         textViewAutora.text = fav.autor
         imgFundoLivroSelecionado.load(fav.imagem)
     }
 
-//    private fun setBookApiInView(bookApi: Item) {
-//        val titulo = bookApi.volumeInfo.title
-//        val autor = bookApi.volumeInfo.authors[0]
-//        val ano = bookApi.volumeInfo.publishedDate
-//        val sinopse = bookApi.volumeInfo.description
-//        val imagem = bookApi.volumeInfo.imageLinks.thumbnail
-//        textViewTitulo.text = titulo
-//        textViewAno.text = ano
-//        textViewSinopse.text = sinopse
-//        textViewAutora.text = autor
-//        imgFundoLivroSelecionado.load(imagem)
-//    }
-
     private fun checkBookApi(bookApi: Item) {
         try {
             val titulo = bookApi.volumeInfo.title
-            if(titulo != ""){
+            if (titulo != "") {
                 textViewTitulo.text = titulo
-            } else{
+            } else {
                 textViewTitulo.text = "Título indisponível"
             }
-        }catch (e:Exception){
+        } catch (e: Exception) {
             val titulo = "Título indisponível"
             textViewTitulo.text = titulo
         }
         try {
             val ano = bookApi.volumeInfo.publishedDate
             textViewAno.text = anoFormating(ano)
-        }catch (e:Exception){
+        } catch (e: Exception) {
             val ano = "Ano indisponível"
             textViewAno.text = ano
         }
         try {
             val sinopse = bookApi.volumeInfo.description
             textViewSinopse.text = sinopse
-        }catch (e:Exception){
+        } catch (e: Exception) {
             val sinopse = "Sinopse indisponível"
             textViewSinopse.text = sinopse
         }
         try {
             val autor = bookApi.volumeInfo.authors[0]
             textViewAutora.text = autor
-        }catch (e:Exception){
+        } catch (e: Exception) {
             val autor = "Autor(a) indisponível"
             textViewAutora.text = autor
         }
         try {
             val imagem = bookApi.volumeInfo.imageLinks.thumbnail
             imgFundoLivroSelecionado.load(imagem)
-        }catch (e:Exception){
+        } catch (e: Exception) {
             val imagem = R.drawable.sem_imagem
             imgFundoLivroSelecionado.load(imagem)
         }
@@ -260,6 +251,7 @@ class LivroSelecionadoActivity : AppCompatActivity() {
         viewModelFav.favList.observe(this) {
             val favCopy = FavoritosEntity()
             if (it.isNotEmpty()) {
+                Log.i("teste position", it[position!!].toString())
                 setBookFavInView(it[position!!])
             } else {
                 setBookFavInView(favCopy)
@@ -344,12 +336,23 @@ class LivroSelecionadoActivity : AppCompatActivity() {
         }
     }
 
-    private fun anoFormating(string: String): String{
+    private fun anoFormating(string: String): String {
         var anoFormatado = ""
-        for (i in 0..3){
+        for (i in 0..3) {
             anoFormatado += string[i]
         }
         return anoFormatado
+    }
+
+    fun View.setMargins(
+        left: Int = this.marginLeft,
+        top: Int = this.marginTop,
+        right: Int = this.marginRight,
+        bottom: Int = this.marginBottom
+    ) {
+        layoutParams = (layoutParams as ViewGroup.MarginLayoutParams).apply {
+            setMargins(left, top, right, bottom)
+        }
     }
 
 

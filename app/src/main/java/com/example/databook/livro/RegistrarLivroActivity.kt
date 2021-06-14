@@ -1,15 +1,18 @@
 package com.example.databook.livro
 
 import android.annotation.SuppressLint
+import android.app.DatePickerDialog
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.text.InputType
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.DatePicker
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
@@ -17,30 +20,38 @@ import androidx.lifecycle.lifecycleScope
 import coil.ImageLoader
 import coil.request.ImageRequest
 import coil.request.SuccessResult
-import com.example.databook.database.favoritos.FavoritosViewModel
 import com.example.databook.R
 import com.example.databook.database.favoritos.FavoritosEntity
+import com.example.databook.database.favoritos.FavoritosViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
-import kotlinx.android.synthetic.main.activity_resgitrar_livro.*
+import kotlinx.android.synthetic.main.activity_registrar_livro.*
 import kotlinx.android.synthetic.main.custom_alert.view.*
 import kotlinx.coroutines.launch
 import java.util.*
 
 
 @Suppress("DEPRECATION", "NAME_SHADOWING")
-class RegistrarLivroActivity : AppCompatActivity() {
+class RegistrarLivroActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener {
     private var pickImage = ""
     private var imageUri: Uri? = null
     private var imagemBitmap: Bitmap? = null
     private lateinit var viewModelFav: FavoritosViewModel
-
-
+    var day = 0
+    var month = 0
+    var year = 0
+    var hour = 0
+    var minute = 0
+    var savedDay = 0
+    var savedMonth = ""
+    var savedYear = 0
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         viewModelFav = ViewModelProvider(this).get(FavoritosViewModel::class.java)
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_resgitrar_livro)
+        setContentView(R.layout.activity_registrar_livro)
+
+        edSinopse.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_MULTI_LINE
 
         val edit = intent.getSerializableExtra("edit") as? Boolean
         if (edit!!) {
@@ -53,6 +64,10 @@ class RegistrarLivroActivity : AppCompatActivity() {
 
         iv_livro.setOnClickListener {
             createAlert()
+        }
+
+        edAno.setOnClickListener {
+            pickDate()
         }
 
         btn_registrar.setOnClickListener {
@@ -135,6 +150,7 @@ class RegistrarLivroActivity : AppCompatActivity() {
     }
 
     private fun showMsg(msg: String) {
+
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
     }
 
@@ -202,6 +218,38 @@ class RegistrarLivroActivity : AppCompatActivity() {
                 viewModelFav.updateFav(fav)
                 Log.i("fav editado", fav.toString())
         }
+    }
+
+
+
+    private fun getDateTimeCalendar(){
+        val cal = Calendar.getInstance()
+        day = cal.get(Calendar.DAY_OF_MONTH)
+        month = cal.get(Calendar.MONTH)
+        year = cal.get(Calendar.YEAR)
+        hour = cal.get(Calendar.HOUR)
+        minute = cal.get(Calendar.MINUTE)
+
+    }
+
+    private fun pickDate(){
+        getDateTimeCalendar()
+
+        DatePickerDialog(this, this, year, month, day).show()
+    }
+
+
+    @SuppressLint("SetTextI18n")
+    override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
+        savedDay = dayOfMonth
+        if(month in 10..12){
+            savedMonth = month.toString()
+        }else{
+            savedMonth = ("0$month").toString()
+        }
+        savedYear = year
+        getDateTimeCalendar()
+        edAno.setText("${savedDay}/${savedMonth}/${savedYear}")
     }
 }
 
