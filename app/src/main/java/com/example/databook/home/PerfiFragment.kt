@@ -54,6 +54,9 @@ class PerfiFragment : Fragment() {
             signOut()
             iniciarSplash()
         }
+        view.iv_perfil.load(mAuth!!.photoUrl)
+
+
         return view
     }
 
@@ -88,7 +91,6 @@ class PerfiFragment : Fragment() {
                     }
                     view.tv_countFavoritos.text = it.countFavoritos.toString()
                     view.tv_countCompartilhados.text = it.countCompartilhamentos.toString()
-                    view.iv_perfil.load(it.imagemPerfil)
                 }
             }
         }

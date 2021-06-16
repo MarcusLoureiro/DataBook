@@ -33,6 +33,11 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+
+    packagingOptions{
+        exclude 'com/itextpdf/io/font/cmap_info.txt'
+        exclude 'com/itextpdf/io/font/cmap/*'
+    }
 }
 
 dependencies {
@@ -145,4 +150,9 @@ dependencies {
 
 //Coroutines
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.5'
+
+//PDF
+    implementation 'com.itextpdf:itext7-core:7.1.3'
+    implementation 'com.karumi:dexter:5.0.0'
+
 }

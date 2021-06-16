@@ -1,10 +1,15 @@
 package com.example.databook.livro
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
+import android.location.LocationManager
 import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
+import android.print.PrintAttributes
+import android.print.PrintManager
 import android.provider.MediaStore.Images.Media.insertImage
 import android.text.method.ScrollingMovementMethod
 import android.util.Log
@@ -12,8 +17,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
-import android.widget.RelativeLayout
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.graphics.drawable.toBitmap
@@ -30,20 +33,45 @@ import com.example.databook.database.favoritos.FavoritosEntity
 import com.example.databook.database.favoritos.FavoritosViewModel
 import com.example.databook.database.perfil.PerfisViewModel
 import com.example.databook.entities.Item
-import com.example.databook.home.MainActivity
 import com.google.firebase.auth.FirebaseAuth
+import com.itextpdf.barcodes.BarcodeQRCode
+import com.itextpdf.io.image.ImageDataFactory
+import com.itextpdf.kernel.colors.ColorConstants
+import com.itextpdf.kernel.geom.PageSize
+import com.itextpdf.kernel.pdf.PdfDocument
+import com.itextpdf.kernel.pdf.PdfWriter
+import com.itextpdf.kernel.pdf.xobject.PdfFormXObject
+import com.itextpdf.layout.Document
+import com.itextpdf.layout.element.Cell
+import com.itextpdf.layout.element.Image
+import com.itextpdf.layout.element.Paragraph
+import com.itextpdf.layout.element.Table
+import com.itextpdf.layout.property.HorizontalAlignment
+import com.itextpdf.layout.property.TextAlignment
 import kotlinx.android.synthetic.main.activity_livro_selecionado.*
 import kotlinx.android.synthetic.main.fab_menu.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.FileNotFoundException
+import java.io.FileOutputStream
+import java.util.*
+import kotlin.jvm.Throws
 
 
-@Suppress("DEPRECATION")
+@Suppress("DEPRECATION", "UNSAFE_CALL_ON_PARTIALLY_DEFINED_RESOURCE")
 class LivroSelecionadoActivity : AppCompatActivity() {
     private lateinit var viewModelFav: FavoritosViewModel
     private lateinit var viewModelPerfil: PerfisViewModel
+    var pdfPath = ""
+    var day = 0
+    var month = 0
+    var year = 0
+    var hour = 0
+    var minute = 0
+    var savedDay = 0
+    var savedMonth = ""
+    var savedYear = 0
     private val mAuth = FirebaseAuth.getInstance().currentUser
 
 
@@ -74,6 +102,7 @@ class LivroSelecionadoActivity : AppCompatActivity() {
 
     private var clicked = false
     override fun onCreate(savedInstanceState: Bundle?) {
+
 
         viewModelPerfil = ViewModelProvider(this).get(PerfisViewModel::class.java)
         viewModelFav = ViewModelProvider(this).get(FavoritosViewModel::class.java)
@@ -149,6 +178,14 @@ class LivroSelecionadoActivity : AppCompatActivity() {
             setShareIntent()
         }
 
+        fabBuy.setOnClickListener {
+            getDateTimeCalendar()
+            createPdf()
+        }
+
+
+
+      //  pdfPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString()
         textViewSinopse.movementMethod = ScrollingMovementMethod()
     }
 
@@ -222,15 +259,6 @@ class LivroSelecionadoActivity : AppCompatActivity() {
         ).show()
     }
 
-    private fun deleteFav(fav: FavoritosEntity) {
-        viewModelFav.deleteFav(fav)
-        Toast.makeText(
-            this,
-            "Deletado com sucesso:${fav.title}",
-            Toast.LENGTH_SHORT
-        ).show()
-    }
-
     private fun updateFav() {
         val position = intent.getSerializableExtra("position") as? Int
         val intent = Intent(this, RegistrarLivroActivity::class.java)
@@ -266,7 +294,7 @@ class LivroSelecionadoActivity : AppCompatActivity() {
         val bitmapPath = insertImage(contentResolver, bitmap, "title", null)
         val uri = Uri.parse(bitmapPath)
         val intent = Intent(Intent.ACTION_SEND)
-        intent.type = "image/png"
+        intent.type = "${textViewTitulo.text}/png"
         intent.putExtra(Intent.EXTRA_STREAM, uri)
         intent.putExtra(
             Intent.EXTRA_TEXT, "Nome do App: DataBook\n" +
@@ -279,7 +307,8 @@ class LivroSelecionadoActivity : AppCompatActivity() {
             it.forEach {
                 if (it.userID == mAuth!!.uid) {
                     val perfilAtual = it
-                    perfilAtual.countCompartilhamentos = perfilAtual.countCompartilhamentos + 1
+                    perfilAtual.countCompartilhamentos = +1
+                    Log.i("share", perfilAtual.countCompartilhamentos.toString())
                     viewModelPerfil.updatePerfil(perfilAtual)
                 }
             }
@@ -354,6 +383,83 @@ class LivroSelecionadoActivity : AppCompatActivity() {
             setMargins(left, top, right, bottom)
         }
     }
+    @Throws(FileNotFoundException::class)
+    private fun createPdf(){
+        pdfPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString()
+        val file = File(pdfPath, "DataBookComprovante$day$hour.pdf")
+        val outPutStream = FileOutputStream(file)
+        
+        val writer = PdfWriter(file)
+        val pdfDocument = PdfDocument(writer)
+        val document = Document(pdfDocument)
+
+        pdfDocument.defaultPageSize = PageSize.A6
+        document.setMargins(0.0f,0.0f,0.0f,0.0f)
+        val d = getDrawable(drawable.logo_pdf)
+        val bitmap = d!!.toBitmap()
+        val stream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
+        val bitmapData = stream.toByteArray()
+
+        val imageData = ImageDataFactory.create(bitmapData)
+        val image = Image(imageData)
+
+        val visitorTicket = Paragraph("Comprovante DataBook").setBold().setFontSize(24.0f).setTextAlignment(TextAlignment.CENTER)
+        val group = Paragraph("Departamento de Compra\n" +
+        "Aplicativo DataBook, Brasil").setTextAlignment(TextAlignment.CENTER).setFontSize(12.0f)
+        val varansi = Paragraph(textViewTitulo.text.toString()).setBold().setFontSize(20.0f).setTextAlignment(TextAlignment.CENTER)
+
+        val width = floatArrayOf(100f,100f)
+        val table = Table(width)
+
+        table.setHorizontalAlignment(HorizontalAlignment.CENTER)
+
+        table.addCell(Cell().add(Paragraph("Usuário")))
+        table.addCell(Cell().add(Paragraph(mAuth!!.displayName.toString())))
+
+        table.addCell(Cell().add(Paragraph("E-mail")))
+        table.addCell(Cell().add(Paragraph(mAuth!!.email.toString())))
+
+        table.addCell(Cell().add(Paragraph("Produto")))
+        table.addCell(Cell().add(Paragraph(textViewTitulo.text.toString())))
+
+        if(month in 10..12){
+            month = month
+        }else{
+            month = ("0$month").toInt()
+        }
+
+        table.addCell(Cell().add(Paragraph("Date:")))
+        table.addCell(Cell().add(Paragraph("$day/$month/$year")))
+
+        table.addCell(Cell().add(Paragraph("Hora:")))
+        table.addCell(Cell().add(Paragraph("$hour:$minute")))
+
+        val code = BarcodeQRCode("Comprovante validado:$hour/$minute")
+        val qrCodeObject = code.createFormXObject(ColorConstants.BLACK, pdfDocument)
+        val qrCodeImage = Image(qrCodeObject).setWidth(80f).setHorizontalAlignment(HorizontalAlignment.CENTER)
+
+     // document.add(image)
+        document.add(visitorTicket)
+        document.add(group)
+        document.add(varansi)
+        document.add(table)
+        document.add(qrCodeImage)
+        document.close()
+
+        Toast.makeText(this, "Pdf Create", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun getDateTimeCalendar(){
+        val cal = Calendar.getInstance()
+        day = cal.get(Calendar.DAY_OF_MONTH)
+        month = cal.get(Calendar.MONTH)
+        year = cal.get(Calendar.YEAR)
+        hour = cal.get(Calendar.HOUR)
+        minute = cal.get(Calendar.MINUTE)
+
+    }
+
 
 
 }
