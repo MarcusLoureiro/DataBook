@@ -73,16 +73,23 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/edEmailInput"
-        android:layout_width="387dp"
-        android:layout_height="62dp"
-        android:layout_gravity="center"
-        android:backgroundTint="@color/white"
-        app:errorIconTint="@color/erroTint"
-        app:errorTextColor="@color/erroTint"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="32dp"
+        android:hint="Email"
+        app:startIconDrawable="@drawable/ic_email"
+        app:startIconTint="@color/color4"
+        app:counterTextColor="@color/color4"
+        app:boxStrokeColor="@color/color4"
+        app:helperTextTextColor="@color/erroTint"
         app:boxStrokeErrorColor="@color/erroTint"
-        app:errorContentDescription="Não é um e-mail válido."
-        app:errorIconDrawable="@drawable/ic_error_"
+        app:hintTextColor="@color/color4"
+        app:helperText="Obrigatório*"
+        app:counterEnabled="true"
+        app:counterMaxLength="50"
         app:layout_constraintBottom_toTopOf="@+id/btn_login"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.541"
@@ -92,25 +99,30 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edEmail"
+            android:maxLength="50"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/white"
-            android:hint="Email" />
+            android:layout_height="wrap_content"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/edSenhaInput"
-        android:layout_width="387dp"
-        android:layout_height="62dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="150dp"
-        android:backgroundTint="@color/white"
-        app:errorIconTint="@color/erroTint"
-        app:errorTextColor="@color/erroTint"
-        app:boxStrokeErrorColor="@color/erroTint"
-        app:errorContentDescription="Senhas devem conter números, letras e símbolos."
-        app:errorIconDrawable="@drawable/ic_error_"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="185dp"
+        android:layout_marginEnd="32dp"
+        android:hint="Senha"
+        app:startIconDrawable="@drawable/ic_lock"
         app:passwordToggleEnabled="true"
+        app:startIconTint="@color/color4"
+        app:counterTextColor="@color/color4"
+        app:boxStrokeColor="@color/color4"
+        app:helperTextTextColor="@color/erroTint"
+        app:boxStrokeErrorColor="@color/erroTint"
+        app:hintTextColor="@color/color4"
+        app:helperText="Obrigatório*"
+        app:counterEnabled="true"
+        app:counterMaxLength="20"
         app:layout_constraintBottom_toTopOf="@+id/btn_login"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.541"
@@ -120,17 +132,18 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edSenha"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/white"
+            android:maxLength="20"
             android:inputType="textPassword"
-            android:hint="Senha" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
     </com.google.android.material.textfield.TextInputLayout>
+
 
     <TextView
         android:id="@+id/tv_esqueceuSenha"
         android:layout_width="336dp"
         android:layout_height="33dp"
+        android:layout_marginBottom="176dp"
         android:width="423dp"
         android:height="55dp"
         android:fontFamily="@font/montserrat"
@@ -142,9 +155,8 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.266"
+        app:layout_constraintHorizontal_bias="0.426"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edSenhaInput"
         app:layout_constraintVertical_bias="0.034" />
 
     <android.widget.Button
@@ -161,7 +173,9 @@
         android:textSize="21sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView2"
+        app:layout_constraintVertical_bias="0.99" />
 
     <TextView
         android:id="@+id/textView3"
@@ -186,7 +200,6 @@
         android:id="@+id/tv_cadastre_se"
         android:layout_width="336dp"
         android:layout_height="33dp"
-        android:layout_marginTop="450dp"
         android:width="423dp"
         android:height="55dp"
         android:fontFamily="@font/montserrat"
@@ -200,7 +213,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.909" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_login"
+        app:layout_constraintVertical_bias="0.84" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

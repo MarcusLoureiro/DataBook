@@ -28,7 +28,6 @@ class CadastroActivity : AppCompatActivity() {
         setContentView(R.layout.activity_cadastro)
 
         arrow_back_cadastro.setOnClickListener {
-            inicarHome()
             finish()
         }
 
@@ -43,10 +42,6 @@ class CadastroActivity : AppCompatActivity() {
                 if (password == edSenhaConfirmeCadastro.text.toString() && email == edEmailCadastro.text.toString()) {
                     registerFirebase(email, password)
                 } else {
-                    edEmailInputCadastro.isErrorEnabled = true
-                    edEmailConfirmInputCadastro.isErrorEnabled = true
-                    edSenhaInputCadastro.isErrorEnabled = true
-                    edSenhaConfirmInputCadastro.isErrorEnabled = true
                     showMsg("Algo deu errado. Tente novamente.")
                 }
             }

@@ -34,77 +34,131 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.791">
-                    <androidx.appcompat.widget.AppCompatEditText
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="65dp"
+                    android:layout_marginEnd="32dp"
+                    android:hint="Título"
+                    app:startIconDrawable="@drawable/ic_title"
+                    app:startIconTint="@color/color4"
+                    app:counterTextColor="@color/color4"
+                    app:boxStrokeColor="@color/color4"
+                    app:helperTextTextColor="@color/erroTint"
+                    app:boxStrokeErrorColor="@color/erroTint"
+                    app:hintTextColor="@color/color4"
+                    app:helperText="Obrigatório*"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="50">
+
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/edTitle"
+                        android:maxLength="50"
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:layout_marginTop="100dp"
-                        android:layout_marginStart="15dp"
-                        android:layout_marginEnd="15dp"
-                        android:background="@drawable/line_ed"
-                        android:fontFamily="@font/montserrat"
-                        android:textColor="@color/color2"
-                        android:textColorHint="@color/color4"
-                        android:hint="Título:" />
-                    <androidx.appcompat.widget.AppCompatEditText
+                        android:layout_height="wrap_content"/>
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="140dp"
+                    android:layout_marginEnd="32dp"
+                    android:hint="Autor(a)"
+                    app:startIconDrawable="@drawable/ic_person"
+                    app:startIconTint="@color/color4"
+                    app:counterTextColor="@color/color4"
+                    app:boxStrokeColor="@color/color4"
+                    app:helperTextTextColor="@color/erroTint"
+                    app:boxStrokeErrorColor="@color/erroTint"
+                    app:hintTextColor="@color/color4"
+                    app:helperText="Obrigatório*"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="30">
+
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/edAutor"
+                        android:maxLength="30"
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:layout_marginTop="150dp"
-                        android:layout_marginStart="15dp"
-                        android:layout_marginEnd="15dp"
-                        android:background="@drawable/line_ed"
-                        android:textColorHint="@color/color4"
-                        android:textColor="@color/color2"
-                        android:fontFamily="@font/montserrat"
-                        android:hint="Autor(a):" />
+                        android:layout_height="wrap_content"/>
 
+                </com.google.android.material.textfield.TextInputLayout>
 
-                    <androidx.appcompat.widget.AppCompatEditText
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="215dp"
+                    android:layout_marginEnd="32dp"
+                    android:hint="Clique para inserir data"
+                    app:startIconDrawable="@drawable/ic_date"
+                    app:startIconTint="@color/color4"
+                    app:counterTextColor="@color/color4"
+                    app:boxStrokeColor="@color/color4"
+                    app:helperTextTextColor="@color/erroTint"
+                    app:boxStrokeErrorColor="@color/erroTint"
+                    app:hintTextColor="@color/color4"
+                    app:helperText="Obrigatório*"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="10">
+
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/edAno"
+                        android:maxLength="10"
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:layout_marginTop="200dp"
-                        android:layout_marginStart="15dp"
-                        android:layout_marginEnd="15dp"
-                        android:background="@drawable/line_ed"
-                        android:fontFamily="@font/montserrat"
-                        android:textColor="@color/color2"
-                        android:textColorHint="@color/color4"
-                        android:hint="Clique para inserir data." />
+                        android:layout_height="wrap_content"/>
 
+                </com.google.android.material.textfield.TextInputLayout>
 
-                    <androidx.appcompat.widget.AppCompatEditText
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="290dp"
+                    android:layout_marginEnd="32dp"
+                    android:hint="Sinopse"
+                    app:startIconDrawable="@drawable/ic_sinopse"
+                    app:startIconTint="@color/color4"
+                    app:counterTextColor="@color/color4"
+                    app:boxStrokeColor="@color/color4"
+                    app:helperTextTextColor="@color/erroTint"
+                    app:boxStrokeErrorColor="@color/erroTint"
+                    app:hintTextColor="@color/color4"
+                    app:helperText="Obrigatório*"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="500">
+
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/edSinopse"
+                        android:maxLength="500"
+                        android:maxLines="2"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingTop="1dp"
-                        android:layout_marginTop="250dp"
-                        android:layout_marginStart="15dp"
-                        android:layout_marginEnd="15dp"
-                        android:background="@drawable/line_ed"
-                        android:fontFamily="@font/montserrat"
-                        android:minLines="2"
-                        android:maxLines="5"
-                        android:inputType="textPersonName|textMultiLine"
-                        android:textColor="@color/color2"
-                        android:textColorHint="@color/color4"
-                        android:hint="Sinopse:" />
+                        android:layout_height="wrap_content"/>
+
+                </com.google.android.material.textfield.TextInputLayout>
 
 
                 <android.widget.Button
                     android:id="@+id/btn_registrar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="265dp"
+                    android:layout_height="42dp"
                     android:layout_gravity="center"
-                    android:layout_marginTop="150dp"
+                    android:layout_marginTop="180dp"
                     android:background="@drawable/btentrar"
                     android:backgroundTint="@color/color4"
                     android:fontFamily="@font/montserrat"
                     android:lineSpacingMultiplier="0.38"
                     android:text="Registrar"
                     android:textColor="@color/white"
-                    android:textSize="21sp"/>
+                    android:textSize="21sp" />
 
 
             </com.google.android.material.card.MaterialCardView>
@@ -118,7 +172,7 @@
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:layout_marginTop="150dp"
-            android:layout_marginStart="120dp"
+            android:layout_marginStart="125dp"
             android:src="@drawable/livro_iv" />
 
     </RelativeLayout>

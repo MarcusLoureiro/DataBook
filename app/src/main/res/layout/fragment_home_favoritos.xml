@@ -1,40 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
-    android:orientation="vertical"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:orientation="vertical">
 
     <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:id="@+id/textInputPesquisa"
-        android:layout_width="387dp"
-        android:layout_height="62dp"
-        android:layout_gravity="center"
-        app:boxStrokeWidth="0dp"
-        app:boxStrokeWidthFocused="0dp"
-        app:boxStrokeColor="#FFF"
-        app:boxBackgroundColor="#FFF"
-        android:layout_marginTop="10dp"
-        app:layout_constraintBottom_toTopOf="@+id/btn_login"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/imageView3"
-        app:endIconMode="custom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="32dp"
+        android:hint="Pesquise um livro"
+        app:boxStrokeColor="@color/color4"
         app:endIconDrawable="@drawable/ic_lupa"
-        app:endIconTint="@color/color4">
+        app:endIconMode="custom"
+        app:endIconTint="@color/color4"
+        app:hintTextColor="@color/color4">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edTextPesquisa"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/barra_pesquisa"
-            android:hint="Buscar"
             android:textColor="@color/color2" />
     </com.google.android.material.textfield.TextInputLayout>
-
-
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -44,8 +37,8 @@
             android:id="@+id/rv_result"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="10dp"
             android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
             android:orientation="vertical"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -59,23 +52,22 @@
             android:layout_alignParentBottom="true"
             android:layout_marginEnd="17dp"
             android:layout_marginBottom="26dp"
-            app:backgroundTint="@color/color4"
-            android:src="@drawable/ic_baseline_add_24"
-            app:tint="@null"
             android:clickable="true"
-            />
+            android:src="@drawable/ic_baseline_add_24"
+            app:backgroundTint="@color/color4"
+            app:tint="@null" />
 
         <ProgressBar
             android:id="@+id/progressBar"
-            android:indeterminateDrawable="@drawable/progress_bar"
-            android:indeterminate="true"
-            android:progress="0"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/rv_result"
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="176dp"
-            android:layout_marginBottom="297dp" />
+            android:layout_marginBottom="297dp"
+            android:indeterminate="true"
+            android:indeterminateDrawable="@drawable/progress_bar"
+            android:progress="0" />
 
     </RelativeLayout>
 

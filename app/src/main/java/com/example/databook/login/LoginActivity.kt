@@ -52,6 +52,14 @@ class LoginActivity : AppCompatActivity() {
         tv_cadastre_se.setOnClickListener {
             inicarCadastro()
         }
+
+        tv_esqueceuSenha.setOnClickListener {
+            if(isValidEmail(edEmail.text.toString())){
+                recSenha()
+            }else{
+                Toast.makeText(this, "Digite o email da conta que deseja recuperar a senha. Tente Novamente!", Toast.LENGTH_LONG).show()
+            }
+        }
     }
 
 
@@ -70,12 +78,10 @@ class LoginActivity : AppCompatActivity() {
     private fun testarCampos(): Boolean {
         var teste = true
         if (edEmail.text.isNullOrBlank() && !isValidEmail(edEmail.text.toString())) {
-            edEmailInput.isErrorEnabled = true
             teste = false
             Toast.makeText(this, "Email inválido", Toast.LENGTH_SHORT).show()
         }
         if (edSenha.text.isNullOrBlank() && !isValidPassword(edSenha.text.toString())) {
-            edSenhaInput.isErrorEnabled = true
             teste = false
             Toast.makeText(this, "Senha inválida", Toast.LENGTH_SHORT).show()
         }
@@ -129,12 +135,26 @@ class LoginActivity : AppCompatActivity() {
     }
 
 
-    fun isValidEmail(str: String): Boolean{
+    fun isValidEmail(str: String): Boolean {
         return EMAIL_ADDRESS_PATTERN.matcher(str).matches()
     }
 
-    fun  isValidPassword(str:String): Boolean{
+    fun isValidPassword(str: String): Boolean {
         return PASSWORD_PATTERN.matcher(str).matches()
+    }
+
+    fun recSenha() {
+        val email = edEmail.text.toString()
+        FirebaseAuth.getInstance().sendPasswordResetEmail(email)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    if (task.isSuccessful()) {
+                        Toast.makeText(this, "Email enviado!", Toast.LENGTH_LONG).show()
+                    } else {
+                        Toast.makeText(this, "Erro! Digite novamente.", Toast.LENGTH_LONG).show()
+                    }
+                }
+            }
     }
 
 }

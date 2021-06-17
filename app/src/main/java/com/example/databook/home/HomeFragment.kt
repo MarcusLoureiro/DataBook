@@ -1,26 +1,20 @@
+@file:Suppress("DEPRECATION")
+
 package com.example.databook.home
 
-import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
-import android.provider.MediaStore
-import android.util.Log
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import coil.ImageLoader
@@ -37,7 +31,6 @@ import com.example.databook.livro.*
 import com.example.databook.services.*
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
-import kotlinx.android.synthetic.main.custom_alert.view.*
 import kotlinx.android.synthetic.main.custom_alert_delete.view.*
 import kotlinx.android.synthetic.main.fragment_home_favoritos.view.*
 import kotlinx.coroutines.launch
@@ -126,11 +119,9 @@ class HomeFragment : Fragment(), MainAdapter.OnLivroClickListener,
         }
         if (favBoolean == false) {
             view.textInputPesquisa.setEndIconOnClickListener {
-                Log.i("termo pesquisa", view.textInputPesquisa.editText?.text.toString())
                 setupObservers(view.textInputPesquisa.editText?.text.toString(), view)
             }
             view.textInputPesquisa.editText?.doOnTextChanged { _, _, _, _ ->
-                Log.i("termo pesquisa", view.textInputPesquisa.editText?.text.toString())
                 setupObservers(view.textInputPesquisa.editText?.text.toString(), view)
             }
         } else {
@@ -195,9 +186,6 @@ class HomeFragment : Fragment(), MainAdapter.OnLivroClickListener,
 
     override fun livroClick(position: Int) {
         val book = listLivro[position]
-        listLivro.forEach {
-            Log.i("title test", book.volumeInfo.title.toString())
-        }
         val intent = Intent(context, LivroSelecionadoActivity::class.java)
         val adapter = MainAdapter(this)
         intent.putExtra("bookApi", book)
@@ -217,7 +205,6 @@ class HomeFragment : Fragment(), MainAdapter.OnLivroClickListener,
     }
 
     override fun livroFavLongClick(position: Int) {
-        Log.i("LONG", "entrou no onLongClick")
         val adapter = LivroFavAdapter(this)
         createAlert(listFavs[position])
         adapter.notifyDataSetChanged()

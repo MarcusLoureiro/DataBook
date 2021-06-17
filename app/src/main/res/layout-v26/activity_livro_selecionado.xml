@@ -16,24 +16,9 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabBuy"
-        android:layout_width="46dp"
-        android:layout_height="41dp"
-        android:src="@drawable/ic_cart"
-        app:backgroundTint="@color/white"
-        app:fabSize="mini"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.204"
-        app:tint="@null"
-        tools:ignore="MissingConstraints" />
+        android:contentDescription="Imagem da capa do livro" />
+
 
     <LinearLayout
         android:id="@+id/includeInfos"
@@ -233,6 +218,19 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fabBuy"
+                android:layout_width="46dp"
+                android:layout_height="41dp"
+                android:layout_marginBottom="16dp"
+                android:src="@drawable/ic_cart"
+                app:backgroundTint="@color/white"
+                app:fabSize="mini"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:tint="@null"
+                tools:ignore="MissingConstraints" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

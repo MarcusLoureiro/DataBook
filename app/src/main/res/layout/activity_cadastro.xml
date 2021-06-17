@@ -39,10 +39,8 @@
     <TextView
         android:layout_gravity="center"
         android:id="@+id/textView"
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:width="423dp"
-        android:height="55dp"
         android:fontFamily="@font/montserrat"
         android:lineSpacingMultiplier="1.3"
         android:text="FAÇA SEU CADASTRO"
@@ -59,112 +57,119 @@
 
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/edEmailInputCadastro"
-        android:layout_width="387dp"
-        android:layout_height="62dp"
-        android:backgroundTint="@color/white"
-        app:errorIconTint="@color/erroTint"
-        app:errorTextColor="@color/erroTint"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="32dp"
+        android:hint="Email"
+        app:startIconDrawable="@drawable/ic_email"
+        app:startIconTint="@color/color4"
+        app:counterTextColor="@color/color4"
+        app:boxStrokeColor="@color/color4"
+        app:helperTextTextColor="@color/erroTint"
         app:boxStrokeErrorColor="@color/erroTint"
-        app:errorContentDescription="Não é um e-mail válido."
-        app:errorIconDrawable="@drawable/ic_error_"
-        android:layout_gravity="center"
-        app:layout_constraintBottom_toTopOf="@+id/btn_login"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/imageView3">
+        app:hintTextColor="@color/color4"
+        app:helperText="Obrigatório*"
+        app:counterEnabled="true"
+        app:counterMaxLength="50">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edEmailCadastro"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/white"
-            android:inputType="textEmailAddress"
-            android:hint="Email" />
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/edEmailCadastro"
+        android:maxLength="50"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/edEmailConfirmInputCadastro"
-        android:layout_width="387dp"
-        android:layout_height="62dp"
-        android:layout_gravity="center"
-        app:errorIconTint="@color/erroTint"
-        app:errorTextColor="@color/erroTint"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="32dp"
+        android:hint="Confirme seu Email"
+        app:startIconDrawable="@drawable/ic_email"
+        app:startIconTint="@color/color4"
+        app:counterTextColor="@color/color4"
+        app:boxStrokeColor="@color/color4"
+        app:helperTextTextColor="@color/erroTint"
         app:boxStrokeErrorColor="@color/erroTint"
-        app:errorContentDescription="E-mail não confere válido."
-        app:errorIconDrawable="@drawable/ic_error_"
-        app:layout_constraintBottom_toTopOf="@+id/btn_login"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/imageView3">
+        app:hintTextColor="@color/color4"
+        app:helperText="Obrigatório*"
+        app:counterEnabled="true"
+        app:counterMaxLength="50">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edConfirmeEmailCadastro"
+            android:maxLength="50"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/white"
-            android:inputType="textEmailAddress"
-            android:hint="Confirme seu Email" />
+            android:layout_height="wrap_content"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/edSenhaInputCadastro"
-        android:layout_width="387dp"
-        android:layout_height="62dp"
-        android:layout_gravity="center"
-        android:backgroundTint="@color/white"
-        app:errorIconTint="@color/erroTint"
-        app:errorTextColor="@color/erroTint"
-        app:boxStrokeErrorColor="@color/erroTint"
-        app:errorContentDescription="Senhas devem conter números, letras e símbolos."
-        app:errorIconDrawable="@drawable/ic_error_"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="32dp"
+        android:hint="Senha"
+        app:startIconDrawable="@drawable/ic_lock"
         app:passwordToggleEnabled="true"
-        app:layout_constraintBottom_toTopOf="@+id/btn_login"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/imageView3">
+        app:startIconTint="@color/color4"
+        app:counterTextColor="@color/color4"
+        app:boxStrokeColor="@color/color4"
+        app:helperTextTextColor="@color/erroTint"
+        app:boxStrokeErrorColor="@color/erroTint"
+        app:hintTextColor="@color/color4"
+        app:helperText="Obrigatório*"
+        app:counterEnabled="true"
+        app:counterMaxLength="20">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edSenhaCadastro"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/white"
+            android:maxLength="20"
             android:inputType="textPassword"
-
-            android:hint="Senha" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/edSenhaConfirmInputCadastro"
-        android:layout_width="387dp"
-        android:layout_height="62dp"
-        android:layout_gravity="center"
-        android:backgroundTint="@color/white"
-        app:errorIconTint="@color/erroTint"
-        app:errorTextColor="@color/erroTint"
-        app:boxStrokeErrorColor="@color/erroTint"
-        app:errorContentDescription="Senhas devem conter números, letras e símbolos"
-        app:errorIconDrawable="@drawable/ic_error_"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="32dp"
+        android:hint="Confirme sua Senha"
+        app:startIconDrawable="@drawable/ic_lock"
         app:passwordToggleEnabled="true"
-        app:layout_constraintBottom_toTopOf="@+id/btn_login"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/imageView3">
+        app:startIconTint="@color/color4"
+        app:counterTextColor="@color/color4"
+        app:boxStrokeColor="@color/color4"
+        app:helperTextTextColor="@color/erroTint"
+        app:boxStrokeErrorColor="@color/erroTint"
+        app:hintTextColor="@color/color4"
+        app:helperText="Obrigatório*"
+        app:counterEnabled="true"
+        app:counterMaxLength="20">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edSenhaConfirmeCadastro"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/white"
+            android:maxLength="20"
             android:inputType="textPassword"
-            android:hint="Confirme sua Senha" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
     </com.google.android.material.textfield.TextInputLayout>
 
+
     <android.widget.Button
-        android:layout_gravity="center"
         android:id="@+id/btn_cadastrar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="237dp"
+        android:layout_height="47dp"
+        android:layout_gravity="center"
         android:layout_marginTop="10dp"
         android:background="@drawable/btentrar"
         android:backgroundTint="@color/color4"

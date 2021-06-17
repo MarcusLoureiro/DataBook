@@ -1,15 +1,11 @@
 package com.example.databook.livro
 
-import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
-import android.location.LocationManager
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
-import android.print.PrintAttributes
-import android.print.PrintManager
 import android.provider.MediaStore.Images.Media.insertImage
 import android.text.method.ScrollingMovementMethod
 import android.util.Log
@@ -69,6 +65,7 @@ class LivroSelecionadoActivity : AppCompatActivity() {
     var year = 0
     var hour = 0
     var minute = 0
+    var second = 0
     var savedDay = 0
     var savedMonth = ""
     var savedYear = 0
@@ -386,7 +383,7 @@ class LivroSelecionadoActivity : AppCompatActivity() {
     @Throws(FileNotFoundException::class)
     private fun createPdf(){
         pdfPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString()
-        val file = File(pdfPath, "DataBookComprovante$day$hour.pdf")
+        val file = File(pdfPath, "DataBookComprovante$day$hour$minute$second.pdf")
         val outPutStream = FileOutputStream(file)
         
         val writer = PdfWriter(file)
@@ -447,7 +444,7 @@ class LivroSelecionadoActivity : AppCompatActivity() {
         document.add(qrCodeImage)
         document.close()
 
-        Toast.makeText(this, "Pdf Create", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, "Compra Efetuada", Toast.LENGTH_SHORT).show()
     }
 
     private fun getDateTimeCalendar(){
@@ -457,6 +454,7 @@ class LivroSelecionadoActivity : AppCompatActivity() {
         year = cal.get(Calendar.YEAR)
         hour = cal.get(Calendar.HOUR)
         minute = cal.get(Calendar.MINUTE)
+        second = cal.get(Calendar.SECOND)
 
     }
 
