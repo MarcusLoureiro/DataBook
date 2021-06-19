@@ -2,7 +2,7 @@ package com.example.databook.entities
 
 
 import java.io.Serializable
-
+//Classe usada para criar objetos com as informações que retornam da API.
 data class VolumeInfo(
     val allowAnonLogging: Boolean = false,
     val authors: List<String> = arrayListOf(),

@@ -11,9 +11,9 @@ import com.example.databook.R
 import com.example.databook.database.perfil.PerfilEntity
 import com.example.databook.database.perfil.PerfisViewModel
 import com.example.databook.home.MainActivity
+import com.example.databook.init.InitScreenActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import kotlinx.android.synthetic.main.activity_cadastro.tv_cadastre_se
 import kotlinx.android.synthetic.main.activity_login.*
 import java.util.regex.Pattern
 
@@ -44,6 +44,7 @@ class LoginActivity : AppCompatActivity() {
         }
         updateUI(user)
         arrow_back_login.setOnClickListener {
+            callInitScreen()
             finish()
         }
         btn_login.setOnClickListener {
@@ -60,6 +61,11 @@ class LoginActivity : AppCompatActivity() {
                 Toast.makeText(this, "Digite o email da conta que deseja recuperar a senha. Tente Novamente!", Toast.LENGTH_LONG).show()
             }
         }
+    }
+
+    private fun callInitScreen() {
+        val intent = Intent(this, InitScreenActivity::class.java)
+        startActivity(intent)
     }
 
 

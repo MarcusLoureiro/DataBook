@@ -6,6 +6,7 @@ import androidx.room.PrimaryKey
 import java.io.Serializable
 
 @Entity(tableName = "perfiltable")
+//Criando a classe PerfilEntity  com os atributos necessários.
 data class PerfilEntity (
     @PrimaryKey(autoGenerate = false)
     var userID: String = "",

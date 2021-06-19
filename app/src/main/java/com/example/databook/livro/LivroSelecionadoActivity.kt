@@ -1,5 +1,6 @@
 package com.example.databook.livro
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
@@ -57,6 +58,8 @@ import kotlin.jvm.Throws
 
 @Suppress("DEPRECATION", "UNSAFE_CALL_ON_PARTIALLY_DEFINED_RESOURCE")
 class LivroSelecionadoActivity : AppCompatActivity() {
+
+    /*Inicialização de variavéis dos ViewModels, FirebaseAuth e Data e Tempo.*/
     private lateinit var viewModelFav: FavoritosViewModel
     private lateinit var viewModelPerfil: PerfisViewModel
     var pdfPath = ""
@@ -72,24 +75,32 @@ class LivroSelecionadoActivity : AppCompatActivity() {
     private val mAuth = FirebaseAuth.getInstance().currentUser
 
 
+    //================================================Animações dos floating button==================================//
+    /*Rotação para abrir menu de botões*/
     private val rotateOpen: Animation by lazy {
         AnimationUtils.loadAnimation(
             this,
             R.anim.rotate_open_anim
         )
     }
+
+    /*Rotação para fechar menu de botões*/
     private val rotateClose: Animation by lazy {
         AnimationUtils.loadAnimation(
             this,
             R.anim.rotate_close_anim
         )
     }
+
+    /*Rotação para descer menu de botões*/
     private val fromBottom: Animation by lazy {
         AnimationUtils.loadAnimation(
             this,
             R.anim.from_bottom_anim
         )
     }
+
+    /*Rotação para subir menu de botões*/
     private val toBottom: Animation by lazy {
         AnimationUtils.loadAnimation(
             this,
@@ -97,20 +108,30 @@ class LivroSelecionadoActivity : AppCompatActivity() {
         )
     }
 
+
     private var clicked = false
     override fun onCreate(savedInstanceState: Bundle?) {
 
 
+        /** Declarando viewModel do Banco de dados:
+         * Tabela de Perfil
+         * Tabela de Favoritos
+         */
         viewModelPerfil = ViewModelProvider(this).get(PerfisViewModel::class.java)
         viewModelFav = ViewModelProvider(this).get(FavoritosViewModel::class.java)
 
+        //Recebendo via intent se o Livro selecionado é um favorito.
         val favoritos = intent.getSerializableExtra("favoritos") as? Boolean
+
+        //Variável isClick para esconder informações do livro e mostrar o fundo da imagem do livro.
         var isClick = false
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_livro_selecionado)
         setActivity()
         setVisibility(true)
+
+        //Aqui será feito a alternância entre mostrar somente o fundo ou não.
         imgFundoLivroSelecionado.setOnClickListener {
             if (!isClick) {
                 includeInfos.isGone = true
@@ -121,6 +142,7 @@ class LivroSelecionadoActivity : AppCompatActivity() {
             }
         }
 
+        //Definir automaticamente se o livro já está na lista de favoritos e setar o ícone ideal.
         if (favoritos == true) {
             fabFavoritar.setImageResource(drawable.ic_favorito_select)
         } else {
@@ -128,9 +150,12 @@ class LivroSelecionadoActivity : AppCompatActivity() {
             fabEditar.isClickable = false
         }
 
+        //Floating Button que abre o menu com as outras opções.
         fabMenu.setOnClickListener {
             onFabMenuClicked()
         }
+
+        //Ativar a função de editar informações do livro.
         fabEditar.setOnClickListener {
             if (favoritos == true) {
                 updateFav()
@@ -142,8 +167,9 @@ class LivroSelecionadoActivity : AppCompatActivity() {
                     Toast.LENGTH_SHORT
                 ).show()
             }
-
         }
+
+        //Ativar a função de favoritar um livro.
         fabFavoritar.setOnClickListener {
             if (favoritos == true) {
                 Toast.makeText(
@@ -171,21 +197,26 @@ class LivroSelecionadoActivity : AppCompatActivity() {
                 }
             }
         }
+
+        //Ativar a intent para que se compartilhe o livro com as redes sociais.
         fabCompatilhar.setOnClickListener {
             setShareIntent()
         }
 
+        //Emite o comprovante em .pdf do livro. Simulação simples de compra com 1-click
         fabBuy.setOnClickListener {
             getDateTimeCalendar()
             createPdf()
         }
 
-
-
-      //  pdfPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString()
+        //Ativando método automático de scroll no textView que exibe a sinopse do livro.
         textViewSinopse.movementMethod = ScrollingMovementMethod()
     }
 
+    /**Função para setar a Activity:
+     * Pega o livro da API
+     * Pega o livro do Banco de Dados
+     * De acordo com a variável "favoritos"*/
     private fun setActivity() {
         val favoritos = intent.getSerializableExtra("favoritos") as? Boolean
         Log.i("FAVORITOS", favoritos.toString())
@@ -196,6 +227,13 @@ class LivroSelecionadoActivity : AppCompatActivity() {
         }
     }
 
+
+    /**Função para setar informações de um livro da tabela de favoritos do Banco de dados:
+     * Título
+     * Ano
+     * Sinopse
+     * Autor(a)
+     * Imagem*/
     private fun setBookFavInView(fav: FavoritosEntity) {
         textViewTitulo.text = fav.title
         textViewAno.text = anoFormating(fav.lancamento)
@@ -204,6 +242,12 @@ class LivroSelecionadoActivity : AppCompatActivity() {
         imgFundoLivroSelecionado.load(fav.imagem)
     }
 
+    /**Função para checar informações de um livro da API Google Books antes de exibir:
+     * Título
+     * Ano
+     * Sinopse
+     * Autor(a)
+     * Imagem*/
     private fun checkBookApi(bookApi: Item) {
         try {
             val titulo = bookApi.volumeInfo.title
@@ -247,6 +291,14 @@ class LivroSelecionadoActivity : AppCompatActivity() {
 
     }
 
+    /**Função para pegar o item da API Google Books via intent e no fim será retornado o item.*/
+    private fun getBookApiData(): Item {
+        val item = intent.getSerializableExtra("bookApi") as? Item
+        return item as Item
+    }
+
+    /**Função para adicionar um livro na tabela de favoritos do Banco de dados:
+     * Um toast é exibido para avisar que a função foi finalizada*/
     private fun addFav(fav: FavoritosEntity) {
         viewModelFav.addFav(fav)
         Toast.makeText(
@@ -256,6 +308,10 @@ class LivroSelecionadoActivity : AppCompatActivity() {
         ).show()
     }
 
+    /**Função para editar um livro na tabela de favoritos do Banco de dados:
+     * Pegasse a position do livro na lista do Banco
+     * Passasse via intent para a Activity RegistrarLivro a position e se é para editar
+     * Start da activity (intent)*/
     private fun updateFav() {
         val position = intent.getSerializableExtra("position") as? Int
         val intent = Intent(this, RegistrarLivroActivity::class.java)
@@ -266,17 +322,12 @@ class LivroSelecionadoActivity : AppCompatActivity() {
     }
 
 
-    private fun getBookApiData(): Item {
-        val item = intent.getSerializableExtra("bookApi") as? Item
-        return item as Item
-    }
-
+    /**Função para pegar um livro na tabela de favoritos do Banco de dados:*/
     private fun getFavInListData() {
         val position = intent.getSerializableExtra("position") as? Int
         viewModelFav.favList.observe(this) {
             val favCopy = FavoritosEntity()
             if (it.isNotEmpty()) {
-                Log.i("teste position", it[position!!].toString())
                 setBookFavInView(it[position!!])
             } else {
                 setBookFavInView(favCopy)
@@ -285,6 +336,10 @@ class LivroSelecionadoActivity : AppCompatActivity() {
     }
 
 
+    /**Função para compartilhar um livro pelas redes sociais:
+     * Seja Favorito
+     * Seja da API
+     * No fim se atualiza a perfil do usuário utilizando a função updatePerfilInfos()*/
     private fun setShareIntent() {
         val drawable = imgFundoLivroSelecionado.drawable
         val bitmap = drawable.toBitmap()
@@ -299,7 +354,14 @@ class LivroSelecionadoActivity : AppCompatActivity() {
                     "Sinopse do livro:${textViewSinopse.text}\n"
         )
         startActivity(Intent.createChooser(intent, "${textViewTitulo.text}"))
+        updatePerfilInfos()
+    }
 
+    /**Função atualiza a perfil do usuário:
+     * Usando ViewModelPerfil
+     * Pegasse o usuário logado pelo FirebaseAuth e comparasse com o id salvo no Banco
+     * No fim se atualiza por meio da função updatePerfil() o número de livros compartilhados*/
+    private fun updatePerfilInfos() {
         viewModelPerfil.perfilList.observe(this) { it ->
             it.forEach {
                 if (it.userID == mAuth!!.uid) {
@@ -312,11 +374,18 @@ class LivroSelecionadoActivity : AppCompatActivity() {
         }
     }
 
+    /**Função usada pelo Floating Button menu:
+     * Chamasse a função de Visibilidade
+     * Chamasse a função de animação
+     * alterasse o valor boolean de click*/
     private fun onFabMenuClicked() {
         setVisibility(clicked)
         setAnimation(clicked)
         clicked = !clicked
     }
+
+    /**Função usada para ativar os status de visibilidade dos Floating Buttons do Menu:
+     * Dependendo do click*/
 
     private fun setVisibility(clicked: Boolean) {
         if (!clicked) {
@@ -330,6 +399,8 @@ class LivroSelecionadoActivity : AppCompatActivity() {
         }
     }
 
+    /**Função usada para ativar as animações dos Floating Buttons do Menu:
+     * Dependendo do click*/
     private fun setAnimation(clicked: Boolean) {
         if (!clicked) {
             fabFavoritar.startAnimation(fromBottom)
@@ -344,16 +415,20 @@ class LivroSelecionadoActivity : AppCompatActivity() {
         }
     }
 
+    /**Função usada para pegar um Bitmap:
+     * transforma url em bitmap
+     * usada para imagens do banco e da API*/
     private suspend fun getBitmap(data: String): Bitmap {
         val loanding = ImageLoader(this)
         val request = ImageRequest.Builder(this)
             .data(data)
             .build()
-
         val result = (loanding.execute(request) as SuccessResult).drawable
         return (result as BitmapDrawable).bitmap
     }
 
+    /**Função para mudar o ícone do favorito:
+     * Dependendo se for favorito ou não*/
     private fun changeIconFav(fav: Boolean) {
         if (fav) {
             fabFavoritar.setImageResource(drawable.ic_favorito_amarelo)
@@ -362,6 +437,9 @@ class LivroSelecionadoActivity : AppCompatActivity() {
         }
     }
 
+    /**Função usada formatar os anos dos livros do(a):
+     * API
+     * Banco*/
     private fun anoFormating(string: String): String {
         var anoFormatado = ""
         for (i in 0..3) {
@@ -370,28 +448,22 @@ class LivroSelecionadoActivity : AppCompatActivity() {
         return anoFormatado
     }
 
-    fun View.setMargins(
-        left: Int = this.marginLeft,
-        top: Int = this.marginTop,
-        right: Int = this.marginRight,
-        bottom: Int = this.marginBottom
-    ) {
-        layoutParams = (layoutParams as ViewGroup.MarginLayoutParams).apply {
-            setMargins(left, top, right, bottom)
-        }
-    }
+
+    /**Cria um arquivo pdf e salva na pasta de Downloads do dispositivo*/
+    @SuppressLint("UseCompatLoadingForDrawables")
     @Throws(FileNotFoundException::class)
-    private fun createPdf(){
-        pdfPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString()
+    private fun createPdf() {
+        pdfPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+            .toString()
         val file = File(pdfPath, "DataBookComprovante$day$hour$minute$second.pdf")
         val outPutStream = FileOutputStream(file)
-        
+
         val writer = PdfWriter(file)
         val pdfDocument = PdfDocument(writer)
         val document = Document(pdfDocument)
 
         pdfDocument.defaultPageSize = PageSize.A6
-        document.setMargins(0.0f,0.0f,0.0f,0.0f)
+        document.setMargins(0.0f, 0.0f, 0.0f, 0.0f)
         val d = getDrawable(drawable.logo_pdf)
         val bitmap = d!!.toBitmap()
         val stream = ByteArrayOutputStream()
@@ -401,12 +473,16 @@ class LivroSelecionadoActivity : AppCompatActivity() {
         val imageData = ImageDataFactory.create(bitmapData)
         val image = Image(imageData)
 
-        val visitorTicket = Paragraph("Comprovante DataBook").setBold().setFontSize(24.0f).setTextAlignment(TextAlignment.CENTER)
-        val group = Paragraph("Departamento de Compra\n" +
-        "Aplicativo DataBook, Brasil").setTextAlignment(TextAlignment.CENTER).setFontSize(12.0f)
-        val varansi = Paragraph(textViewTitulo.text.toString()).setBold().setFontSize(20.0f).setTextAlignment(TextAlignment.CENTER)
+        val visitorTicket = Paragraph("Comprovante DataBook").setBold().setFontSize(24.0f)
+            .setTextAlignment(TextAlignment.CENTER)
+        val group = Paragraph(
+            "Departamento de Compra\n" +
+                    "Aplicativo DataBook, Brasil"
+        ).setTextAlignment(TextAlignment.CENTER).setFontSize(12.0f)
+        val varansi = Paragraph(textViewTitulo.text.toString()).setBold().setFontSize(20.0f)
+            .setTextAlignment(TextAlignment.CENTER)
 
-        val width = floatArrayOf(100f,100f)
+        val width = floatArrayOf(100f, 100f)
         val table = Table(width)
 
         table.setHorizontalAlignment(HorizontalAlignment.CENTER)
@@ -420,9 +496,9 @@ class LivroSelecionadoActivity : AppCompatActivity() {
         table.addCell(Cell().add(Paragraph("Produto")))
         table.addCell(Cell().add(Paragraph(textViewTitulo.text.toString())))
 
-        if(month in 10..12){
+        if (month in 10..12) {
             month = month
-        }else{
+        } else {
             month = ("0$month").toInt()
         }
 
@@ -432,11 +508,12 @@ class LivroSelecionadoActivity : AppCompatActivity() {
         table.addCell(Cell().add(Paragraph("Hora:")))
         table.addCell(Cell().add(Paragraph("$hour:$minute")))
 
-        val code = BarcodeQRCode("Comprovante validado:$hour/$minute")
+        val code = BarcodeQRCode("Comprovante validado:$hour/$minute\nID Usuário:${mAuth.uid}")
         val qrCodeObject = code.createFormXObject(ColorConstants.BLACK, pdfDocument)
-        val qrCodeImage = Image(qrCodeObject).setWidth(80f).setHorizontalAlignment(HorizontalAlignment.CENTER)
+        val qrCodeImage =
+            Image(qrCodeObject).setWidth(80f).setHorizontalAlignment(HorizontalAlignment.CENTER)
 
-     // document.add(image)
+        // document.add(image)
         document.add(visitorTicket)
         document.add(group)
         document.add(varansi)
@@ -447,7 +524,8 @@ class LivroSelecionadoActivity : AppCompatActivity() {
         Toast.makeText(this, "Compra Efetuada", Toast.LENGTH_SHORT).show()
     }
 
-    private fun getDateTimeCalendar(){
+    /**Pega data e hora atual do dispositivo*/
+    private fun getDateTimeCalendar() {
         val cal = Calendar.getInstance()
         day = cal.get(Calendar.DAY_OF_MONTH)
         month = cal.get(Calendar.MONTH)
@@ -457,7 +535,6 @@ class LivroSelecionadoActivity : AppCompatActivity() {
         second = cal.get(Calendar.SECOND)
 
     }
-
 
 
 }

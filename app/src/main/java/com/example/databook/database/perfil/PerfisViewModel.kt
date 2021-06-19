@@ -9,8 +9,10 @@ import kotlinx.coroutines.launch
 
 class PerfisViewModel(app: Application): AndroidViewModel(app) {
 
+    /**ViewModel usado para ter acesso aos dados do banco, especificamente da tabela de perfis*/
     val perfilList: LiveData<List<PerfilEntity>>
     private val repository: PerfilRepository
+
 
     init {
         val perfilDAO = AppDataBase.getDataBase(app).perfisDAO()
@@ -18,12 +20,14 @@ class PerfisViewModel(app: Application): AndroidViewModel(app) {
         perfilList = repository.readAllData
     }
 
+    //Adicionando novo perfil
     fun addPerfil(perfil: PerfilEntity){
         viewModelScope.launch(Dispatchers.IO) {
             repository.addPerfil(perfil)
         }
     }
 
+    //Editando novo perfil
     fun updatePerfil(perfil: PerfilEntity){
         viewModelScope.launch(Dispatchers.IO) {
             repository.updatePerfil(perfil)

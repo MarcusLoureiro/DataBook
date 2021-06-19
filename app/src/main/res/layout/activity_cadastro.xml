@@ -186,7 +186,6 @@
 
     <TextView
         android:layout_gravity="center"
-        android:id="@+id/tv_login"
         android:layout_width="383dp"
         android:layout_height="37dp"
         android:width="422dp"
@@ -206,8 +205,8 @@
         app:layout_constraintVertical_bias="0.423" />
 
     <TextView
+        android:id="@+id/tv_login"
         android:layout_gravity="center"
-        android:id="@+id/tv_cadastre_se"
         android:layout_width="336dp"
         android:layout_height="33dp"
         android:width="423dp"
