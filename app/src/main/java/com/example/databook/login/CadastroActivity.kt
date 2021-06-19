@@ -28,6 +28,7 @@ class CadastroActivity : AppCompatActivity() {
         setContentView(R.layout.activity_cadastro)
 
         arrow_back_cadastro.setOnClickListener {
+            inicarLogin()
             finish()
         }
 

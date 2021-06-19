@@ -107,7 +107,7 @@ class RegistrarLivroActivity : AppCompatActivity(), DatePickerDialog.OnDateSetLi
             val id = UUID.randomUUID().toString()
             val userID = FirebaseAuth.getInstance().currentUser?.uid.toString()
             val title = edTitle.text.toString()
-            val ano = edAno.text.toString()
+            val ano = savedYear.toString()
             val autor = edAutor.text.toString()
             val sinopse = edSinopse.text.toString()
             lifecycleScope.launch {
@@ -210,13 +210,11 @@ class RegistrarLivroActivity : AppCompatActivity(), DatePickerDialog.OnDateSetLi
         val position = intent.getSerializableExtra("position") as? Int
         viewModelFav.favList.observe(this) {
                 val fav = it[position!!]
-                Log.i("fav original", fav.toString())
                 fav.sinopse = edSinopse.text.toString()
                 fav.autor = edAutor.text.toString()
                 fav.title = edTitle.text.toString()
                 fav.lancamento = edAno.text.toString()
                 viewModelFav.updateFav(fav)
-                Log.i("fav editado", fav.toString())
         }
     }
 

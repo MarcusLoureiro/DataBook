@@ -7,7 +7,7 @@ import com.example.databook.database.favoritos.FavoritosEntity
 import com.example.databook.database.perfil.PerfilDAO
 import com.example.databook.database.perfil.PerfilEntity
 
-
+//Criando o banco de dados com as entidades e a versão e se o banco poderá ser exportado.
 @Database(
     entities = [FavoritosEntity::class, PerfilEntity::class],
     version = 1,
@@ -23,6 +23,7 @@ abstract class AppDataBase : RoomDatabase() {
         @Volatile
         private var INSTANCE: AppDataBase? = null
 
+        //Criando a instância do banco com todos os atributos necessários, como nome, se a sincronização offline está ativa, etc.
         fun getDataBase(context: Context): AppDataBase {
             val tempInstance = INSTANCE
             if (tempInstance != null) {

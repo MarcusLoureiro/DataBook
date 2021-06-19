@@ -5,7 +5,7 @@ import android.graphics.BitmapFactory
 import androidx.room.TypeConverter
 import java.io.ByteArrayOutputStream
 
-
+//Classe usada para poder salvar no banco dados não primitivos. Nesse caso será usada para salvar dados do tipo Bitmap.
 class Converters {
     @TypeConverter
     fun fromBitmap(bitmap: Bitmap): ByteArray {

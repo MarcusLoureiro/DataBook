@@ -7,7 +7,7 @@ import com.example.databook.database.perfil.PerfilDAO
 import com.example.databook.database.perfil.PerfilEntity
 
 
-
+//Cria os repositórios que serão usados pelos ViewModels para pegar os dados do Banco. Usando suspend fun.
 class FavoritosRepository(private val favoritosDAO: FavoritosDAO){
 
     val readAllData: LiveData<List<FavoritosEntity>> = favoritosDAO.getFavoritosList()

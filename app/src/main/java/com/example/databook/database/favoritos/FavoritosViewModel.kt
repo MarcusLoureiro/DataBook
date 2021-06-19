@@ -9,6 +9,7 @@ import kotlinx.coroutines.launch
 
 class FavoritosViewModel(app: Application): AndroidViewModel(app) {
 
+    /**ViewModel usado para ter acesso aos dados do banco, especificamente da tabela de favoritos*/
     val favList: LiveData<List<FavoritosEntity>>
     private val repository: FavoritosRepository
 
@@ -18,18 +19,21 @@ class FavoritosViewModel(app: Application): AndroidViewModel(app) {
         favList = repository.readAllData
     }
 
+    //Adicionando novo favorito
     fun addFav(fav: FavoritosEntity){
         viewModelScope.launch(Dispatchers.IO) {
             repository.addFav(fav)
         }
     }
 
+    //Editando favorito
     fun updateFav(fav: FavoritosEntity){
         viewModelScope.launch(Dispatchers.IO) {
             repository.updateFav(fav)
         }
     }
 
+    //Deletando favorito
     fun deleteFav(fav: FavoritosEntity){
         viewModelScope.launch(Dispatchers.IO) {
             repository.deleteFav(fav)
@@ -42,10 +46,12 @@ class FavoritosViewModel(app: Application): AndroidViewModel(app) {
 //        }
 //    }
 
+    //retornando lista de favoritos de acordo com pesquisa.
     fun getseacrhListFav(search:String): LiveData<List<FavoritosEntity>>{
         return repository.getListFavSearch(search)
     }
 
+    //retornando lista de favoritos de acordo com userID.
     fun getListFavUserId(userID: String):LiveData<List<FavoritosEntity>> {
         return repository.getListFavUser(userID)
     }
